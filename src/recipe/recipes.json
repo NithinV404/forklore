@@ -1,0 +1,174 @@
+[
+    {
+        "id":2,
+        "title":"Chicken Biryani",
+        "context":"The most popular dish in India",
+        "description":"Chicken Biryani is a savory chicken and rice dish that includes layers of chicken, rice, and aromatics that are steamed together. The bottom layer of rice absorbs all the chicken juices as it cooks, giving it a tender texture and rich flavor, while the top layer of rice turns out white and fluffy.",
+        "cook_time":"1 hour",
+        "difficulty":"Medium",
+        "image":"https://upload.wikimedia.org/wikipedia/commons/5/5a/%22Hyderabadi_Dum_Biryani%22.jpg",
+        "ingredients":[
+            {
+                "name":"Chicken",
+                "quantity":"1 kg"
+            },
+            {
+                "name":"Onion",
+                "quantity":"1 kg"
+            }
+        ],
+        "method":[
+            {
+                "step":"Step 1"
+            },
+            {
+                "step":"Step 2"
+            }
+        ]
+    },
+    {
+        "id":3,
+        "title":"Spaghetti Carbonara",
+        "context":"A classic Italian pasta dish with eggs and cheese ",
+        "description":"Spaghetti Carbonara is a classic Italian pasta dish made with spaghetti, eggs, pancetta, and grated Pecorino Romano cheese. The eggs are beaten together with the cheese to create a creamy sauce that coats the pasta, while the pancetta adds a salty, savory flavor.",
+        "cook_time":"30 minutes",
+        "difficulty":"Easy",
+        "image":"https://images.immediate.co.uk/production/volatile/sites/30/2020/08/recipe-image-legacy-id-1001491_11-2e0fa5c.jpg",
+        "ingredients":[
+            {
+                "name":"Spaghetti",
+                "quantity":"500g"
+            },
+            {
+                "name":"Pancetta",
+                "quantity":"150g"
+            },
+            {
+                "name":"Eggs",
+                "quantity":"4"
+            },
+            {
+                "name":"Pecorino Romano cheese",
+                "quantity":"100g"
+            }
+        ],
+        "method":[
+            {
+                "step":"Step 1"
+            },
+            {
+                "step":"Step 2"
+            }
+        ]
+    },
+    {
+        "id":4,
+        "title":"Beef Stroganoff",
+        "context":"A hearty Russian dish with spices",
+        "description":"Beef Stroganoff is a hearty Russian dish made with tender strips of beef, mushrooms, and onions in a creamy sauce. The dish is typically served over egg noodles or rice, and is perfect for a cozy winter meal.",
+        "cook_time":"1 hour",
+        "difficulty":"Medium",
+        "image":"https://www.allrecipes.com/thmb/mSWde3PHTu-fDkbvWBw0D1JlS8U=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/25202beef-stroganoff-iii-ddmfs-3x4-233-0f26fa477e9c446b970a32502468efc6.jpg",
+        "ingredients":[
+            {
+                "name":"Beef",
+                "quantity":"1 kg"
+            },
+            {
+                "name":"Mushrooms",
+                "quantity":"500g"
+            },
+            {
+                "name":"Onion",
+                "quantity":"1"
+            },
+            {
+                "name":"Sour cream",
+                "quantity":"200g"
+            }
+        ],
+        "method":[
+            {
+                "step":"Step 1"
+            },
+            {
+                "step":"Step 2"
+            }
+        ]
+    },
+    {
+        "id":5,
+        "title":"Margherita Pizza",
+        "context":"A classic Italian pizza with tomato, mozzarella, and basil",
+        "description":"Margherita Pizza is a classic Italian pizza topped with tomato sauce, mozzarella cheese, and fresh basil leaves. It is a simple yet delicious pizza that showcases the flavors of the ingredients. The tomato sauce provides a tangy and savory base, while the mozzarella cheese melts and becomes gooey, and the fresh basil adds a hint of freshness.",
+        "cook_time":"20 minutes",
+        "difficulty":"Easy",
+        "image":"https://www.blossmangas.com/wp-content/uploads/2021/05/Margherita-pizza-2.jpg",
+        "ingredients":[
+            {
+                "name":"Pizza dough",
+                "quantity":"1"
+            },
+            {
+                "name":"Tomato sauce",
+                "quantity":"200g"
+            },
+            {
+                "name":"Mozzarella cheese",
+                "quantity":"200g"
+            },
+            {
+                "name":"Fresh basil leaves",
+                "quantity":"10"
+            }
+        ],
+        "method":[
+            {
+                "step":"Step 1"
+            },
+            {
+                "step":"Step 2"
+            }
+        ]
+    },
+    {
+        "id":6,
+        "title":"Chocolate Chip Cookies",
+        "context":"Classic homemade cookies with chocolate chips",
+        "description":"Chocolate Chip Cookies are classic homemade cookies made with butter, sugar, eggs, flour, and chocolate chips. They are soft, chewy, and loaded with gooey chocolate chips. These cookies are perfect for any occasion and are loved by both kids and adults.",
+        "cook_time":"15 minutes",
+        "difficulty":"Easy",
+        "image":"https://handletheheat.com/wp-content/uploads/2020/10/BAKERY-STYLE-CHOCOLATE-CHIP-COOKIES-9-637x637-1.jpg",
+        "ingredients":[
+            {
+                "name":"Butter",
+                "quantity":"1 cup"
+            },
+            {
+                "name":"Sugar",
+                "quantity":"1 cup"
+            },
+            {
+                "name":"Eggs",
+                "quantity":"2"
+            },
+            {
+                "name":"Flour",
+                "quantity":"2 cups"
+            },
+            {
+                "name":"Chocolate chips",
+                "quantity":"2 cups"
+            }
+        ],
+        "method":[
+            {
+                "step":"Step 1"
+            },
+            {
+                "step":"Step 2"
+            }
+        ]
+    }
+]
+    
