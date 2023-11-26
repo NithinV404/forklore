@@ -1,11 +1,15 @@
 import data from "../recipe/recipes.json";
 import "../components/recipe_details.css";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import icon_back from "../assets/icon-back.svg";
 
   export default function RecipeDetails(){
   var { id } = useParams();
   var recipe = data.filter(recipe=>recipe.id==Number(id))[0];
-  return(
+  return(<>
+    <header>
+      <Link to="/"><img src={ icon_back } alt="back" /></Link>
+    </header>
     <div className="recipe_details" key={recipe.id}>
     <div className="recipe_details_header">
     <div className="recipe_details_header_left">
@@ -29,6 +33,7 @@ import { useParams } from "react-router-dom";
       {recipe.method.map((step,index)=><li key={index}>{step.step}</li>)}
     </ol>
     </div>
+    </>
     );
   }
   
