@@ -14,3 +14,28 @@
     height: 5rem;
     box-shadow: 0px 0px 3px rgb(139, 139, 139);
 }
+input[type="text"]
+{
+    width: 20rem;
+    height: 2rem;
+    border-radius: 1rem;
+    border: 1px solid rgb(139, 139, 139);
+    padding-left: 1rem;
+    outline: none;
+}
+.search-items
+{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: white;
+    box-shadow: 0 0 3px rgb(139, 139, 139);
+    border-radius: 10px;
+    padding: 10px;
+}
+.search-item
+{
+    padding: 0.2rem 0
+}
