@@ -4,8 +4,12 @@ import Header from "../components/header";
 import { Link } from "react-router-dom";
 import icon_share from "../assets/icon-share.svg";
 import icon_delete from "../assets/icon-delete.svg";
+import axios from "axios";
 export default function RecipeCards()
 {
+    const handleDelete = (recipeId: number) => {
+        axios.post('http://localhost:5000/delete', {recipeId});
+    }
     return(<>
         <Header />
         <div className="recipe_cards">
@@ -21,7 +25,7 @@ export default function RecipeCards()
         <div className="share_btn">
         <img src={ icon_share } alt="share"/> 
         </div>
-        <div className="delete_btn">
+        <div className="delete_btn" onClick={()=> handleDelete(recipe.id)}>
         <img src={ icon_delete } alt="delete"/>
         </div>
         </div>

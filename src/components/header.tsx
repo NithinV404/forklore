@@ -7,6 +7,7 @@ export default function Header()
     {
         idMeal: string;
         strMeal: string;
+        strMealThumb: string;
     }
     interface ResponseData
     {
@@ -19,6 +20,7 @@ export default function Header()
         try{
             const response = await axios.post('http://localhost:5000/search', {recipeName});
             setResponseData(response.data);
+            console.log(response.data);
         }
         catch(err)
         {
@@ -39,12 +41,14 @@ export default function Header()
         value={recipeName}
         onChange={(e) => setRecipeName(e.target.value)}
         onKeyPress={handleKeyPress}
+        onBlur={() => setResponseData(null)}
         />
-        <div className='search-items'>{
-        responseData && responseData.meals.map((meal: any) => (
-            <div key={meal.idMeal} className='search-item'><p>{meal.strMeal}</p></div>
-        ))
-        }</div>
+        { responseData ? (<div className='search-items'>
+        {responseData && responseData.meals.map((meal: any) => (
+            <div key={meal.idMeal} className='items'><p>{meal.strMeal}</p><img src={meal.strMealThumb}/></div>
+        ))}
+        </div>) : null
+        }
         </div>
         </div>
     )
