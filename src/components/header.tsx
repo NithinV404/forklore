@@ -34,7 +34,8 @@ export default function Header()
 
 
 
-    const handleaddrecipe = async (recipeId: String) => {
+    const handleaddrecipe = (recipeId: String) => {
+        console.log("clicked");
         const index = data.findIndex((recipe) => recipe.idMeal === recipeId);
         if(index != -1)
         {
@@ -42,9 +43,9 @@ export default function Header()
             return;
         }
         else
-        { await axios.post('http://localhost:5000/add',{recipeId});}
+        { axios.post('http://localhost:5000/add',{recipeId});}
     }
-    
+
     return (
         <div className="header">
         <div className="header-name"><h2>Recipe App</h2></div>

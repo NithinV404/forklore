@@ -39,7 +39,7 @@ app.post('/delete',(req,res)=>{
                     if(err)
                     console.log(err);
                     else
-                    console.log('recipe deleted');
+                    res.send({status: 'ok'});
                 })
             }
         })
@@ -68,7 +68,7 @@ app.post('/add',(req,res)=>{
                         if (err) {
                             console.log(err);
                         } else {
-                            console.log('recipe added');
+                            res.send({status: 'ok'});
                         }
                     });
                 }

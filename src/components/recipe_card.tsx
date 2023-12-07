@@ -9,8 +9,8 @@ export default function RecipeCards()
 {
  
 
-    const handleDelete = (recipeId: String) => {
-        axios.post('http://localhost:5000/delete', {recipeId});
+    const handleDelete = async (recipeId: String) => {
+        await axios.post('http://localhost:5000/delete', {recipeId});
     }
     return(<>
         <Header />
