@@ -29,10 +29,10 @@ export default function RecipeCards()
         <div className="recipe_card_footer">
         <Link className="btn" to={`recipe_details/${recipe.idMeal}`}>Read more</Link>
         <div className="share_btn">
-        <img src={ icon_share } alt="share"/> 
+        <img className="ic-hover" src={ icon_share } alt="share"/> 
         </div>
         <div className="delete_btn" onClick={()=> handleDelete(recipe.idMeal)}>
-        <img src={ icon_delete } alt="delete"/>
+        <img className="ic-hover" src={ icon_delete } alt="delete"/>
         </div>
         </div>
         </div>

@@ -4,8 +4,12 @@ import { Link, useParams } from "react-router-dom";
 import icon_back from "../assets/icon-back.svg";
 
   export default function RecipeDetails(){
+
   var { id } = useParams();
   var recipe = data.filter(recipe=>recipe.idMeal==(id))[0];
+  const videoId = new URL(recipe.strYoutube).searchParams.get('v');
+  const embedUrl = `https://www.youtube.com/embed/${videoId}`;
+
   return(<>
     <header>
       <Link to="/"><img src={ icon_back } alt="back" /></Link>
@@ -35,6 +39,8 @@ import icon_back from "../assets/icon-back.svg";
     <h3>Instructions</h3>
     <pre>{recipe.strInstructions}</pre>
     { !recipe.strSource ? (<><h3>Source</h3><a href={recipe.strSource}></a></>): null}
+    <h3>Video</h3>
+    <iframe width="560" height="315" src={embedUrl} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
     </div>
     </>
     );

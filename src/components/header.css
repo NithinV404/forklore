@@ -43,14 +43,39 @@ input[type="text"]
 .items
 {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-around;
+    align-items: center;
     padding: 0.2rem 0;
-    flex-wrap: wrap;
     width: 20rem;
+}
+.items > .item-name
+{
+    width: 13rem;
+    font-size: 1rem;
+    font-weight: 500;
+    padding-left: 0.5rem;
+
 }
 .items > img
 {
    width: 3rem;
    height: 3rem;
    border-radius: 10px;
+   cursor: pointer;
+   transition: ease-in-out 0.3s;
+}
+.ic-hover
+{
+    transition: ease-in-out 0.1s;
+    border-radius: 8px;
+}
+.ic-hover:hover
+{
+    transform: scale(1.1);
+    background-color: rgb(228, 228, 228);
+}
+.search-items > .items > .add-icon
+{
+    width: 20px;
+    height: 20px;
 }
