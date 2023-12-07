@@ -7,7 +7,9 @@ import icon_delete from "../assets/icon-delete.svg";
 import axios from "axios";
 export default function RecipeCards()
 {
-    const handleDelete = (recipeId: number) => {
+ 
+
+    const handleDelete = (recipeId: String) => {
         axios.post('http://localhost:5000/delete', {recipeId});
     }
     return(<>
@@ -16,16 +18,20 @@ export default function RecipeCards()
         {data.map((recipe,index)=>
         <div className="recipe_card" key={index}>
         <div className="recipe_card_header">
-        <h1>{recipe.title}</h1>
-        <p>{recipe.context}</p>
+        <h1>{recipe.strMeal}</h1>
+        <div className="recipe_card_details">
+        <p>ID: {recipe.idMeal}</p>
+        <p>Category: {recipe.strCategory}</p>
+        <p>Area: {recipe.strArea}</p>
+        </div> 
         </div>
-        <img src={recipe.image} alt={recipe.title} />
+        <img src={recipe.strMealThumb} alt={recipe.strMeal} />
         <div className="recipe_card_footer">
-        <Link className="btn" to={`recipe_details/${recipe.id}`}>Read more</Link>
+        <Link className="btn" to={`recipe_details/${recipe.idMeal}`}>Read more</Link>
         <div className="share_btn">
         <img src={ icon_share } alt="share"/> 
         </div>
-        <div className="delete_btn" onClick={()=> handleDelete(recipe.id)}>
+        <div className="delete_btn" onClick={()=> handleDelete(recipe.idMeal)}>
         <img src={ icon_delete } alt="delete"/>
         </div>
         </div>

@@ -14,7 +14,7 @@ app.post('/search', (req, res) => {
         let url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${mealname}`;
         fetch(url)
         .then(response=>response.json())
-        .then(data=>res.send(data));
+        .then(data=>res.send(data))
     }
     catch(error)    
     {
@@ -26,16 +26,16 @@ app.post('/delete',(req,res)=>{
     const recipeid = req.body.recipeId;
     try
     {
-        fs.readFile('../src/recipe/recipes.json', 'utf8', (err, data)=>{
+        fs.readFile('./src/recipe/recipes.json', 'utf8', (err, data)=>{
             if(err)
             console.log(err);
             else
             {
                 const recipes = JSON.parse(data);
-                const index = recipes.findIndex(recipe => recipe.id === recipeid);
+                const index = recipes.findIndex(recipe => recipe.idMeal === recipeid);
                 if (index !== -1)
                 recipes.splice(index, 1);
-                fs.writeFile('../src/recipe/recipes.json', JSON.stringify(recipes), err=>{
+                fs.writeFile('./src/recipe/recipes.json', JSON.stringify(recipes), err=>{
                     if(err)
                     console.log(err);
                     else
@@ -49,3 +49,32 @@ app.post('/delete',(req,res)=>{
     }
 })
 
+app.post('/add',(req,res)=>{
+    const recipeid = req.body.recipeId;
+    console.log(recipeid)
+    try {
+        let url = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${recipeid}`;
+        fetch(url)
+        .then(response => response.json())
+        .then(newRecipe => {
+            console.log(newRecipe)
+            fs.readFile('./src/recipe/recipes.json', 'utf8', (err, data) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    const recipes = JSON.parse(data);
+                    recipes.push(newRecipe.meals[0]);
+                    fs.writeFile('./src/recipe/recipes.json', JSON.stringify(recipes, null, 2), err => {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            console.log('recipe added');
+                        }
+                    });
+                }
+            });
+        });
+    } catch (err) {
+        console.log(err);
+    }
+});

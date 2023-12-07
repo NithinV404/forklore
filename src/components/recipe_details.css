@@ -49,3 +49,7 @@ header > a > img
     height: 200px;
     border-radius: 2rem;
 }
+.recipe_details > pre
+{
+    white-space: pre-wrap;
+}

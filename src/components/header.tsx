@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import axios from 'axios';
 import './header.css';
+import data from '../recipe/recipes.json'
 export default function Header()
 {
+   
     interface Meal
     {
         idMeal: string;
@@ -15,7 +17,9 @@ export default function Header()
     }
 
     const [recipeName, setRecipeName] = useState("");
-    const [responseData, setResponseData] = useState<ResponseData | null>(null); // [
+    const [responseData, setResponseData] = useState<ResponseData | null>(null); 
+
+
     const handleSearch = async () => {
         try{
             const response = await axios.post('http://localhost:5000/search', {recipeName});
@@ -27,11 +31,20 @@ export default function Header()
             console.log(err);
         }
     }
-    const handleKeyPress = (event: { key: string; }) => {
-        if (event.key === 'Enter') {
-          handleSearch();
+
+
+
+    const handleaddrecipe = async (recipeId: String) => {
+        const index = data.findIndex((recipe) => recipe.idMeal === recipeId);
+        if(index != -1)
+        {
+            alert("Recipe already exists");
+            return;
         }
-      }
+        else
+        { await axios.post('http://localhost:5000/add',{recipeId});}
+    }
+    
     return (
         <div className="header">
         <div className="header-name"><h2>Recipe App</h2></div>
@@ -40,12 +53,17 @@ export default function Header()
         placeholder="Search for recipes"
         value={recipeName}
         onChange={(e) => setRecipeName(e.target.value)}
-        onKeyPress={handleKeyPress}
-        onBlur={() => setResponseData(null)}
+        onKeyPress={handleSearch}
+        //onBlur={() => setResponseData(null)}
         />
-        { responseData ? (<div className='search-items'>
-        {responseData && responseData.meals.map((meal: any) => (
-            <div key={meal.idMeal} className='items'><p>{meal.strMeal}</p><img src={meal.strMealThumb}/></div>
+        { responseData && responseData.meals!=null ? (<div className='search-items'>
+        {
+            responseData.meals.map((meal: any) => (
+            <div key={meal.idMeal} className='items'>
+            <p>{meal.strMeal}</p>
+            <img src={meal.strMealThumb}/>
+            <button className="btn" onClick={()=>handleaddrecipe(meal.idMeal)}>Add</button>
+            </div>
         ))}
         </div>) : null
         }

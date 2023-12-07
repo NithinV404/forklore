@@ -16,7 +16,7 @@
 }
 input[type="text"]
 {
-    width: 15rem;
+    width: 20rem;
     height: 2rem;
     border-radius: 1rem;
     border: 1px solid rgb(139, 139, 139);
@@ -27,19 +27,26 @@ input[type="text"]
 {
     position: absolute;
     display: flex;
-    justify-content: center;
     flex-direction: column;
     background-color: white;
     box-shadow: 0 0 3px rgb(139, 139, 139);
     border-radius: 10px;
+    width: 20rem;
+    max-height: 20rem;
+    overflow: scroll;
     padding: 10px;
-    width: 15rem;
+}
+.items:first
+{
+    padding-top: 10px;
 }
 .items
 {
     display: flex;
-    justify-content: space-between;
-    padding: 0.2rem 0
+    justify-content: space-evenly;
+    padding: 0.2rem 0;
+    flex-wrap: wrap;
+    width: 20rem;
 }
 .items > img
 {
