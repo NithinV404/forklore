@@ -29,7 +29,6 @@ export default function Header() {
   };
 
   const handleaddrecipe = (recipeId: String) => {
-    console.log("clicked");
     const index = data.findIndex((recipe) => recipe.idMeal === recipeId);
     if (index != -1) {
       alert("Recipe already exists");
