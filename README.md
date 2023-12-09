@@ -1,30 +1,32 @@
-# React + TypeScript + Vite
+# Recipe App ( Vite + React + Ts)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a recipe app used to save and store recipes locally on the system 
 
-Currently, two official plugins are available:
+![Example Image 1](./public/screenshots/thorium_zitnWIlrIo.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+![Example Image 2](./public/screenshots/thorium_yFBAssnOG7.png)
 
-## Expanding the ESLint configuration
+![Example Image 3](./public/screenshots/thorium_4Cd7Z2pptk.png)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Instruction to run the project 
 
-- Configure the top-level `parserOptions` property like this:
+- First download the project to your local device
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+- Navigate to the recipe_book folder 
+
+- Install the necessary dependencies by running the command
+
 ```
+npm i 
+```
+- Run the project using command 
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+```
+npm run start 
+```
+- Open your default brower and navigate to this url 
+
+```
+https://localhost:5173
+```
+Please do not claim this project as yours 
