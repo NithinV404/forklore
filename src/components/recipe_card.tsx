@@ -5,17 +5,36 @@ import { Link } from "react-router-dom";
 import icon_share from "../assets/icon-share.svg";
 import icon_delete from "../assets/icon-delete.svg";
 import axios from "axios";
+import { useState } from "react";
 export default function RecipeCards()
 {
- 
-
     const handleDelete = async (recipeId: String) => {
         await axios.post('http://localhost:5000/delete', {recipeId});
     }
+    const categories = [...new Set(data.map((recipe) => recipe.strCategory))];
+
+    const [category, setCatergory] = useState<String>("All");
+    var recipe;
+        if(category === "All") 
+        recipe = data;
+        else if(category === "Alphabetical")
+        recipe = data.sort((a, b) => a.strMeal.localeCompare(b.strMeal));
+        else
+        recipe = data.filter((recipe) => recipe.strCategory == category);
+    
     return(<>
         <Header />
+        <select onChange={(e) => setCatergory(e.target.value)}>
+        <option value="All">All</option>
+        <option value="Alphabetical">Alphabetical</option>
+        {categories.map((value, index) => (
+        <option key={index} value={value}>
+        {value}
+        </option>
+        ))}
+</select>
         <div className="recipe_cards">
-        {data.map((recipe,index)=>
+        {recipe.map((recipe,index)=>
         <div className="recipe_card" key={index}>
         <div className="recipe_card_header">
         <h1>{recipe.strMeal}</h1>
