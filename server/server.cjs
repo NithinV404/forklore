@@ -7,74 +7,73 @@ app.use(cors());
 app.listen(5000, () => console.log('listening at 5000'));
 app.use(express.json());
 
-app.post('/search', (req, res) => {
-    const mealname = req.body.recipeName;
-    try
-    {
+
+async function getRecipes(mealname) {
+    try {
         let url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${mealname}`;
-        fetch(url)
-        .then(response=>response.json())
-        .then(data=>res.send(data))
-    }
-    catch(error)    
-    {
+        const response = await fetch(url);
+        const data = await response.json();
+        return data;
+    } catch (error) {
         console.log(error);
     }
-});
+}
 
-app.post('/delete',(req,res)=>{
-    const recipeid = req.body.recipeId;
-    try
-    {
-        fs.readFile('./src/recipe/recipes.json', 'utf8', (err, data)=>{
+async function deleteRecipe(recipeid) {
+    try{
+            fs.readFile('./src/recipe/recipes.json', 'utf8', async (err, data)=>{
             if(err)
-            console.log(err);
+            throw err;
             else
             {
-                const recipes = JSON.parse(data);
+                const recipes = await JSON.parse(data);
                 const index = recipes.findIndex(recipe => recipe.idMeal === recipeid);
                 if (index !== -1)
                 recipes.splice(index, 1);
-                fs.writeFile('./src/recipe/recipes.json', JSON.stringify(recipes), err=>{
-                    if(err)
-                    console.log(err);
-                    else
-                    res.send({status: 'ok'});
-                })
+                fs.writeFile('./src/recipe/recipes.json', JSON.stringify(recipes), err => {
+                    if (err)
+                    throw err;
+                });
             }
         })
     }
-    catch(err){
+    catch(err)
+    {
         console.log(err);
     }
-})
+}
 
-app.post('/add',(req,res)=>{
-    const recipeid = req.body.recipeId;
-    console.log(recipeid)
+async function addRecipe(recipeid){
     try {
         let url = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${recipeid}`;
-        fetch(url)
-        .then(response => response.json())
-        .then(newRecipe => {
-            console.log(newRecipe)
-            fs.readFile('./src/recipe/recipes.json', 'utf8', (err, data) => {
-                if (err) {
-                    console.log(err);
-                } else {
+        const response = await fetch(url);
+        const newRecipe = await response.json();
+        fs.readFile('./src/recipe/recipes.json', 'utf8', (err, data) => {
+            if (err) 
+            throw err;
+            else {
                     const recipes = JSON.parse(data);
                     recipes.push(newRecipe.meals[0]);
                     fs.writeFile('./src/recipe/recipes.json', JSON.stringify(recipes, null, 2), err => {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            res.send({status: 'ok'});
-                        }
+                        if (err)
+                        throw(err);
                     });
                 }
-            });
         });
-    } catch (err) {
+    } 
+    catch (err) {
         console.log(err);
     }
+}
+
+app.post('/search', async (req, res) => {
+    res.send(await getRecipes(req.body.recipeName)); 
+});
+
+app.post('/delete',async (req,res)=>{
+    res.send(await deleteRecipe(req.body.recipeId));
+})
+
+app.post('/add',async (req,res)=>{
+    res.send(await addRecipe(req.body.recipeId));
 });

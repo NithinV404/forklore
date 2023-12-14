@@ -9,6 +9,7 @@ export default function RecipeDetails() {
   var recipe = data.filter((recipe) => recipe.idMeal == id)[0];
   const videoId = new URL(recipe.strYoutube).searchParams.get("v");
   const embedUrl = `https://www.youtube.com/embed/${videoId}`;
+  
   useEffect(() => {
     window.scrollTo(0, 0);
   },[]);

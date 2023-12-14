@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { createContext, useState } from "react";
 import axios from "axios";
 import "./header.css";
 import data from "../recipe/recipes.json";
 import ic_plus from "../assets/icon-plus.svg"
+
+export const RecipeNameContext = createContext("");
+
 export default function Header() {
   interface Meal {
     idMeal: string;
@@ -13,16 +16,16 @@ export default function Header() {
     meals: Meal[];
   }
 
+  const serverUrl = import.meta.env.VITE_SERVER_URL;
   const [recipeName, setRecipeName] = useState("");
   const [responseData, setResponseData] = useState<ResponseData | null>(null);
 
   const handleSearch = async () => {
     try {
-      const response = await axios.post("http://localhost:5000/search", {
+      const response = await axios.post(`${serverUrl}/search`, {
         recipeName,
       });
       setResponseData(response.data);
-      console.log(response.data);
     } catch (err) {
       console.log(err);
     }
@@ -34,7 +37,7 @@ export default function Header() {
       alert("Recipe already exists");
       return;
     } else {
-      axios.post("http://localhost:5000/add", { recipeId });
+      axios.post(`${serverUrl}/add`, { recipeId });
     }
   };
 
@@ -53,6 +56,7 @@ export default function Header() {
           onKeyDown={handleSearch}
           onFocus={handleSearch}
         />
+        <RecipeNameContext.Provider value={recipeName} />
         {responseData && responseData.meals != null ? (
           <div className="search-items">
             {responseData.meals.map((meal: any) => (
@@ -75,3 +79,4 @@ export default function Header() {
     </div>
   );
 }
+

@@ -1,23 +1,36 @@
 import data from "../recipe/recipes.json";
 import "../components/recipe_cards.css";
-import Header from "../components/header";
 import { Link } from "react-router-dom";
-import icon_share from "../assets/icon-share.svg";
+import icon_share from "../assets/icon-share.svg"
 import icon_delete from "../assets/icon-delete.svg";
 import axios from "axios";
-import { useState } from "react";
+import {  useContext, useState } from "react";
+import Header from "./Header";
+import { RecipeNameContext } from "./Header";
+
+
 export default function RecipeCards() {
+
+  const serverUrl = import.meta.env.VITE_SERVER_URL;
+
   const handleDelete = async (recipeId: String) => {
-    await axios.post("http://localhost:5000/delete", { recipeId });
+    await axios.post(`${serverUrl}/delete`, { recipeId });
   };
+
   const categories = [...new Set(data.map((recipe) => recipe.strCategory))];
 
   const [category, setCatergory] = useState<String>("All");
-  var recipe;
+  const [isActive, setIsActive] = useState(false);
+  
+ 
+  const searchTerm = useContext(RecipeNameContext).toLowerCase();
+  let recipe = data.filter((recipe) => recipe.strMeal.toLowerCase().includes(searchTerm));
+
   if (category === "All") recipe = data;
   else if (category === "Alphabetical")
     recipe = data.sort((a, b) => a.strMeal.localeCompare(b.strMeal));
-  else recipe = data.filter((recipe) => recipe.strCategory == category);
+  else
+    recipe = data.filter((recipe) => recipe.strCategory == category);
 
   return (
     <>
@@ -69,6 +82,7 @@ export default function RecipeCards() {
             </div>
           ))
         )}
+      <div className={`add_icon ${isActive ? 'active' : ''}`} onClick={()=>{setIsActive(!isActive)}}>+</div>
       </div>
     </>
   );
