@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
 import axios from "axios";
-import "./header.css";
+import header_style from "./header.module.css";
 import data from "../recipe/recipes.json";
 import ic_plus from "../assets/icon-plus.svg"
 
@@ -42,11 +42,11 @@ export default function Header() {
   };
 
   return (
-    <div className="header">
-      <div className="header-name">
+    <div className={header_style.header}>
+      <div className={header_style.header_name}>
         <h2>Recipe App</h2>
       </div>
-      <div className="header-search" onBlur={() => setResponseData(null)}
+      <div className={header_style.header_search} onBlur={() => setResponseData(null)}
       >
         <input
           type="text"

@@ -1,0 +1,16 @@
+.addrecipe_form_style 
+{
+   display: flex;
+   flex-direction: column;
+}
+.form_style
+{
+    display: flex;
+    flex-direction: column;
+    margin: 1rem 1rem;
+}
+.form_style > input[type="submit"]
+{
+    margin: 1rem 0;
+    padding: 1rem 0.5rem;
+}   
