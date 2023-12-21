@@ -69,17 +69,17 @@ input[type="text"]
    cursor: pointer;
    transition: ease-in-out 0.3s;
 }
-.ic-hover
+.ic_hover
 {
     transition: ease-in-out 0.1s;
     border-radius: 8px;
 }
-.ic-hover:hover
+.ic_hover:hover
 {
     transform: scale(1.1);
     background-color: rgb(228, 228, 228);
 }
-.search-items > .items > .add-icon
+.items > .add_icon
 {
     width: 20px;
     height: 20px;

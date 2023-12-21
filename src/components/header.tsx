@@ -64,7 +64,7 @@ export default function Header() {
                 <div className={header_style.item_name}><p>{meal.strMeal}</p></div>
                 <img src={meal.strMealThumb} />
                 <img
-                  className="add-icon ic-hover"
+                  className={`${header_style.add_icon}  ${header_style.ic_hover}` }
                   src={ic_plus}
                   onMouseDown={(e) => {
                     e.preventDefault();
