@@ -28,7 +28,7 @@ input[type="text"]
     padding-left: 1rem;
     outline: none;
 }
-.search-items
+.search_items
 {
     position: absolute;
     display: flex;
@@ -53,7 +53,7 @@ input[type="text"]
     padding: 0.2rem 0;
     width: 20rem;
 }
-.items > .item-name
+.items > .item_name
 {
     width: 13rem;
     font-size: 1rem;

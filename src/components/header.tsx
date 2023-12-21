@@ -46,7 +46,7 @@ export default function Header() {
       <div className={header_style.header_name}>
         <h2>Recipe App</h2>
       </div>
-      <div className={header_style.header_search} onBlur={() => setResponseData(null)}
+      <div onBlur={() => setResponseData(null)}
       >
         <input
           type="text"
@@ -58,10 +58,10 @@ export default function Header() {
         />
         <RecipeNameContext.Provider value={recipeName} />
         {responseData && responseData.meals != null ? (
-          <div className="search-items">
+          <div className={header_style.search_items}>
             {responseData.meals.map((meal: any) => (
-              <div key={meal.idMeal} className="items">
-                <div className="item-name"><p>{meal.strMeal}</p></div>
+              <div key={meal.idMeal} className={header_style.items}>
+                <div className={header_style.item_name}><p>{meal.strMeal}</p></div>
                 <img src={meal.strMealThumb} />
                 <img
                   className="add-icon ic-hover"
