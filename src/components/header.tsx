@@ -6,7 +6,7 @@ import ic_plus from "../assets/icon-plus.svg"
 
 export const RecipeNameContext = createContext("");
 
-export default function Header() {
+export default function Header({setSearchInput}: { setSearchInput: (input: string) => void }) {
   interface Meal {
     idMeal: string;
     strMeal: string;
@@ -26,6 +26,7 @@ export default function Header() {
         recipeName,
       });
       setResponseData(response.data);
+      setSearchInput(recipeName);
     } catch (err) {
       console.log(err);
     }
@@ -49,6 +50,7 @@ export default function Header() {
       <div onBlur={() => setResponseData(null)}
       >
         <input
+          className={header_style.header_input}
           type="text"
           placeholder="Search for recipes"
           value={recipeName}

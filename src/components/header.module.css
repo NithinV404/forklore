@@ -19,7 +19,7 @@
     margin: 0 2rem;
 
 }
-input[type="text"]
+.header_input[type="text"]
 {
     width: 20rem;
     height: 2rem;
