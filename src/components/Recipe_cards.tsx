@@ -18,7 +18,6 @@ export default function RecipeCards({searchInput}: {searchInput: String | null})
   const categories = [...new Set(data.map((recipe) => recipe.strCategory))];
 
   const [category, setCatergory] = useState<String>("All");
-  const [isActive, setIsActive] = useState(false);
 
   let recipe;
   if(category === "All")
@@ -81,7 +80,9 @@ export default function RecipeCards({searchInput}: {searchInput: String | null})
             </div>
           ))
         )}
-      <div className={`add_icon ${isActive ? 'active' : ''}`} onClick={()=>{setIsActive(!isActive)}}>+</div>
+      <Link to='/add_recipe'
+      className={`add_icon`}
+      >+</Link>
       </div>
     </>
   );

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styles from "./Add_recipe.module.css";
+import React from "react";
 export default function AddRecipe() {
   const [addbutton, setbutton] = useState<number>(1);
   const measure = [
@@ -30,7 +31,7 @@ export default function AddRecipe() {
           </div>
 
           <div className="ingredients_list">
-            <label>Recipe Ingredients</label>{" "}
+            <label >Recipe Ingredients</label>{" "}
             <button
               className={styles.add_btn}
               onClick={(e) => {
@@ -40,12 +41,21 @@ export default function AddRecipe() {
             >
               Add
             </button>
+            <button
+              className={styles.add_btn}
+              onClick={(e) => {
+                setbutton((addbutton) => addbutton - 1);
+                e.preventDefault();
+              }}
+            >
+              Delete
+            </button>
+            <hr/>
             {[...Array(addbutton)].map((_, index) => (
-              <>
+              <React.Fragment key={`ingredients_key_${index}`}>
                 <br />
                 <input
                   className={styles.form_inputs}
-                  key={`ingredient_key_${index}`}
                   type="text"
                   name={`ingredient_${index + 1}`}
                   id={`ingredient_${index + 1}`}
@@ -53,29 +63,28 @@ export default function AddRecipe() {
                 />
                 <input
                   className={styles.form_inputs}
-                  key={`quantity_key_${index}`}
                   type="text"
                   name={`quantity_${index + 1}`}
                   id={`quantity_${index + 1}`}
                   placeholder={`Quantity ${index + 1}`}
                 />
                 <select
-                  key={`measure_key_${index}`}
                   className={styles.form_inputs_dropdown}
                   name={`measure_${index + 1}`}
                   id={`measure_${index + 1}`}
                 >
                 {measure.map((measure, index) => <option key={`measure_${index}`} value={measure}>{measure}</option>)}
                 </select>
-              </>
+              </React.Fragment>
             ))}
           </div>
-
+              <hr />
           <div>
             <label htmlFor="recipe_instructions">Recipe Instructions</label>
             <br />
             <textarea
-              cols={40}
+              className={styles.form_inputs}
+              cols={80}
               rows={10}
               name="recipe_instructions"
               id="recipe_instructions"
@@ -85,11 +94,10 @@ export default function AddRecipe() {
 
           <div>
             <label htmlFor="recipe_image">Recipe Image</label>
-            <br />
-            <input type="text" name="recipe_image" id="recipe_image" />
+            <input className={styles.add_btn} type="button" id="recipe_image" value="Upload" />
           </div>
 
-          <input type="button" value="submit" />
+          <input className={`${styles.submit_btn} ${styles.add_btn}`} type="button" value="Submit" />
         </form>
       </div>
     </>
