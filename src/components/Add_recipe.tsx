@@ -123,6 +123,7 @@ export default function AddRecipe() {
           </div>
 
           <div>
+            <label>Recipe Image</label>
             <input
               className={styles.add_btn}
               type="file"
