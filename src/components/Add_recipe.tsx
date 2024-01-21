@@ -2,7 +2,6 @@ import { useState } from "react";
 import styles from "./Add_recipe.module.css";
 import React from "react";
 export default function AddRecipe() {
-  const [addbutton, setbutton] = useState<number>(1);
   const measure = [
     "grams",
     "ml",
@@ -14,9 +13,15 @@ export default function AddRecipe() {
     "pinch",
     "whole",
   ];
+  const [addbutton, setbutton] = useState<number>(1);
+  const [recipename, setrecipename] = useState<string>("");
+  const [recipeingredients, setrecipeingredients] = useState<string[]>([]);
+  const [recipeinstructions, setrecipeinstructions] = useState<string>("");
+  const [recipemeasure, setrecipemeasure] = useState<string[]>([]);
+  const [recipemeasurevalue, setrecipemeasurevalue] = useState<string[]>([]);
+  
   return (
     <>
-      {console.log(addbutton)}
       <div className={styles.addrecipe_form_style}>
         <form action="" className={styles.form_style}>
           <div>
@@ -27,11 +32,13 @@ export default function AddRecipe() {
               type="text"
               name="recipe_name"
               id="recipe_name"
+              value={recipename}
+              onChange={(e) => setrecipename(e.target.value)}
             />
           </div>
 
           <div className="ingredients_list">
-            <label >Recipe Ingredients</label>{" "}
+            <label>Recipe Ingredients</label>{" "}
             <button
               className={styles.add_btn}
               onClick={(e) => {
@@ -44,41 +51,60 @@ export default function AddRecipe() {
             <button
               className={styles.add_btn}
               onClick={(e) => {
-                setbutton((addbutton) => addbutton - 1);
+                if (addbutton > 0) {
+                  setbutton((addbutton) => addbutton - 1);
+                }
                 e.preventDefault();
               }}
             >
               Delete
             </button>
-            <hr/>
+            <hr />
             {[...Array(addbutton)].map((_, index) => (
               <React.Fragment key={`ingredients_key_${index}`}>
                 <br />
                 <input
                   className={styles.form_inputs}
                   type="text"
-                  name={`ingredient_${index + 1}`}
-                  id={`ingredient_${index + 1}`}
                   placeholder={`Ingredient ${index + 1}`}
+                  value={recipeingredients[index] || ""}
+                  onChange={(e) => {
+                    const newIngredients = [...recipeingredients];
+                    newIngredients[index] = e.target.value;
+                    setrecipeingredients(newIngredients);
+                  }}
                 />
                 <input
                   className={styles.form_inputs}
                   type="text"
-                  name={`quantity_${index + 1}`}
-                  id={`quantity_${index + 1}`}
                   placeholder={`Quantity ${index + 1}`}
+                  value={recipemeasurevalue[index]}
+                  onChange={(e) => {
+                    const newMeasureValues = [...recipemeasurevalue];
+                    newMeasureValues[index] = e.target.value;
+                    setrecipemeasurevalue(newMeasureValues);
+                  }}
                 />
                 <select
                   className={styles.form_inputs_dropdown}
-                  name={`measure_${index + 1}`}
-                  id={`measure_${index + 1}`}
+                  value={recipemeasure[index]}
+                  onChange={ (e) => {
+                    const newMeasures = [...recipemeasure];
+                    newMeasures[index] = e.target.value;
+                    setrecipemeasure(newMeasures);
+                  }}
                 >
-                {measure.map((measure, index) => <option key={`measure_${index}`} value={measure}>{measure}</option>)}
+                  <option>select</option>
+                  {measure.map((measure, index) => (
+                    <option key={`measure_${index}`} value={measure}>
+                      {measure}
+                    </option>
+                  ))}
                 </select>
               </React.Fragment>
             ))}
           </div>
-              <hr />
+          <hr />
           <div>
             <label htmlFor="recipe_instructions">Recipe Instructions</label>
             <br />
@@ -89,15 +115,35 @@ export default function AddRecipe() {
               name="recipe_instructions"
               id="recipe_instructions"
               style={{ resize: "none" }}
+              value={recipeinstructions}
+              onChange={(e) => {
+                setrecipeinstructions(e.target.value);
+              }}
             />
           </div>
 
           <div>
-            <label htmlFor="recipe_image">Recipe Image</label>
-            <input className={styles.add_btn} type="button" id="recipe_image" value="Upload" />
+            <input
+              className={styles.add_btn}
+              type="file"
+              accept="image/*"
+            />
           </div>
 
-          <input className={`${styles.submit_btn} ${styles.add_btn}`} type="button" value="Submit" />
+          <input
+            className={`${styles.submit_btn} ${styles.add_btn}`}
+            type="button"
+            value="Submit"
+            onClick={() => {
+              console.log({
+                measures: recipemeasurevalue,
+                ingredients: recipeingredients,
+                name: recipename,
+                instructions: recipeinstructions,
+                measurment: recipemeasure
+              });
+            }}
+          />
         </form>
       </div>
     </>
