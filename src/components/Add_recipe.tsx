@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styles from "./Add_recipe.module.css";
 import React from "react";
+import axios from "axios";
 export default function AddRecipe() {
   const measure = [
     "grams",
@@ -136,12 +137,16 @@ export default function AddRecipe() {
             type="button"
             value="Submit"
             onClick={() => {
-              console.log({
-                measures: recipemeasurevalue,
-                ingredients: recipeingredients,
-                name: recipename,
-                instructions: recipeinstructions,
-                measurment: recipemeasure
+                axios.post("http://localhost:5000/add_recipes", {
+                    recipe_name: recipename,
+                    recipe_ingredients: recipeingredients,
+                    recipe_instructions: recipeinstructions,
+                    recipe_measure: recipemeasure,
+                    recipe_measure_value: recipemeasurevalue,
+                }).then((response) => {
+                    console.log(response);
+                }).catch((error) => {
+                    console.log(error);
               });
             }}
           />

@@ -1,57 +1,63 @@
-import data from "../recipe/recipes.json";
 import "../components/recipe_cards.css";
 import { Link } from "react-router-dom";
-import icon_share from "../assets/icon-share.svg"
+import icon_share from "../assets/icon-share.svg";
 import icon_delete from "../assets/icon-delete.svg";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
+type Recipe = {
+  idMeal: string;
+  strMeal: string;
+  strCategory: string;
+  strArea: string;
+  strInstructions: string;
+  strMealThumb: string;
+  strTags: string;
+  strYoutube: string;
+  strSource: string;
+};
 
-export default function RecipeCards({searchInput}: {searchInput: String | null}) {
-
+export default function RecipeCards(
+  { searchInput, getRecipe, recipe }: { searchInput: String | null, getRecipe: () => void, recipe: Recipe[] }
+) {
   const serverUrl = import.meta.env.VITE_SERVER_URL;
+  const [category, setCategory] = useState("All");
 
-  const handleDelete = async (recipeId: String) => {
-    await axios.post(`${serverUrl}/delete`, { recipeId });
+  const handleDelete = async (id: string) => {
+    try {
+      await axios.delete(`${serverUrl}/delete/${id}`);
+      getRecipe();
+    } catch (error) {
+      console.error("Error deleting recipe:", error);
+    }
   };
 
-  const categories = [...new Set(data.map((recipe) => recipe.strCategory))];
-
-  const [category, setCatergory] = useState<String>("All");
-
-  let recipe;
-  if(category === "All")
-    recipe = data;
-  else if (category === "Alphabetical")
-    recipe = data.sort((a, b) => a.strMeal.localeCompare(b.strMeal));
-  else
-    recipe = data.filter((recipe) => recipe.strCategory == category);
-
-  if(searchInput!==null)
-  recipe = recipe.filter((recipe) => recipe.strMeal.toLowerCase().includes(searchInput.toLowerCase()));
-
-  
   return (
     <>
       <div className="filter-ribbon">
         <h4>Filter</h4>
         <select
           className="category-dropdown"
-          onChange={(e) => setCatergory(e.target.value)}
+          onChange={(e) => setCategory(e.target.value)}
         >
           <option value="All">All</option>
           <option value="Alphabetical">Alphabetical</option>
-          {categories.map((value, index) => (
+          {/* {categories.map((value, index) => (
             <option key={index} value={value}>
               {value}
             </option>
-          ))}
+          ))} */}
         </select>
       </div>
       <div className="recipe_cards">
         {recipe.length === 0 ? (
-          <div className="empty-recipe"><h1>No recipes saved</h1><br/><p>Add recipes using search</p></div>
+          <div className="empty-recipe">
+            <h1>No recipes saved</h1>
+            <br />
+            <p>Add recipes using search</p>
+          </div>
         ) : (
+          recipe &&
           recipe.map((recipe, index) => (
             <div className="recipe_card" key={index}>
               <div className="recipe_card_header">
@@ -80,9 +86,9 @@ export default function RecipeCards({searchInput}: {searchInput: String | null})
             </div>
           ))
         )}
-      <Link to='/add_recipe'
-      className={`add_icon`}
-      >+</Link>
+        <Link to="/add_recipe" className={`add_icon`}>
+          +
+        </Link>
       </div>
     </>
   );

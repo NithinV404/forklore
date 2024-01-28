@@ -1,15 +1,26 @@
-import data from "../recipe/recipes.json";
 import "../components/recipe_details.css";
 import { Link, useParams } from "react-router-dom";
 import icon_back from "../assets/icon-back.svg";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-export default function RecipeDetails() {
+type Recipe = {
+  idMeal: string;
+  strMeal: string;
+  strCategory: string;
+  strArea: string;
+  strInstructions: string;
+  strMealThumb: string;
+  strTags: string;
+  strYoutube: string;
+  strSource: string;
+};
+
+export default function RecipeDetails( { recipes }: { recipes: Recipe[] }) {
   var { id } = useParams();
-  var recipe = data.filter((recipe) => recipe.idMeal == id)[0];
-  const videoId = new URL(recipe.strYoutube).searchParams.get("v");
+  const recipe = recipes.find((recipe) => recipe.idMeal === id);
+  const videoId = recipe?.strYoutube ? new URL(recipe.strYoutube).searchParams.get("v") : null;
   const embedUrl = `https://www.youtube.com/embed/${videoId}`;
-  
+
   useEffect(() => {
     window.scrollTo(0, 0);
   },[]);
@@ -21,6 +32,8 @@ export default function RecipeDetails() {
           <img src={icon_back} alt="back" />
         </Link>
       </header>
+      { recipe == null ? (<div className="loading">Loading. . .</div>) : (
+        
       <div className="recipe_details" key={recipe.idMeal}>
         <div className="recipe_details_header">
           <div className="recipe_details_header_left">
@@ -69,7 +82,7 @@ export default function RecipeDetails() {
     height="315" 
     src={embedUrl} >
     </embed>
-      </div>
+      </div>)}
     </>
   );
 }
