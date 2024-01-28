@@ -34,7 +34,6 @@ export default function Header({
         recipeName,
       });
       setResponseData(response.data);
-      setSearchInput(recipeName);
     } catch (err) {
       console.log(err);
     }
@@ -61,8 +60,7 @@ export default function Header({
           className={header_style.header_input}
           type="text"
           placeholder="Search for recipes"
-          value={recipeName}
-          onChange={(e) => setRecipeName(e.target.value)}
+          onChange={(e) => {setRecipeName(e.currentTarget.value); setSearchInput(e.currentTarget.value);}}
           onKeyDown={handleSearch}
           onFocus={handleSearch}
         />

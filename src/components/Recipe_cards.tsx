@@ -18,10 +18,26 @@ type Recipe = {
 };
 
 export default function RecipeCards(
-  { searchInput, getRecipe, recipe }: { searchInput: String | null, getRecipe: () => void, recipe: Recipe[] }
+  { searchInput, getRecipe, recipes }: { searchInput: String | null, getRecipe: () => void, recipes: Recipe[] }
 ) {
   const serverUrl = import.meta.env.VITE_SERVER_URL;
   const [category, setCategory] = useState("All");
+  const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>(recipes);
+
+  useEffect(() => {
+    let filtered = [...recipes];
+
+    if (category === "Alphabetical") {
+      filtered.sort((a, b) => a.strMeal.localeCompare(b.strMeal));
+    } else if (category !== "All") {
+      filtered = filtered.filter(recipe => recipe.strCategory === category);
+    }
+    if (searchInput !== "" && searchInput !== null) {
+      filtered = filtered.filter(recipe => recipe.strMeal.toLowerCase().includes(searchInput.toLowerCase()));
+    }
+
+    setFilteredRecipes(filtered);
+  }, [category, searchInput, recipes]);
 
   const handleDelete = async (id: string) => {
     try {
@@ -42,23 +58,18 @@ export default function RecipeCards(
         >
           <option value="All">All</option>
           <option value="Alphabetical">Alphabetical</option>
-          {/* {categories.map((value, index) => (
-            <option key={index} value={value}>
-              {value}
-            </option>
-          ))} */}
         </select>
       </div>
       <div className="recipe_cards">
-        {recipe.length === 0 ? (
+        {filteredRecipes.length === 0 ? (
           <div className="empty-recipe">
             <h1>No recipes saved</h1>
             <br />
             <p>Add recipes using search</p>
           </div>
         ) : (
-          recipe &&
-          recipe.map((recipe, index) => (
+          filteredRecipes &&
+          filteredRecipes.map((recipe, index) => (
             <div className="recipe_card" key={index}>
               <div className="recipe_card_header">
                 <h1>{recipe.strMeal}</h1>

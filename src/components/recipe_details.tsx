@@ -1,7 +1,7 @@
 import "../components/recipe_details.css";
 import { Link, useParams } from "react-router-dom";
 import icon_back from "../assets/icon-back.svg";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 type Recipe = {
   idMeal: string;
