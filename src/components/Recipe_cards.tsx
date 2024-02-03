@@ -22,22 +22,29 @@ export default function RecipeCards(
 ) {
   const serverUrl = import.meta.env.VITE_SERVER_URL;
   const [category, setCategory] = useState("All");
+  const [categoryList, setCategoryList] = useState<string[]>([]);
   const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>(recipes);
 
   useEffect(() => {
     let filtered = [...recipes];
-
+  
     if (category === "Alphabetical") {
       filtered.sort((a, b) => a.strMeal.localeCompare(b.strMeal));
     } else if (category !== "All") {
       filtered = filtered.filter(recipe => recipe.strCategory === category);
-    }
+    } 
     if (searchInput !== "" && searchInput !== null) {
       filtered = filtered.filter(recipe => recipe.strMeal.toLowerCase().includes(searchInput.toLowerCase()));
     }
-
+  
     setFilteredRecipes(filtered);
   }, [category, searchInput, recipes]);
+
+  useEffect(() => {
+    const categorySet = new Set<string>();
+    recipes.forEach(recipe => categorySet.add(recipe.strCategory));
+    setCategoryList(Array.from(categorySet));
+  }, [recipes]);
 
   const handleDelete = async (id: string) => {
     try {
@@ -58,6 +65,7 @@ export default function RecipeCards(
         >
           <option value="All">All</option>
           <option value="Alphabetical">Alphabetical</option>
+          { categoryList.map((category, index) => <option key={index} value={category}>{category}</option>) }
         </select>
       </div>
       <div className="recipe_cards">

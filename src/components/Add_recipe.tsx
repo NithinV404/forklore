@@ -20,6 +20,20 @@ export default function AddRecipe() {
   const [recipeinstructions, setrecipeinstructions] = useState<string>("");
   const [recipemeasure, setrecipemeasure] = useState<string[]>([]);
   const [recipemeasurevalue, setrecipemeasurevalue] = useState<string[]>([]);
+  const [recipeImage, setRecipeImage] = useState<File | null>(null);
+
+// ...
+
+<input
+  className={styles.add_btn}
+  type="file"
+  accept="image/*"
+  onChange={(e) => {
+    if (e.target.files) {
+      setRecipeImage(e.target.files[0]);
+    }
+  }}
+/>
   
   return (
     <>
@@ -129,6 +143,11 @@ export default function AddRecipe() {
               className={styles.add_btn}
               type="file"
               accept="image/*"
+              onChange={(e) => {
+                if (e.target.files) {
+                  setRecipeImage(e.target.files[0]);
+                }
+              }}
             />
           </div>
 
@@ -143,6 +162,7 @@ export default function AddRecipe() {
                     recipe_instructions: recipeinstructions,
                     recipe_measure: recipemeasure,
                     recipe_measure_value: recipemeasurevalue,
+                    recipe_image: recipeImage
                 }).then((response) => {
                     console.log(response);
                 }).catch((error) => {
