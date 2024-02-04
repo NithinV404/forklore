@@ -1,8 +1,10 @@
 import { useState } from "react";
 import styles from "./Add_recipe.module.css";
-import React from "react";
+import React from "react"; 
 import axios from "axios";
+
 export default function AddRecipe() {
+  const serverUrl = import.meta.env.VITE_SERVER_URL;
   const measure = [
     "grams",
     "ml",
@@ -14,27 +16,41 @@ export default function AddRecipe() {
     "pinch",
     "whole",
   ];
-  const [addbutton, setbutton] = useState<number>(1);
   const [recipename, setrecipename] = useState<string>("");
+  const [recipecategory, setrecipecategory] = useState<string>("");
+  const [recipetags, setrecipetags] = useState<string>("");
+  const [recipeyoutube, setrecipeyoutube] = useState<string>("");
+  const [recipearea, setrecipearea] = useState<string>("");
   const [recipeingredients, setrecipeingredients] = useState<string[]>([]);
   const [recipeinstructions, setrecipeinstructions] = useState<string>("");
-  const [recipemeasure, setrecipemeasure] = useState<string[]>([]);
+  const [recipemeasureunit, setrecipemeasureunit] = useState<string[]>([]);
   const [recipemeasurevalue, setrecipemeasurevalue] = useState<string[]>([]);
   const [recipeImage, setRecipeImage] = useState<File | null>(null);
+  const [addbutton, setbutton] = useState<number>(1);
 
-// ...
-
-<input
-  className={styles.add_btn}
-  type="file"
-  accept="image/*"
-  onChange={(e) => {
-    if (e.target.files) {
-      setRecipeImage(e.target.files[0]);
+  const handleSubmit = async () => {
+    const recipeData = {
+      recipename,
+      recipeingredients,
+      recipeinstructions,
+      recipemeasureunit,
+      recipemeasurevalue,
+      recipeImage,
+      recipecategory,
+      recipeyoutube,
+      recipetags,
+      recipearea
+    };
+    try {
+      const response = await axios.post(`${serverUrl}/addrecipe`, {
+        recipeData,
+      });
+      console.log(response.data);
+    } catch (err) {
+      console.log(err);
     }
-  }}
-/>
-  
+  }
+
   return (
     <>
       <div className={styles.addrecipe_form_style}>
@@ -102,11 +118,11 @@ export default function AddRecipe() {
                 />
                 <select
                   className={styles.form_inputs_dropdown}
-                  value={recipemeasure[index]}
-                  onChange={ (e) => {
-                    const newMeasures = [...recipemeasure];
+                  value={recipemeasureunit[index]}
+                  onChange={(e) => {
+                    const newMeasures = [...recipemeasureunit];
                     newMeasures[index] = e.target.value;
-                    setrecipemeasure(newMeasures);
+                    setrecipemeasureunit(newMeasures);
                   }}
                 >
                   <option>select</option>
@@ -155,23 +171,11 @@ export default function AddRecipe() {
             className={`${styles.submit_btn} ${styles.add_btn}`}
             type="button"
             value="Submit"
-            onClick={() => {
-                axios.post("http://localhost:5000/add_recipes", {
-                    recipe_name: recipename,
-                    recipe_ingredients: recipeingredients,
-                    recipe_instructions: recipeinstructions,
-                    recipe_measure: recipemeasure,
-                    recipe_measure_value: recipemeasurevalue,
-                    recipe_image: recipeImage
-                }).then((response) => {
-                    console.log(response);
-                }).catch((error) => {
-                    console.log(error);
-              });
-            }}
+            onClick={handleSubmit}
           />
         </form>
       </div>
     </>
   );
 }
+

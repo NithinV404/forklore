@@ -2,10 +2,32 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const fs = require("fs");
+const multer = require("multer");
+const shortid = require('shortid');
+
+function generateUniqueId(recipes) {
+  let id = shortid.generate();
+  while (Array.isArray(recipes) && recipes.some(recipe => recipe.id === id)) {
+      id = shortid.generate();
+  }
+  return id;
+}
 
 app.use(cors());
 app.listen(5000, () => console.log("listening at 5000"));
 app.use(express.json());
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './src/recipes/images');
+  },
+  filename: (req, file, cb) => {
+    const recipeId = "mr" + uuidv4();
+    cb(null, recipeId + ".jpg");
+  }
+});
+
+const upload = multer({ storage: storage });
 
 async function readFileData() {
   try {
@@ -36,6 +58,7 @@ async function getRecipes() {
     console.log(error);
   }
 }
+
 async function deleteRecipe(recipeid) {
   try {
     const recipes = await readFileData();
@@ -72,13 +95,28 @@ async function addRecipeByApi(recipeid) {
   }
 }
 
-async function addRecipeByUser() {
+async function addRecipeByUser(newRecipe) {
+  const { recipename, recipeingredients, recipeinstructions, recipemeasureunit, recipemeasurevalue, recipeimage, recipecategory, recipetags, recipeyoutube,recipearea } = newRecipe;
   try {
-    fs.readFile("./src/recipe/recipes.json", "utf8", (err, data) => {
-      if (err) throw err;
-      else {
-        const recipes = JSON.parse(data);
-        recipes.push(newRecipe.meals[0]);
+        const recipeId = "mr" + generateUniqueId();
+        const recipes = await readFileData();
+        const tempRecipe = {
+          idMeal: recipeId,
+          strMeal: recipename,
+          strCategory: recipecategory,
+          strArea: recipearea,
+          strInstructions: recipeinstructions,
+          strMealThumb: ".src/recipes/images/" + recipeId + ".jpg",
+          strTags: recipetags,
+          strYoutube: recipeyoutube,
+        };
+        for (let i = 0; i < 10; i++) {
+          const ingredientKey = `strIngredient${i + 1}`;
+          const measureKey = `strMeasure${i + 1}`;
+          tempRecipe[ingredientKey] = recipeingredients[i];
+          tempRecipe[measureKey] = recipemeasurevalue[i]+" "+recipemeasureunit[i];
+        }
+        recipes.push(tempRecipe);
         fs.writeFile(
           "./src/recipe/recipes.json",
           JSON.stringify(recipes, null, 2),
@@ -86,9 +124,9 @@ async function addRecipeByUser() {
             if (err) throw err;
           }
         );
+        console.log("Added Recipe", tempRecipe);
       }
-    });
-  } catch (err) {
+   catch (err) {
     console.log(err);
   }
 }
@@ -107,6 +145,10 @@ app.delete("/delete/:id", async (req, res) => {
 
 app.post("/add", async (req, res) => {
   res.send(await addRecipeByApi(req.body.recipeId));
+});
+
+app.post("/addrecipe", upload.single('recipeimage'), async (req, res) => {
+  res.send(await addRecipeByUser(req.body.recipeData));
 });
 
 // app.find("/details/:id", async (req, res) => {
