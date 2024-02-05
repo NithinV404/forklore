@@ -8,7 +8,7 @@ This is a recipe app used to save and store recipes locally on the system
 
 ![Example Image 3](./images/screenshots/thorium_4Cd7Z2pptk.png)
 
-![Example Image 4](./images/screenshots/thorium_zitnWIlrIo.png)
+![Example Image 4](./images/screenshots/thorium_tXx9BRWlOo.png)
 
 ## Instruction to run the project 
 
