@@ -2,11 +2,13 @@
 
 This is a recipe app used to save and store recipes locally on the system 
 
-![Example Image 1](./public/screenshots/thorium_zitnWIlrIo.png)
+![Example Image 1](./images/screenshots/thorium_zitnWIlrIo.png)
 
-![Example Image 2](./public/screenshots/thorium_yFBAssnOG7.png)
+![Example Image 2](./images/screenshots/thorium_yFBAssnOG7.png)
 
-![Example Image 3](./public/screenshots/thorium_4Cd7Z2pptk.png)
+![Example Image 3](./images/screenshots/thorium_4Cd7Z2pptk.png)
+
+![Example Image 4](./images/screenshots/thorium_zitnWIlrIo.png)
 
 ## Instruction to run the project 
 
@@ -14,18 +16,11 @@ This is a recipe app used to save and store recipes locally on the system
 
 - Navigate to the recipe_book folder 
 
-- Install the necessary dependencies by running the command
-
+- To run the project execute the following command
 ```
-npm i 
+node start.js
 ```
-- Run the project using command 
-
-```
-npm run start 
-```
-- Open your default brower and navigate to this url 
-
+- Navigate to the url or ctrl click the url to open in browser from terminal
 ```
 https://localhost:5173
 ```

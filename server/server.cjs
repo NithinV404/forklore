@@ -1,9 +1,11 @@
 const express = require("express");
 const app = express();
-const cors = require("cors");
 const fs = require("fs");
+const path = require("path");
+const cors = require("cors");
 const multer = require("multer");
 const shortid = require('shortid');
+const recipesFolder = path.join(__dirname, "recipes");
 
 function generateUniqueId(recipes) {
   let id = shortid.generate();
@@ -19,8 +21,7 @@ app.use(express.json());
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './src/recipes/images');
-  },
+    cb(null, `${recipesFolder}/images`);  },
   filename: (req, file, cb) => {
     const recipeId = "mr" + uuidv4();
     cb(null, recipeId + ".jpg");
@@ -32,7 +33,7 @@ const upload = multer({ storage: storage });
 async function readFileData() {
   try {
     const data = await fs.promises.readFile(
-      "./src/recipe/recipes.json",
+      `${recipesFolder}/recipes.json`,
       "utf8"
     );
     return JSON.parse(data);
@@ -65,7 +66,7 @@ async function deleteRecipe(recipeid) {
     const index = recipes.findIndex((recipe) => recipe.idMeal === recipeid);
     if (index !== -1) recipes.splice(index, 1);
     fs.writeFile(
-      "./src/recipe/recipes.json",
+      `${recipesFolder}/recipes.json`,
       JSON.stringify(recipes),
       (err) => {
         if (err) throw err;
@@ -84,7 +85,7 @@ async function addRecipeByApi(recipeid) {
     const recipes = await readFileData();
     recipes.push(newRecipe.meals[0]);
     fs.writeFile(
-      "./src/recipe/recipes.json",
+      `${recipesFolder}/recipes.json`,
       JSON.stringify(recipes, null, 2),
       (err) => {
         if (err) throw err;
@@ -106,7 +107,7 @@ async function addRecipeByUser(newRecipe) {
           strCategory: recipecategory,
           strArea: recipearea,
           strInstructions: recipeinstructions,
-          strMealThumb: ".src/recipes/images/" + recipeId + ".jpg",
+          strMealThumb: `${recipesFolder}/images/` + recipeId + ".jpg",
           strTags: recipetags,
           strYoutube: recipeyoutube,
         };
@@ -118,7 +119,7 @@ async function addRecipeByUser(newRecipe) {
         }
         recipes.push(tempRecipe);
         fs.writeFile(
-          "./src/recipe/recipes.json",
+          `${recipesFolder}/recipes.json`,
           JSON.stringify(recipes, null, 2),
           (err) => {
             if (err) throw err;
