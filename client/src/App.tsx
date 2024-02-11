@@ -41,7 +41,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<RecipeCards searchInput={searchInput} getRecipe={getRecipe} recipes={recipes}/>} /> 
         <Route path='/recipe_details/:id' element={<RecipeDetails recipes={recipes} />} />
-        <Route path='/add_recipe' element={<Add_recipe />} />
+        <Route path='/add_recipe' element={<Add_recipe getRecipe={getRecipe} />} />
       </Routes>
       </Router>
   </>

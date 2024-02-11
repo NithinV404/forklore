@@ -3,8 +3,7 @@ import styles from "./Add_recipe.module.css";
 import React from "react"; 
 import axios from "axios";
 
-
-export default function AddRecipe() {
+export default function AddRecipe({getRecipe}: {getRecipe:()=> void}) {
   const serverUrl = import.meta.env.VITE_SERVER_URL;
   const measure = [
     "grams",
@@ -52,6 +51,8 @@ export default function AddRecipe() {
     } catch (err) {
       console.log(err);
     }
+    getRecipe();
+    window.location.href = "/";
   }
 
   return (
