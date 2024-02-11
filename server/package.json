@@ -11,7 +11,7 @@
     "shortid": "^2.2.16"
   },
   "devDependencies": {
-    "nodemin": "3.0.3"
+    "nodemon": "3.0.3"
   },
   "scripts": {
     "start-server": "nodemon server.cjs"

@@ -8,7 +8,7 @@ let commands = [
 ];
 
 commands.forEach((command) => {
-  let ps = spawn("powershell.exe", ["-Command", command]);
+  let ps = spawn(command, { shell: true });
 
   ps.stdout.on("data", (data) => {
     console.log(`stdout: ${data}`);

@@ -3,6 +3,7 @@ import styles from "./Add_recipe.module.css";
 import React from "react"; 
 import axios from "axios";
 
+
 export default function AddRecipe() {
   const serverUrl = import.meta.env.VITE_SERVER_URL;
   const measure = [
@@ -21,29 +22,31 @@ export default function AddRecipe() {
   const [recipetags, setrecipetags] = useState<string>("");
   const [recipeyoutube, setrecipeyoutube] = useState<string>("");
   const [recipearea, setrecipearea] = useState<string>("");
-  const [recipeingredients, setrecipeingredients] = useState<string[]>([]);
+  const [recipeingredients, setrecipeingredients] = useState<string[]>([""]);
   const [recipeinstructions, setrecipeinstructions] = useState<string>("");
-  const [recipemeasureunit, setrecipemeasureunit] = useState<string[]>([]);
-  const [recipemeasurevalue, setrecipemeasurevalue] = useState<string[]>([]);
+  const [recipemeasureunit, setrecipemeasureunit] = useState<string[]>([""]);
+  const [recipemeasurevalue, setrecipemeasurevalue] = useState<string[]>([""]);
   const [recipeImage, setRecipeImage] = useState<File | null>(null);
   const [addbutton, setbutton] = useState<number>(1);
 
-  const handleSubmit = async () => {
-    const recipeData = {
-      recipename,
-      recipeingredients,
-      recipeinstructions,
-      recipemeasureunit,
-      recipemeasurevalue,
-      recipeImage,
-      recipecategory,
-      recipeyoutube,
-      recipetags,
-      recipearea
-    };
+  const handleSubmit = async () => {    
+    const recipeData = new FormData();
+    recipeData.append("file", recipeImage as Blob);
+    recipeData.append("recipename", recipename);
+    recipeData.append("recipeingredients",JSON.stringify(recipeingredients));
+    recipeData.append("recipeinstructions", recipeinstructions);
+    recipeData.append("recipemeasureunit", JSON.stringify(recipemeasureunit));
+    recipeData.append("recipemeasurevalue", JSON.stringify(recipemeasurevalue));
+    recipeData.append("recipecategory", recipecategory);
+    recipeData.append("recipeyoutube", recipeyoutube);
+    recipeData.append("recipetags", recipetags);
+    recipeData.append("recipearea", recipearea);
+    console.log(recipeData);
     try {
-      const response = await axios.post(`${serverUrl}/addrecipe`, {
-        recipeData,
+      const response = await axios.post(`${serverUrl}/addrecipe`, recipeData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
       console.log(response.data);
     } catch (err) {
@@ -125,7 +128,7 @@ export default function AddRecipe() {
                     setrecipemeasureunit(newMeasures);
                   }}
                 >
-                  <option>select</option>
+                  <option value="">select</option>
                   {measure.map((measure, index) => (
                     <option key={`measure_${index}`} value={measure}>
                       {measure}
@@ -164,6 +167,7 @@ export default function AddRecipe() {
                   setRecipeImage(e.target.files[0]);
                 }
               }}
+              name="file"
             />
           </div>
 
