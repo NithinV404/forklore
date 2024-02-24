@@ -1,5 +1,5 @@
 {
-  "name": "recipe_book",
+  "name": "forklore",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -16,7 +16,7 @@
     "react-dom": "^18.2.0",
     "react-qr-code": "^2.0.12",
     "react-router-dom": "^6.20.0",
-    "recipe_book": "file:.."
+    "forklore": "file:.."
   },
   "devDependencies": {
     "@types/react": "^18.2.37",

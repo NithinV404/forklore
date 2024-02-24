@@ -53,7 +53,7 @@ export default function Header({
   return (
     <div className={header_style.header}>
       <div className={header_style.header_name}>
-        <h2>Recipe App</h2>
+        <h2>ForkLore</h2>
       </div>
       <div onBlur={() => setResponseData(null)}>
         <input

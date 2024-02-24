@@ -14,7 +14,7 @@ This is a recipe app used to save and store recipes locally on the system
 
 - First download the project to your local device
 
-- Navigate to the recipe_book folder 
+- Navigate to the forklore folder 
 
 - To run the project execute the following command
 ```

@@ -1,15 +1,15 @@
 {
-  "name": "recipe_book",
+  "name": "forklore",
   "version": "1.0.0",
   "description": "A simple clean app to store and read all the recipes at a single place ",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NithinV404/recipe_book.git"
+    "url": "git+https://github.com/NithinV404/forklore.git"
   },
   "author": "Nithin V",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/NithinV404/recipe_book/issues"
+    "url": "https://github.com/NithinV404/forklore/issues"
   },
-  "homepage": "https://github.com/NithinV404/recipe_book#readme"
+  "homepage": "https://github.com/NithinV404/forklore#readme"
 }
