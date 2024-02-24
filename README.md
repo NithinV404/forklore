@@ -1,4 +1,4 @@
-# Recipe App ( Vite + React + Ts)
+# ForkLore ( Vite + React + Ts)
 
 This is a recipe app used to save and store recipes locally on the system 
 
