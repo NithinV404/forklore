@@ -16,12 +16,12 @@ interface ResponseData {
 
 export default function Header({
   setSearchInput,
-  getRecipe,
-  recipes
+  recipes,
+  fetchRecipes
 }: {
   setSearchInput: (input: string) => void;
-  getRecipe: () => void;
   recipes: Meal[];
+  fetchRecipes: () => void;
 }) {
 
   const serverUrl = import.meta.env.VITE_SERVER_URL;
@@ -39,14 +39,14 @@ export default function Header({
     }
   };
 
-  const handleaddrecipe = (recipeId: String) => {
+  const handleaddrecipe = async (recipeId: String) => {
     const index = recipes.findIndex((recipe) => recipe.idMeal === recipeId);
     if (index != -1) {
       alert("Recipe already exists");
       return;
     } else {
-      axios.post(`${serverUrl}/add`, { recipeId });
-      getRecipe();
+      const response = await axios.post(`${serverUrl}/add`, { recipeId });
+      if(response.status === 200){ fetchRecipes(); }
     }
   };
 

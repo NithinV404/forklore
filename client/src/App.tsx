@@ -21,27 +21,30 @@ export default function App() {
     strSource: string;
   };
 
-  const getRecipe = async () => {
-    const response = await axios.get(`${serverUrl}/`);
-    setRecipes(response.data);
-  };
-
-  useEffect(() => {
-    getRecipe();
-  }, []);
-
   const [searchInput, setSearchInput] = useState<string | null>(''); 
 
   const [recipes, setRecipes] = useState<Recipe[]>([]);
 
+  const fetchRecipes = async () => {
+  console.log('fetched')
+  const response = await axios.get(`${serverUrl}/`);
+      setRecipes(response.data);
+  };
+
+  useEffect(() => {
+    fetchRecipes();
+  }, []);
+
+
+
   return (
     <>
-    <Header setSearchInput={setSearchInput} getRecipe={getRecipe} recipes={recipes}/>
+    <Header setSearchInput={setSearchInput} recipes={recipes} fetchRecipes={fetchRecipes}/>
     <Router>
       <Routes>
-        <Route path="/" element={<RecipeCards searchInput={searchInput} getRecipe={getRecipe} recipes={recipes}/>} /> 
+        <Route path="/" element={<RecipeCards searchInput={searchInput}  recipes={recipes} fetchRecipes={fetchRecipes}/>} /> 
         <Route path='/recipe_details/:id' element={<RecipeDetails recipes={recipes} />} />
-        <Route path='/add_recipe' element={<Add_recipe getRecipe={getRecipe} />} />
+        <Route path='/add_recipe' element={<Add_recipe fetchRecipes={fetchRecipes} />} />
       </Routes>
       </Router>
   </>

@@ -3,7 +3,7 @@ import styles from "./Add_recipe.module.css";
 import React from "react"; 
 import axios from "axios";
 
-export default function AddRecipe({getRecipe}: {getRecipe:()=> void}) {
+export default function AddRecipe({fetchRecipes}: {fetchRecipes: () => void}){
   const serverUrl = import.meta.env.VITE_SERVER_URL;
   const measure = [
     "grams",
@@ -47,11 +47,10 @@ export default function AddRecipe({getRecipe}: {getRecipe:()=> void}) {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log(response.data);
+      if(response.status === 200) { fetchRecipes(); }
     } catch (err) {
       console.log(err);
     }
-    getRecipe();
     window.location.href = "/";
   }
 
@@ -177,6 +176,7 @@ export default function AddRecipe({getRecipe}: {getRecipe:()=> void}) {
             type="button"
             value="Submit"
             onClick={handleSubmit}
+
           />
         </form>
       </div>

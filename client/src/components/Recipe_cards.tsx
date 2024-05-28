@@ -18,7 +18,7 @@ type Recipe = {
 };
 
 export default function RecipeCards(
-  { searchInput, getRecipe, recipes }: { searchInput: String | null, getRecipe: () => void, recipes: Recipe[] }
+  { searchInput, recipes, fetchRecipes }: { searchInput: String | null, recipes: Recipe[], fetchRecipes: () => void}
 ) {
   const serverUrl = import.meta.env.VITE_SERVER_URL;
   const [category, setCategory] = useState("All");
@@ -48,8 +48,8 @@ export default function RecipeCards(
 
   const handleDelete = async (id: string) => {
     try {
-      await axios.delete(`${serverUrl}/delete/${id}`);
-      getRecipe();
+      const response = await axios.delete(`${serverUrl}/delete/${id}`);
+      if (response.status === 200) { fetchRecipes(); }
     } catch (error) {
       console.error("Error deleting recipe:", error);
     }
