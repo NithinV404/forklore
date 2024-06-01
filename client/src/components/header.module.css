@@ -24,9 +24,10 @@
     width: 20rem;
     height: 2rem;
     border-radius: 1rem;
-    border: 1px solid rgb(139, 139, 139);
+    border: 1px solid rgb(209, 209, 209);
     padding-left: 1rem;
     outline: none;
+    background-color: var(--primary-secondary-color); 
 }
 .search_items
 {
@@ -40,6 +41,7 @@
     max-height: 20rem;
     overflow: scroll;
     padding: 10px;
+    animation: scrollDown 0.3s ease-out;
 }
 .items:first
 {
@@ -83,4 +85,18 @@
 {
     width: 20px;
     height: 20px;
+}
+
+@keyframes scrollDown
+{
+    0%
+    {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100%
+    {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

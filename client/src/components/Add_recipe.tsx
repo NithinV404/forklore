@@ -1,9 +1,10 @@
 import { useState } from "react";
 import styles from "./Add_recipe.module.css";
-import React from "react"; 
+import React from "react";
 import axios from "axios";
+import HeaderBack from "./header_back";
 
-export default function AddRecipe({fetchRecipes}: {fetchRecipes: () => void}){
+export default function AddRecipe({ fetchRecipes }: { fetchRecipes: () => void }) {
   const serverUrl = import.meta.env.VITE_SERVER_URL;
   const measure = [
     "grams",
@@ -28,11 +29,11 @@ export default function AddRecipe({fetchRecipes}: {fetchRecipes: () => void}){
   const [recipeImage, setRecipeImage] = useState<File | null>(null);
   const [addbutton, setbutton] = useState<number>(1);
 
-  const handleSubmit = async () => {    
+  const handleSubmit = async () => {
     const recipeData = new FormData();
     recipeData.append("file", recipeImage as Blob);
     recipeData.append("recipename", recipename);
-    recipeData.append("recipeingredients",JSON.stringify(recipeingredients));
+    recipeData.append("recipeingredients", JSON.stringify(recipeingredients));
     recipeData.append("recipeinstructions", recipeinstructions);
     recipeData.append("recipemeasureunit", JSON.stringify(recipemeasureunit));
     recipeData.append("recipemeasurevalue", JSON.stringify(recipemeasurevalue));
@@ -47,7 +48,7 @@ export default function AddRecipe({fetchRecipes}: {fetchRecipes: () => void}){
           "Content-Type": "multipart/form-data",
         },
       });
-      if(response.status === 200) { fetchRecipes(); }
+      if (response.status === 200) { fetchRecipes(); }
     } catch (err) {
       console.log(err);
     }
@@ -56,6 +57,7 @@ export default function AddRecipe({fetchRecipes}: {fetchRecipes: () => void}){
 
   return (
     <>
+      <HeaderBack />
       <div className={styles.addrecipe_form_style}>
         <form action="" className={styles.form_style}>
           <div>

@@ -3,6 +3,7 @@ import axios from "axios";
 import header_style from "./header.module.css";
 import ic_plus from "../assets/icon-plus.svg";
 
+
 export const RecipeNameContext = createContext("");
 
 interface Meal {
@@ -46,7 +47,7 @@ export default function Header({
       return;
     } else {
       const response = await axios.post(`${serverUrl}/add`, { recipeId });
-      if(response.status === 200){ fetchRecipes(); }
+      if (response.status === 200) { fetchRecipes(); }
     }
   };
 
@@ -60,7 +61,7 @@ export default function Header({
           className={header_style.header_input}
           type="text"
           placeholder="Search for recipes"
-          onChange={(e) => {setRecipeName(e.currentTarget.value); setSearchInput(e.currentTarget.value);}}
+          onChange={(e) => { setRecipeName(e.currentTarget.value); setSearchInput(e.currentTarget.value); }}
           onKeyDown={handleSearch}
           onFocus={handleSearch}
         />

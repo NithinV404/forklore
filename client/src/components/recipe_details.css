@@ -1,3 +1,4 @@
+@import "../variables.module.css";
 *
 {
     padding: 0;
@@ -8,12 +9,9 @@ header
     display: flex;
     align-items: center;
     height: 5rem;
-    box-shadow: 0px 0px 3px rgb(139, 139, 139);
+    border-bottom: 1px solid var(--border-color);
 }
-header > a > img
-{
-    padding: 0 2rem;
-}
+
 .recipe_details
 {
     display: flex;
@@ -26,12 +24,18 @@ header > a > img
     position: relative;
     margin: 0 20px;
 }
+.recipe_details > h3
+{
+    display: inline-block;
+    background-color: var(--primary-secondary-color);
+    padding: 10px;
+    border-radius: 5px;
+}
 .recipe_details_header
 {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    box-shadow: 0px 1px 0px rgb(189, 188, 188);
     padding: 3rem 0;
 }
 .recipe_details_header_left
@@ -53,3 +57,4 @@ header > a > img
 {
     white-space: pre-wrap;
 }
+

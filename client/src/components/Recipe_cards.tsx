@@ -1,6 +1,6 @@
 import "../components/recipe_cards.css";
-import { Link } from "react-router-dom";
-import icon_share from "../assets/icon-share.svg";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+// import icon_share from "../assets/icon-share.svg";
 import icon_delete from "../assets/icon-delete.svg";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -18,33 +18,55 @@ type Recipe = {
 };
 
 export default function RecipeCards(
-  { searchInput, recipes, fetchRecipes }: { searchInput: String | null, recipes: Recipe[], fetchRecipes: () => void}
+  { searchInput, recipes, fetchRecipes }: { searchInput: String | null, recipes: Recipe[], fetchRecipes: () => void }
 ) {
+  const navigate = useNavigate();
+  const location = useLocation();
   const serverUrl = import.meta.env.VITE_SERVER_URL;
   const [category, setCategory] = useState("All");
   const [categoryList, setCategoryList] = useState<string[]>([]);
   const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>(recipes);
 
+
   useEffect(() => {
     let filtered = [...recipes];
-  
+
     if (category === "Alphabetical") {
       filtered.sort((a, b) => a.strMeal.localeCompare(b.strMeal));
     } else if (category !== "All") {
       filtered = filtered.filter(recipe => recipe.strCategory === category);
-    } 
+    }
     if (searchInput !== "" && searchInput !== null) {
       filtered = filtered.filter(recipe => recipe.strMeal.toLowerCase().includes(searchInput.toLowerCase()));
     }
-  
+
     setFilteredRecipes(filtered);
   }, [category, searchInput, recipes]);
+
 
   useEffect(() => {
     const categorySet = new Set<string>();
     recipes.forEach(recipe => categorySet.add(recipe.strCategory));
     setCategoryList(Array.from(categorySet));
   }, [recipes]);
+
+  const recipeDetailsRedirect = (id: string) => {
+    sessionStorage.setItem('scrollPosition', window.scrollY.toString());
+    navigate(`/recipe_details/${id}`, {
+      state: {
+        from: '/',
+      }
+    });
+  }
+
+  useEffect(() => {
+    const scrollPos = sessionStorage.getItem('scrollPosition');
+    if (scrollPos) {
+      window.scrollTo(0, parseInt(scrollPos));
+      sessionStorage.removeItem('scrollPosition'); // Clear the scroll position after using it
+    }
+  }, []);
+
 
   const handleDelete = async (id: string) => {
     try {
@@ -65,7 +87,7 @@ export default function RecipeCards(
         >
           <option value="All">All</option>
           <option value="Alphabetical">Alphabetical</option>
-          { categoryList.map((category, index) => <option key={index} value={category}>{category}</option>) }
+          {categoryList.map((category, index) => <option key={index} value={category}>{category}</option>)}
         </select>
       </div>
       <div className="recipe_cards">
@@ -73,7 +95,7 @@ export default function RecipeCards(
           <div className="empty-recipe">
             <h1>No recipes saved</h1>
             <br />
-            <p>Add recipes using search</p>
+            <p>Add recipes using search or +</p>
           </div>
         ) : (
           filteredRecipes &&
@@ -89,12 +111,7 @@ export default function RecipeCards(
               </div>
               <img src={recipe.strMealThumb} alt={recipe.strMeal} />
               <div className="recipe_card_footer">
-                <Link className="btn" to={`recipe_details/${recipe.idMeal}`}>
-                  Read more
-                </Link>
-                <div className="share_btn">
-                  <img className="ic-hover" src={icon_share} alt="share" />
-                </div>
+                <button className="btn" onClick={() => recipeDetailsRedirect(recipe.idMeal)}>Read more</button>
                 <div
                   className="delete_btn"
                   onClick={() => handleDelete(recipe.idMeal)}
@@ -105,7 +122,8 @@ export default function RecipeCards(
             </div>
           ))
         )}
-        <Link to="/add_recipe" className={`add_icon`}>
+        <Link
+          to="/add_recipe" className={`add_icon`}>
           +
         </Link>
       </div>
