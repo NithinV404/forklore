@@ -1,0 +1,7 @@
+:root {
+    --light-gray: #f2f2f2;
+    --border-radius: 1rem;
+    --border-color: rgb(209, 209, 209);
+    --primary-secondary-color: #e9e9e9f8;
+    --primary-secondary-color-hover: #cacaca;
+}
