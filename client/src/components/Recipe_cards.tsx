@@ -1,5 +1,5 @@
 import "../components/recipe_cards.css";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // import icon_share from "../assets/icon-share.svg";
 import icon_delete from "../assets/icon-delete.svg";
 import axios from "axios";
@@ -21,7 +21,6 @@ export default function RecipeCards(
   { searchInput, recipes, fetchRecipes }: { searchInput: String | null, recipes: Recipe[], fetchRecipes: () => void }
 ) {
   const navigate = useNavigate();
-  const location = useLocation();
   const serverUrl = import.meta.env.VITE_SERVER_URL;
   const [category, setCategory] = useState("All");
   const [categoryList, setCategoryList] = useState<string[]>([]);
@@ -112,12 +111,11 @@ export default function RecipeCards(
               <img src={recipe.strMealThumb} alt={recipe.strMeal} />
               <div className="recipe_card_footer">
                 <button className="btn" onClick={() => recipeDetailsRedirect(recipe.idMeal)}>Read more</button>
-                <div
+                <button
                   className="delete_btn"
-                  onClick={() => handleDelete(recipe.idMeal)}
                 >
-                  <img className="ic-hover" src={icon_delete} alt="delete" />
-                </div>
+                  <img className="ic-hover" src={icon_delete} alt="delete" onClick={() => handleDelete(recipe.idMeal)} />
+                </button>
               </div>
             </div>
           ))

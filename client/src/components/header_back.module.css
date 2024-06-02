@@ -7,10 +7,11 @@
     height: 40px;
     width: 40px;
     border-radius: 100%;
-    border: none;
+    border: solid 1px var(--border-color);
     padding: 0.5rem;
     margin-left: 20px;
     background-color: var(--primary-secondary-color);
+    color: var(--primary-secondary-font);
 
 }
 .circle:hover

@@ -1,23 +1,25 @@
 var express = require("express");
 var router = express.Router();
 var fs = require("fs");
-const {readFileData, recipesFolder} = require("./file_utils"); 
+var path = require("path");
+const { readFileData, recipesFolder } = require("./file_utils");
+
+const deleteLocalImage = (imageName) => {
+    if (fs.existsSync(`${recipesFolder}/images/${imageName}`))
+        fs.unlink(`${recipesFolder}/images/${imageName}`, (err) => {
+            if (err) throw err;
+        });
+}
 
 router.delete("/:id", async function (req, res) {
     try {
         const recipes = await readFileData();
         const index = recipes.findIndex((recipe) => recipe.idMeal === req.params.id);
-        if (index !== -1) {
-            const imageUrl = recipes[index].strMealThumb; // assuming the image URL is stored in the 'strMealThumb' property
-            const imageName = path.basename(imageUrl); 
-            console.log(imageName)// extract the image name from the URL
-            const imagePath = `${recipesFolder}/${imageName}`;
-            if (fs.existsSync(imagePath)) {
-                fs.unlink(imagePath, (err) => {
-                    if (err) throw err;
-                    console.log('Image was deleted');
-                });
-            }
+
+        if (index != -1) {
+            const recipe = recipes[index];
+            const filename = path.basename(recipe.strMealThumb);
+            deleteLocalImage(filename);
             recipes.splice(index, 1);
             fs.writeFile(
                 `${recipesFolder}/recipes.json`,

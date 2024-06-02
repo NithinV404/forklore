@@ -2,8 +2,8 @@
 
 .addrecipe_form_style 
 {
-   display: flex;
-   flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 .form_style
 {
@@ -67,3 +67,4 @@
     height: 50px;
     width: 100px;
 }
+

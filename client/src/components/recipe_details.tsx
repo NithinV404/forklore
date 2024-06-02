@@ -1,7 +1,10 @@
 import "../components/recipe_details.css";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import HeaderBack from "./header_back";
 import { useEffect } from "react";
+import icon_edit from "../assets/icon-edit.svg";
+import icon_delete from "../assets/icon-delete.svg";
+import axios from "axios";
 
 type Recipe = {
   idMeal: string;
@@ -15,17 +18,28 @@ type Recipe = {
   strSource: string;
 };
 
-export default function RecipeDetails({ recipes }: { recipes: Recipe[] }) {
+export default function RecipeDetails({ recipes, fetchRecipes }: { recipes: Recipe[], fetchRecipes: () => void }) {
   var { id } = useParams();
-  const navigate = useNavigate();
-  const location = useLocation();
   const recipe = recipes.find((recipe) => recipe.idMeal === id);
   const videoId = recipe?.strYoutube ? new URL(recipe.strYoutube).searchParams.get("v") : null;
   const embedUrl = `https://www.youtube.com/embed/${videoId}`;
+  const serverUrl = import.meta.env.VITE_SERVER_URL;
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const handeRecipeDelete = async (id: string) => {
+    try {
+      const response = await axios.delete(`${serverUrl}/delete/${id}`);
+      if (response.status === 200) {
+        fetchRecipes();
+        window.location.href = "/";
+      }
+    } catch (error) {
+      console.error("Error deleting recipe:", error);
+    }
+  }
 
   return (
     <>
@@ -48,6 +62,20 @@ export default function RecipeDetails({ recipes }: { recipes: Recipe[] }) {
               <p>
                 <b>Tags:</b> {recipe.strTags}
               </p>
+              <div className="modify_icons">
+                <div
+                  onClick={(event) => {
+                    event.preventDefault();
+                    window.location.href = `/edit_recipe/${id}`;
+                  }}
+                ><embed type="image/svg+xml" className="edit_icon" src={icon_edit} /></div>
+                <div
+                  onClick={(event) => {
+                    event.preventDefault();
+                    handeRecipeDelete(recipe.idMeal);
+                  }}
+                ><embed type="image/svg+xml" src={icon_delete} /></div>
+              </div>
             </div>
             <img src={recipe.strMealThumb} alt={recipe.strCategory} />
           </div>

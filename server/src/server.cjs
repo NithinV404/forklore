@@ -13,12 +13,14 @@ const deleteRecipe = require("./routes/delete_recipe");
 const add_recipe_api = require("./routes/add_recipe_api");
 const addRecipeUser = require("./routes/add_recipe_user");
 const search_recipe = require("./routes/search_recipe");
+const edit_recipe = require("./routes/edit_recipe");
 
 app.use("/", fetch_recipes)
 app.use("/search", search_recipe)
 app.use("/delete", deleteRecipe)
 app.use("/add", add_recipe_api)
 app.use("/addrecipe", addRecipeUser)
+app.use("/editrecipe", edit_recipe)
 
 
 // app.find("/details/:id", async (req, res) => {

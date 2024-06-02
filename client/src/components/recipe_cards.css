@@ -39,6 +39,10 @@
     border-radius: 10px;
     transition: all 0.1s ease-out;
 }
+.recipe_card:hover {
+    transform: scale(1.05); 
+    cursor: pointer;
+}
 
 .recipe_card_header
 {
@@ -56,11 +60,18 @@
     margin-bottom: 10px;
     aspect-ratio: 2/1;
 }
+
 a
 {
     padding-top: 5px;
     text-decoration: none;
     color: black;
+}
+button
+{
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
 }
 .btn 
 {

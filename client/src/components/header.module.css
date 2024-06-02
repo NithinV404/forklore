@@ -27,8 +27,13 @@
     border: 1px solid rgb(209, 209, 209);
     padding-left: 1rem;
     outline: none;
-    background-color: var(--primary-secondary-color); 
+    background-color: var(--primary-secondary-color);
 }
+.header_input[type="text"]:hover
+{
+    background-color: var(--primary-secondary-color-hover);
+}
+
 .search_items
 {
     position: absolute;
@@ -41,7 +46,7 @@
     max-height: 20rem;
     overflow: scroll;
     padding: 10px;
-    animation: scrollDown 0.3s ease-out;
+    animation: scrollDown 0.2s ease-out;
 }
 .items:first
 {
