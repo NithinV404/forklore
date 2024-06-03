@@ -22,6 +22,7 @@ export default function AddRecipe({ fetchRecipes }: { fetchRecipes: () => void }
   const [recipetags, setrecipetags] = useState<string>("");
   const [recipeyoutube, setrecipeyoutube] = useState<string>("");
   const [recipearea, setrecipearea] = useState<string>("");
+  const [recipesource, setrecipesource] = useState<string>("");
   const [recipeingredients, setrecipeingredients] = useState<string[]>([""]);
   const [recipeinstructions, setrecipeinstructions] = useState<string>("");
   const [recipemeasureunit, setrecipemeasureunit] = useState<string[]>([""]);
@@ -39,6 +40,7 @@ export default function AddRecipe({ fetchRecipes }: { fetchRecipes: () => void }
     recipeData.append("recipemeasurevalue", JSON.stringify(recipemeasurevalue));
     recipeData.append("recipecategory", recipecategory);
     recipeData.append("recipeyoutube", recipeyoutube);
+    recipeData.append("recipesource", recipesource);
     recipeData.append("recipetags", recipetags);
     recipeData.append("recipearea", recipearea);
     console.log(recipeData);
@@ -70,9 +72,44 @@ export default function AddRecipe({ fetchRecipes }: { fetchRecipes: () => void }
               id="recipe_name"
               value={recipename}
               onChange={(e) => setrecipename(e.target.value)}
+              placeholder="Enter recipe name"
             />
           </div>
-
+          <div>
+            <label htmlFor="recipe_category">Recipe Category</label>
+            <br />
+            <input
+              className={styles.form_inputs}
+              type="text"
+              name="recipe_category"
+              id="recipe_category"
+              value={recipecategory}
+              onChange={(e) => setrecipecategory(e.target.value)}
+              placeholder="Enter recipe category"
+            />
+          </div>
+          <div><label htmlFor="recipe_area">Recipe Area</label>
+            <br />
+            <input
+              className={styles.form_inputs}
+              type="text"
+              name="recipe_area"
+              id="recipe_area"
+              value={recipearea}
+              onChange={(e) => setrecipearea(e.target.value)}
+              placeholder="Enter recipe area"
+            /></div>
+          <div><label htmlFor="recipe_tags">Recipe Tags</label>
+            <br />
+            <input
+              className={styles.form_inputs}
+              type="text"
+              name="recipe_tags"
+              id="recipe_tags"
+              value={recipetags}
+              onChange={(e) => setrecipetags(e.target.value)}
+              placeholder="Enter recipe tags"
+            /></div>
           <div className="ingredients_list">
             <label>Recipe Ingredients</label>{" "}
             <button
@@ -157,7 +194,6 @@ export default function AddRecipe({ fetchRecipes }: { fetchRecipes: () => void }
               }}
             />
           </div>
-
           <div>
             <label>Recipe Image</label>
             <input
@@ -172,13 +208,37 @@ export default function AddRecipe({ fetchRecipes }: { fetchRecipes: () => void }
               name="file"
             />
           </div>
-
+          <div>
+            <label htmlFor="recipe_youtube">Youtube Link</label>
+            <br />
+            <input
+              className={styles.form_inputs}
+              type="text"
+              name="recipe_youtube"
+              id="recipe_youtube"
+              value={recipeyoutube}
+              onChange={(e) => setrecipeyoutube(e.target.value)}
+              placeholder="Enter YouTube link" // Add this line
+            />
+          </div>
+          <div>
+            <label htmlFor="recipe_source">Recipe Source</label>
+            <br />
+            <input
+              className={styles.form_inputs}
+              type="text"
+              name="recipe_source"
+              id="recipe_source"
+              value={recipesource}
+              onChange={(e) => setrecipesource(e.target.value)}
+              placeholder="Enter recipe source" // Add this line
+            />
+          </div>
           <input
             className={`${styles.submit_btn} ${styles.add_btn}`}
             type="button"
             value="Submit"
             onClick={handleSubmit}
-
           />
         </form>
       </div>

@@ -42,6 +42,7 @@ router.post("/", upload.single('file'), async function (req, res) {
             strMealThumb: req.file ? `http://localhost:5000/images/${recipeId}.jpg` : newRecipe.recipeimage,
             strTags: newRecipe.recipetags,
             strYoutube: newRecipe.recipeyoutube,
+            strSource: newRecipe.recipesource,
         };
         console.log(newRecipe.recipeingredients)
 

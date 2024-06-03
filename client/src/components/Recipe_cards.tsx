@@ -99,18 +99,22 @@ export default function RecipeCards(
         ) : (
           filteredRecipes &&
           filteredRecipes.map((recipe, index) => (
-            <div className="recipe_card" key={index}>
+            <div className="recipe_card" key={index} onClick={() => recipeDetailsRedirect(recipe.idMeal)}>
               <div className="recipe_card_header">
                 <h1>{recipe.strMeal}</h1>
                 <div className="recipe_card_details">
                   <p>ID: {recipe.idMeal}</p>
                   <p>Category: {recipe.strCategory}</p>
                   <p>Area: {recipe.strArea}</p>
+                  <div className="tag-container">
+                    {recipe.strTags && recipe.strTags.split(',').map((tag, tagIndex) => (
+                      <p className="tag" key={tagIndex}>{tag}</p>
+                    ))}
+                  </div>
                 </div>
               </div>
               <img src={recipe.strMealThumb} alt={recipe.strMeal} />
               <div className="recipe_card_footer">
-                <button className="btn" onClick={() => recipeDetailsRedirect(recipe.idMeal)}>Read more</button>
                 <button
                   className="delete_btn"
                 >

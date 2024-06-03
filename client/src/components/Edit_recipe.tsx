@@ -34,10 +34,11 @@ export default function Edit_recipe({ recipes, fetchRecipes }: { recipes: Recipe
                 ingredients.push(recipe[`strIngredient${i}` as keyof Recipe]);
             }
             if (recipe[`strMeasure${i}` as keyof Recipe] && recipe[`strMeasure${i}` as keyof Recipe].trim() !== "") {
-                measureunit.push(recipe[`strMeasure${i}` as keyof Recipe]);
-            }
-            if (recipe[`strMeasure${i}` as keyof Recipe] && recipe[`strMeasure${i}` as keyof Recipe].trim() !== "") {
-                measurevalue.push(recipe[`strMeasure${i}` as keyof Recipe]);
+                const measure = recipe[`strMeasure${i}` as keyof Recipe];
+                const value = measure.match(/\d+/)?.[0] || '';
+                const unit = measure.replace(/\d+/, '').trim();
+                measurevalue.push(value);
+                measureunit.push(unit);
             }
         }
     }
@@ -60,6 +61,7 @@ export default function Edit_recipe({ recipes, fetchRecipes }: { recipes: Recipe
     const [recipeyoutube, setrecipeyoutube] = useState<string>("");
     const [recipearea, setrecipearea] = useState<string>("");
     const [recipemealthumb, setrecipemealthumb] = useState<string>("");
+    const [recipesource, setrecipesource] = useState<string>("");
     const [recipeingredients, setrecipeingredients] = useState<string[]>([]);
     const [recipeinstructions, setrecipeinstructions] = useState<string>("");
     const [recipemeasureunit, setrecipemeasureunit] = useState<string[]>([]);
@@ -101,6 +103,7 @@ export default function Edit_recipe({ recipes, fetchRecipes }: { recipes: Recipe
         recipeData.append("recipeyoutube", recipeyoutube);
         recipeData.append("recipetags", recipetags);
         recipeData.append("recipearea", recipearea);
+        recipeData.append("recipesource", recipesource);
         console.log(recipeData)
         try {
             const response = await axios.post(`${serverUrl}/editrecipe`, recipeData, {
@@ -133,7 +136,41 @@ export default function Edit_recipe({ recipes, fetchRecipes }: { recipes: Recipe
                                 onChange={(e) => setrecipename(e.target.value)}
                             />
                         </div>
-
+                        <div>
+                            <label htmlFor="recipe_category">Recipe Category</label>
+                            <br />
+                            <input
+                                className={styles.form_inputs}
+                                type="text"
+                                name="recipe_category"
+                                id="recipe_category"
+                                value={recipecategory}
+                                onChange={(e) => setrecipecategory(e.target.value)}
+                                placeholder="Enter recipe category"
+                            />
+                        </div>
+                        <div><label htmlFor="recipe_area">Recipe Area</label>
+                            <br />
+                            <input
+                                className={styles.form_inputs}
+                                type="text"
+                                name="recipe_area"
+                                id="recipe_area"
+                                value={recipearea}
+                                onChange={(e) => setrecipearea(e.target.value)}
+                                placeholder="Enter recipe area"
+                            /></div>
+                        <div><label htmlFor="recipe_tags">Recipe Tags</label>
+                            <br />
+                            <input
+                                className={styles.form_inputs}
+                                type="text"
+                                name="recipe_tags"
+                                id="recipe_tags"
+                                value={recipetags}
+                                onChange={(e) => setrecipetags(e.target.value)}
+                                placeholder="Enter recipe tags"
+                            /></div>
                         <div className="ingredients_list">
                             <label>Recipe Ingredients</label>{" "}
                             <button
@@ -197,6 +234,11 @@ export default function Edit_recipe({ recipes, fetchRecipes }: { recipes: Recipe
                                                 {measure}
                                             </option>
                                         ))}
+                                        {!measure.includes(recipemeasureunit[index]) && recipemeasureunit[index] && (
+                                            <option value={recipemeasureunit[index]}>
+                                                {recipemeasureunit[index]}
+                                            </option>
+                                        )}
                                     </select>
                                 </React.Fragment>
                             ))}
@@ -233,7 +275,32 @@ export default function Edit_recipe({ recipes, fetchRecipes }: { recipes: Recipe
                                 name="file"
                             />
                         </div>
-
+                        <div>
+                            <label htmlFor="recipe_youtube">Youtube Link</label>
+                            <br />
+                            <input
+                                className={styles.form_inputs}
+                                type="text"
+                                name="recipe_youtube"
+                                id="recipe_youtube"
+                                value={recipeyoutube}
+                                onChange={(e) => setrecipeyoutube(e.target.value)}
+                                placeholder="Enter YouTube link" // Add this line
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="recipe_source">Recipe Source</label>
+                            <br />
+                            <input
+                                className={styles.form_inputs}
+                                type="text"
+                                name="recipe_source"
+                                id="recipe_source"
+                                value={recipesource}
+                                onChange={(e) => setrecipesource(e.target.value)}
+                                placeholder="Enter recipe source" // Add this line
+                            />
+                        </div>
                         <input
                             className={`${styles.submit_btn} ${styles.add_btn}`}
                             type="button"
