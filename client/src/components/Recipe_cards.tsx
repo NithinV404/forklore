@@ -67,7 +67,8 @@ export default function RecipeCards(
   }, []);
 
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: string, event: React.MouseEvent) => {
+    event.stopPropagation();
     try {
       const response = await axios.delete(`${serverUrl}/delete/${id}`);
       if (response.status === 200) { fetchRecipes(); }
@@ -118,7 +119,7 @@ export default function RecipeCards(
                 <button
                   className="delete_btn"
                 >
-                  <img className="ic-hover" src={icon_delete} alt="delete" onClick={() => handleDelete(recipe.idMeal)} />
+                  <img className="ic-hover" src={icon_delete} alt="delete" onClick={(event) => handleDelete(recipe.idMeal, event)} />
                 </button>
               </div>
             </div>
