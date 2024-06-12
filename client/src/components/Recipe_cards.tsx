@@ -1,6 +1,5 @@
 import "../components/recipe_cards.css";
 import { Link, useNavigate } from "react-router-dom";
-// import icon_share from "../assets/icon-share.svg";
 import icon_delete from "../assets/icon-delete.svg";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -102,25 +101,31 @@ export default function RecipeCards(
           filteredRecipes.map((recipe, index) => (
             <div className="recipe_card" key={index} onClick={() => recipeDetailsRedirect(recipe.idMeal)}>
               <div className="recipe_card_header">
-                <h1>{recipe.strMeal}</h1>
-                <div className="recipe_card_details">
-                  <p>ID: {recipe.idMeal}</p>
-                  <p>Category: {recipe.strCategory}</p>
-                  <p>Area: {recipe.strArea}</p>
-                  <div className="tag-container">
-                    {recipe.strTags && recipe.strTags.split(',').map((tag, tagIndex) => (
-                      <p className="tag" key={tagIndex}>{tag}</p>
-                    ))}
-                  </div>
+                <div className="tag-container">
+                  {recipe.strTags && recipe.strTags.split(',').map((tag, tagIndex) => (
+                    tagIndex < 3 && <p className="tag" key={tagIndex}>{tag}</p>
+                  ))}
                 </div>
+                <img src={recipe.strMealThumb} alt={recipe.strMeal} />
               </div>
-              <img src={recipe.strMealThumb} alt={recipe.strMeal} />
               <div className="recipe_card_footer">
-                <button
-                  className="delete_btn"
-                >
-                  <img className="ic-hover" src={icon_delete} alt="delete" onClick={(event) => handleDelete(recipe.idMeal, event)} />
-                </button>
+                <div className="recipe_card_details">
+                  <h3>{recipe.strMeal}</h3>
+                  <p>{recipe.idMeal}</p>
+                  <div className="category_container"><p id='recipe_card_category'>{recipe.strCategory}</p></div>
+                </div>
+                <div className="icons_container">
+                  <div><button
+                    className="delete_btn"
+                  >
+                    <img className="ic-hover" src={icon_delete} alt="delete" onClick={(event) => handleDelete(recipe.idMeal, event)} />
+                  </button></div>
+                  <div><button
+                    className="share_btn"
+                  >
+                  </button></div>
+                </div>
+
               </div>
             </div>
           ))

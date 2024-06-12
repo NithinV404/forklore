@@ -3,16 +3,16 @@
 .circle
 {
     display: flex;
+    position: absolute;
     justify-content: center;
     height: 40px;
     width: 40px;
+    top: 6rem;
     border-radius: 100%;
-    border: solid 1px var(--border-color);
     padding: 0.5rem;
     margin-left: 20px;
-    background-color: var(--primary-secondary-color);
-    color: var(--primary-secondary-font);
-
+    transition: all 0.2s ease-out;
+    background-color: white;
 }
 .circle:hover
 {
