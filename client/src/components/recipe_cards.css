@@ -1,3 +1,5 @@
+@import "../variables.module.css";
+
 .recipe_cards
 {
     display: grid;
@@ -14,6 +16,16 @@
     }
     
 }
+#recipe_card_category
+{
+    display: inline-block;
+    background-color: orange;
+    color: #000000;
+    padding: 5px 10px;
+    margin:  4px 0 0 -5px;
+    border-radius: 20px;
+    font-size: 0.8em;
+}
 .recipe_cards > .empty-recipe
 {
     display: flex;
@@ -28,62 +40,123 @@
 {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
-    height: 350px;
-    width: 200px;
+    height: fit-content;
+    width: 15rem;
     box-shadow: 0px 0px 8px rgb(161, 161, 161);
     overflow: hidden;
-    padding: 20px;
     border-radius: 10px;
+    transition: all 0.1s ease-out;
 }
-.recipe_card_header
+.recipe_card:hover {
+    transform: scale(1.05); 
+    cursor: pointer;
+}
+
+.recipe_card_header > img
 {
-    height: 160px;
-    width: auto;
+    width: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+    height: 16rem;
     overflow: hidden;
-    box-shadow: 0 8px 0 -6px rgb(161, 161, 161);
-    margin-bottom: 5px;
 }
-.recipe_card > img
+.recipe_card_footer
 {
-    width: 200px;
-    height: 120px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    aspect-ratio: 2/1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+    padding: 0 20px;
+    border-radius: 0 0 20px 20px;
+    height: 9rem;
+    margin-top: -30px;
+    background-color: white;
 }
-a
+.recipe_card_footer > .icons_container
 {
-    padding-top: 5px;
-    text-decoration: none;
-    color: black;
+    margin: 0 0 10px 0;
+    display: flex;
 }
+
+.recipe_card_details
+{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    padding: 10px 0 10px 10px;
+}
+.recipe_card_details > h3
+{
+    font-size: 1.3rem;
+}
+.recipe_card_details > p
+{
+    font-size: 0.85rem;
+    color: var(--text-color);
+}
+.delete_btn
+{
+    background-color: transparent;
+    border: none;
+    padding: 20px;
+    width: 10px; 
+    height: 10px; 
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.delete_btn > img
+{
+    width: 25px;
+    height: 25px;
+}
+.delete_btn:hover
+{
+    background-color: rgb(44, 44, 44);
+    background-color: red;
+    border-radius: 50%;
+}
+
+.tag-container {
+  display: flex;
+  position: absolute;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  font-size: 12px;
+  margin: 5px 0 0 10px;
+}
+
+.tag {
+  background-color: #7bc8e2;
+  color: #000000;
+  font-weight: 500;
+  padding: 5px 8px;
+  margin: 5px 5px 0 0 ;
+  border-radius: 20px;
+}
+
 .btn 
 {
     color: white;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 2.5rem;
     background-color: rgb(44, 44, 44);
     border-radius: 2rem;
     border: none;
     cursor: pointer;
     box-shadow: 0px 0px px 1px rgb(44, 44, 44);
+    transition: all 0.5s ease-in-out;
 }
-.recipe_card_footer
+.fullscreen
 {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
-.share_btn,.delete_btn
-{
-    display: flex;
-    justify-content: center;
-    cursor: pointer;
-}
-.recipe_card_details
-{
-    margin: 5px 0;
-}
+
 .filter-ribbon
 {
     display: flex;
@@ -95,8 +168,8 @@ a
 {
    padding: 5px;
    border-radius: 20px;
-   border: 1px solid rgb(161, 161, 161);
-   background-color: white;
+   border: 1px solid var(--border-color);
+   background-color: #f2f2f2; 
    text-align: center;
 }
 .recipe_cards > .add_icon
@@ -121,8 +194,34 @@ a
     from {bottom: 0px;}
     to{ bottom: 100px;}
 }
+a
+{
+    padding-top: 5px;
+    text-decoration: none;
+    color: black;
+}
 .add_icon:hover
 {
     animation: 0.5s ease-in-out;
     box-shadow: 0px 0px 8px rgb(44, 44, 44);
+}
+.add_icon.active
+{
+    animation: fillscreen 0.5s ease-out;
+}
+#recipe_youtube,#recipe_source
+{
+    width: 35rem;
+}
+@keyframes fillscreen {
+    from { 
+        opacity: 0; 
+        transform: scale(1);
+        background-color: white;
+    }
+    to {
+        opacity: 1;
+        transform: scale(100);
+        background-color: white;
+    }
 }

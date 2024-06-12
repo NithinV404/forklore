@@ -1,10 +1,11 @@
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import RecipeCards from './components/Recipe_cards'
 import Add_recipe from './components/Add_recipe'
 import RecipeDetails from './components/recipe_details'
 import Header from './components/header'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import Edit_recipe from './components/Edit_recipe'
 export default function App() {
 
   const serverUrl = import.meta.env.VITE_SERVER_URL;
@@ -21,14 +22,14 @@ export default function App() {
     strSource: string;
   };
 
-  const [searchInput, setSearchInput] = useState<string | null>(''); 
+  const [searchInput, setSearchInput] = useState<string | null>('');
 
   const [recipes, setRecipes] = useState<Recipe[]>([]);
 
   const fetchRecipes = async () => {
-  console.log('fetched')
-  const response = await axios.get(`${serverUrl}/`);
-      setRecipes(response.data);
+    console.log('fetched')
+    const response = await axios.get(`${serverUrl}/`);
+    setRecipes(response.data);
   };
 
   useEffect(() => {
@@ -39,14 +40,15 @@ export default function App() {
 
   return (
     <>
-    <Header setSearchInput={setSearchInput} recipes={recipes} fetchRecipes={fetchRecipes}/>
-    <Router>
-      <Routes>
-        <Route path="/" element={<RecipeCards searchInput={searchInput}  recipes={recipes} fetchRecipes={fetchRecipes}/>} /> 
-        <Route path='/recipe_details/:id' element={<RecipeDetails recipes={recipes} />} />
-        <Route path='/add_recipe' element={<Add_recipe fetchRecipes={fetchRecipes} />} />
-      </Routes>
+      <Header setSearchInput={setSearchInput} recipes={recipes} fetchRecipes={fetchRecipes} />
+      <Router>
+        <Routes>
+          <Route path="/" element={<RecipeCards searchInput={searchInput} recipes={recipes} fetchRecipes={fetchRecipes} />} />
+          <Route path='/recipe_details/:id' element={<RecipeDetails recipes={recipes} fetchRecipes={fetchRecipes} />} />
+          <Route path='/add_recipe' element={<Add_recipe fetchRecipes={fetchRecipes} />} />
+          <Route path='/edit_recipe/:id' element={<Edit_recipe recipes={recipes} fetchRecipes={fetchRecipes} />} />
+        </Routes>
       </Router>
-  </>
+    </>
   )
 }

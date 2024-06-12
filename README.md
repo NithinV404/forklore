@@ -2,13 +2,13 @@
 
 This is a recipe app used to save and store recipes locally on the system 
 
-![Example Image 1](./images/screenshots/thorium_zitnWIlrIo.png)
+![Example Image 1](./images/screenshots/photo_1.png)
 
-![Example Image 2](./images/screenshots/thorium_yFBAssnOG7.png)
+![Example Image 2](./images/screenshots/photo_2.png)
 
-![Example Image 3](./images/screenshots/thorium_4Cd7Z2pptk.png)
+![Example Image 3](./images/screenshots/photo_3.png)
 
-![Example Image 4](./images/screenshots/thorium_tXx9BRWlOo.png)
+![Example Image 4](./images/screenshots/photo_4.png)
 
 ## Instruction to run the project 
 
