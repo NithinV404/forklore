@@ -103,7 +103,7 @@ export default function RecipeCards(
               <div className="recipe_card_header">
                 <div className="tag-container">
                   {recipe.strTags && recipe.strTags.split(',').map((tag, tagIndex) => (
-                    tagIndex < 3 && <p className="tag" key={tagIndex}>{tag}</p>
+                    tagIndex < 2 && <p className="tag" key={tagIndex}>{tag}</p>
                   ))}
                 </div>
                 <img src={recipe.strMealThumb} alt={recipe.strMeal} />

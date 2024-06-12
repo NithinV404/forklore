@@ -58,6 +58,7 @@
     border-radius: 10px;
     object-fit: cover;
     height: 16rem;
+    overflow: hidden;
 }
 .recipe_card_footer
 {
