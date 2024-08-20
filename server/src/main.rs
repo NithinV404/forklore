@@ -1,11 +1,21 @@
-mod file_utils;
+mod modules;
+mod routes;
+use actix_cors::Cors;
+use actix_web::{App, HttpServer};
 
-// Checks if the folder and file exists, if not it creates them
-const PATH: &str = "recipes/recipes.json";
-fn main() {
-    println!(
-        "{}",
-        file_utils::FileUtils::file_exists("recipes/recipes.json", true)
-    );
-    println!("{:?}", file_utils::FileUtils::read_file(PATH));
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+    HttpServer::new(|| {
+        App::new()
+            .wrap(
+                Cors::default()
+                    .allow_any_origin()
+                    .allow_any_method()
+                    .allow_any_header(),
+            )
+            .configure(routes::config)
+    })
+    .bind("localhost:5000")?
+    .run()
+    .await
 }
