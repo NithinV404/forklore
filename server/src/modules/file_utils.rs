@@ -1,7 +1,66 @@
-use serde_json::{Error, Value};
+use serde::{Deserialize, Serialize};
+use serde_json::Error;
 use std::fs::{File, OpenOptions};
-use std::io::{Read, Write};
+use std::io::{self, Read};
 use std::path::Path;
+
+#[allow(non_snake_case)]
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Recipe {
+    pub idMeal: String,
+    pub strMeal: String,
+    pub strDrinkAlternate: Option<String>,
+    pub strCategory: String,
+    pub strArea: String,
+    pub strInstructions: String,
+    pub strMealThumb: String,
+    pub strTags: Option<String>,
+    pub strYoutube: String,
+    pub strIngredient1: Option<String>,
+    pub strIngredient2: Option<String>,
+    pub strIngredient3: Option<String>,
+    pub strIngredient4: Option<String>,
+    pub strIngredient5: Option<String>,
+    pub strIngredient6: Option<String>,
+    pub strIngredient7: Option<String>,
+    pub strIngredient8: Option<String>,
+    pub strIngredient9: Option<String>,
+    pub strIngredient10: Option<String>,
+    pub strIngredient11: Option<String>,
+    pub strIngredient12: Option<String>,
+    pub strIngredient13: Option<String>,
+    pub strIngredient14: Option<String>,
+    pub strIngredient15: Option<String>,
+    pub strIngredient16: Option<String>,
+    pub strIngredient17: Option<String>,
+    pub strIngredient18: Option<String>,
+    pub strIngredient19: Option<String>,
+    pub strIngredient20: Option<String>,
+    pub strMeasure1: Option<String>,
+    pub strMeasure2: Option<String>,
+    pub strMeasure3: Option<String>,
+    pub strMeasure4: Option<String>,
+    pub strMeasure5: Option<String>,
+    pub strMeasure6: Option<String>,
+    pub strMeasure7: Option<String>,
+    pub strMeasure8: Option<String>,
+    pub strMeasure9: Option<String>,
+    pub strMeasure10: Option<String>,
+    pub strMeasure11: Option<String>,
+    pub strMeasure12: Option<String>,
+    pub strMeasure13: Option<String>,
+    pub strMeasure14: Option<String>,
+    pub strMeasure15: Option<String>,
+    pub strMeasure16: Option<String>,
+    pub strMeasure17: Option<String>,
+    pub strMeasure18: Option<String>,
+    pub strMeasure19: Option<String>,
+    pub strMeasure20: Option<String>,
+    pub strSource: Option<String>,
+    pub strImageSource: Option<String>,
+    pub strCreativeCommonsConfirmed: Option<String>,
+    pub dateModified: Option<String>,
+}
 
 #[allow(dead_code)]
 pub struct FileUtils;
@@ -39,25 +98,19 @@ impl FileUtils {
         }
     }
 
-    pub fn read_file(path: &str) -> Result<Value, Error> {
-        let mut file = OpenOptions::new()
-            .read(true)
-            .open(path)
-            .expect("Failed to open file");
-
+    pub fn read_file(path: &str) -> Result<Vec<Recipe>, Error> {
+        let mut file = File::open(path).expect("Failed to open file");
         let mut contents = String::new();
         file.read_to_string(&mut contents)
             .expect("Failed to read file");
 
-        let json: Value = serde_json::from_str(&contents)?;
-        Ok(json)
+        let data: Vec<Recipe> = serde_json::from_str(&contents)?;
+        Ok(data)
     }
 
-    pub fn write_file(path: &str, content: &Value) {
-        let mut file = File::create(path).expect("Failed to create file");
-        file.write_all(content.to_string().as_bytes())
-            .expect("Failed to write to file");
+    pub fn write_file(path: &str, content: Vec<Recipe>) -> Result<(), io::Error> {
+        let file = File::create(path)?;
+        serde_json::to_writer(file, &content)?;
+        Ok(())
     }
-
-    // pub fn write_file(path: &str, content: &str) {}
 }
