@@ -62,12 +62,14 @@
 
 .recipe_card_header > img
 {
+    display: block;
     width: 100%;
     border-radius: 10px;
     object-fit: cover;
     height: 16rem;
     overflow: hidden;
 }
+
 .recipe_card_footer
 {
     display: flex;
