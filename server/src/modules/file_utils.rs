@@ -113,4 +113,9 @@ impl FileUtils {
         serde_json::to_writer(file, &content)?;
         Ok(())
     }
+
+    pub fn remove_file(path: &str) -> Result<(), io::Error> {
+        std::fs::remove_file(path)?;
+        Ok(())
+    }
 }

@@ -7,6 +7,10 @@ pub async fn delete_recipes(path: web::Path<String>) -> impl Responder {
     let mut recipes = file_utils::FileUtils::read_file("recipes/recipes.json").unwrap();
     println!("recipes: {:?}", recipes);
 
+    if id.starts_with("U_") {
+        let file_path = format!("recipes/images/{}.jpg", id);
+        file_utils::FileUtils::remove_file(&file_path).unwrap();
+    }
     // Retain only the recipes that do not match the given id
     let original_len = recipes.len();
     recipes.retain(|recipe| recipe.idMeal != id);
