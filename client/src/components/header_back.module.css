@@ -1,0 +1,26 @@
+@import "../variables.module.css";
+
+.circle
+{
+    display: flex;
+    position: absolute;
+    justify-content: center;
+    height: 40px;
+    width: 40px;
+    top: 6rem;
+    border-radius: 100%;
+    padding: 0.5rem;
+    margin-left: 20px;
+    transition: all 0.2s ease-out;
+    background-color: white;
+}
+.circle:hover
+{
+    background-color: var(--primary-secondary-color-hover);
+}
+
+.back_icon
+{
+    width: 20px;
+    padding: 0 2rem;
+}
