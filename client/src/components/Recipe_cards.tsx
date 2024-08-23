@@ -111,7 +111,6 @@ export default function RecipeCards(
               <div className="recipe_card_footer">
                 <div className="recipe_card_details">
                   <h3>{recipe.strMeal}</h3>
-                  <p>{recipe.idMeal}</p>
                   <div className="category_container"><p id='recipe_card_category'>{recipe.strCategory}</p>
                     <div className="icons_container">
                       <div><button
