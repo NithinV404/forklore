@@ -1,4 +1,4 @@
-use crate::modules::{add_recipe_user, delete_recipes, fetch_recipes};
+use crate::modules::{add_recipe_user, delete_recipes, edit_recipe, fetch_recipes};
 use actix_files as fs;
 use actix_web::web;
 
@@ -12,4 +12,5 @@ pub fn config(cfg: &mut web::ServiceConfig) {
         web::resource("delete/{id}").route(web::delete().to(delete_recipes::delete_recipes)),
     );
     cfg.service(web::resource("addrecipe").route(web::post().to(add_recipe_user::add_recipe_user)));
+    cfg.service(web::resource("editrecipe").route(web::post().to(edit_recipe::edit_recipe)));
 }

@@ -1,11 +1,10 @@
-use std::fs::File;
-use std::io::Write;
-
 use crate::modules::file_utils::{FileUtils, Recipe};
 use actix_multipart::Multipart;
 use actix_web::{Error, HttpResponse};
 use futures::StreamExt;
 use serde_json::{json, Map, Value};
+use std::fs::File;
+use std::io::Write;
 use uuid::Uuid;
 
 struct RecipeDataUser {
@@ -53,14 +52,19 @@ pub async fn add_recipe_user(mut payload: Multipart) -> Result<HttpResponse, Err
         // The payload is unwrapped to retrive different data sent from the client
         match field.content_disposition().unwrap().get_name().unwrap() {
             "file" => {
-                if FileUtils::folder_exists("recipes/images", true) {
-                    let filename = format!("recipes/images/{}.jpg", recipe_data.recipe_id);
-                    let mut file = File::create(filename)?;
-                    file.write_all(&bytes).expect("Failed to write file");
-                    recipe_data.mealthumb = Some(format!(
-                        "http://localhost:5000/recipes/images/{}.jpg",
-                        recipe_data.recipe_id
-                    ));
+                let content_str = String::from_utf8(bytes.clone()).unwrap();
+                if content_str.starts_with("https://") || content_str.starts_with("http://") {
+                    recipe_data.mealthumb = Some(content_str.clone());
+                } else {
+                    if FileUtils::folder_exists("recipes/images", true) {
+                        let filename = format!("recipes/images/{}.jpg", recipe_data.recipe_id);
+                        let mut file = File::create(filename)?;
+                        file.write_all(&bytes).expect("Failed to write file");
+                        recipe_data.mealthumb = Some(format!(
+                            "http://localhost:5000/recipes/images/{}.jpg",
+                            recipe_data.recipe_id
+                        ));
+                    }
                 }
             }
             "recipename" => {
@@ -68,24 +72,15 @@ pub async fn add_recipe_user(mut payload: Multipart) -> Result<HttpResponse, Err
             }
             "recipeingredients" => {
                 let ingredients_str = String::from_utf8(bytes.clone()).unwrap();
-                recipe_data.ingredients = ingredients_str
-                    .split(',')
-                    .map(|s| s.trim().to_string())
-                    .collect();
+                recipe_data.ingredients = serde_json::from_str(&ingredients_str).unwrap();
             }
             "recipemeasureunit" => {
                 let measureunit_str = String::from_utf8(bytes.clone()).unwrap();
-                recipe_data.measure_unit = measureunit_str
-                    .split(',')
-                    .map(|s| s.trim().to_string())
-                    .collect();
+                recipe_data.measure_unit = serde_json::from_str(&measureunit_str).unwrap();
             }
             "recipemeasurevalue" => {
                 let measurevalue_str = String::from_utf8(bytes.clone()).unwrap();
-                recipe_data.measure_value = measurevalue_str
-                    .split(',')
-                    .map(|s| s.trim().to_string())
-                    .collect();
+                recipe_data.measure_value = serde_json::from_str(&measurevalue_str).unwrap();
             }
             "recipeinstructions" => {
                 recipe_data.instructions = String::from_utf8(bytes.clone()).unwrap()
@@ -115,6 +110,7 @@ pub async fn add_recipe_user(mut payload: Multipart) -> Result<HttpResponse, Err
     let mut recipe_json = Map::new();
     recipe_json.insert("recipe_name".to_string(), json!(recipe_data.recipe_name));
 
+    println!("{:?}", recipe_data.ingredients);
     for i in 0..20 {
         let ingredient = recipe_data
             .ingredients

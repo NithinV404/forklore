@@ -5,12 +5,13 @@ use serde_json::json;
 pub async fn delete_recipes(path: web::Path<String>) -> impl Responder {
     let id = path.into_inner();
     let mut recipes = file_utils::FileUtils::read_file("recipes/recipes.json").unwrap();
-    println!("recipes: {:?}", recipes);
 
-    if id.starts_with("U_") {
-        let file_path = format!("recipes/images/{}.jpg", id);
-        file_utils::FileUtils::remove_file(&file_path).unwrap();
+    // Delete the file from recipes/images folder if it exists with the given id
+    let image_path = format!("recipes/images/{}.jpg", id);
+    if let Err(_) = std::fs::remove_file(&image_path) {
+        // Ignore the error if the file doesn't exist
     }
+
     // Retain only the recipes that do not match the given id
     let original_len = recipes.len();
     recipes.retain(|recipe| recipe.idMeal != id);
