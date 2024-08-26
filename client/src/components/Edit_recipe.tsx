@@ -66,7 +66,7 @@ export default function Edit_recipe({ recipes, fetchRecipes }: { recipes: Recipe
     const [recipeinstructions, setrecipeinstructions] = useState<string>("");
     const [recipemeasureunit, setrecipemeasureunit] = useState<string[]>([]);
     const [recipemeasurevalue, setrecipemeasurevalue] = useState<string[]>([]);
-    const [recipeImage, setRecipeImage] = useState<File | null>(null);
+    const [recipeImage, setRecipeImage] = useState<File | null | String>(null);
     const [addbutton, setbutton] = useState<number>(1);
 
     useEffect(() => {
@@ -91,7 +91,7 @@ export default function Edit_recipe({ recipes, fetchRecipes }: { recipes: Recipe
             recipeData.append("file", recipeImage as Blob);
         }
         else {
-            recipeData.append("recipeimage", recipemealthumb);
+            recipeData.append("file", recipemealthumb);
         }
         recipeData.append("idMeal", recipe?.idMeal || "");
         recipeData.append("recipename", recipename);
@@ -104,7 +104,6 @@ export default function Edit_recipe({ recipes, fetchRecipes }: { recipes: Recipe
         recipeData.append("recipetags", recipetags);
         recipeData.append("recipearea", recipearea);
         recipeData.append("recipesource", recipesource);
-        console.log(recipeData)
         try {
             const response = await axios.post(`${serverUrl}/editrecipe`, recipeData, {
                 headers: {
