@@ -85,7 +85,8 @@ impl FileUtils {
             return true;
         } else {
             if create {
-                Self::folder_exists(path, true);
+                let dir_path = Path::new(path).parent().unwrap();
+                Self::folder_exists(dir_path.to_str().unwrap(), true);
                 OpenOptions::new()
                     .read(true)
                     .write(true)
@@ -99,10 +100,15 @@ impl FileUtils {
     }
 
     pub fn read_file(path: &str) -> Result<Vec<Recipe>, Error> {
+        Self::file_exists(path, true);
         let mut file = File::open(path).expect("Failed to open file");
         let mut contents = String::new();
         file.read_to_string(&mut contents)
             .expect("Failed to read file");
+
+        if contents.trim().is_empty() {
+            return Ok(vec![]);
+        }
 
         let data: Vec<Recipe> = serde_json::from_str(&contents)?;
         Ok(data)
