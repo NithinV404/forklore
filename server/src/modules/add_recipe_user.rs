@@ -52,11 +52,8 @@ pub async fn add_recipe_user(mut payload: Multipart) -> Result<HttpResponse, Err
         // The payload is unwrapped to retrive different data sent from the client
         match field.content_disposition().unwrap().get_name().unwrap() {
             "file" => {
-                let content_str = String::from_utf8(bytes.clone()).unwrap();
-                if bytes.is_empty() {
-                    recipe_data.mealthumb = Some(String::new());
-                } else if content_str.starts_with("https://") || content_str.starts_with("http://")
-                {
+                let content_str = String::from_utf8_lossy(&bytes).to_string();
+                if content_str.starts_with("https://") || content_str.starts_with("http://") {
                     recipe_data.mealthumb = Some(content_str.clone());
                 } else {
                     if FileUtils::folder_exists("recipes/images", true) {
