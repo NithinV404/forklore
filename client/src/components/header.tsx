@@ -29,12 +29,13 @@ export default function Header({
   const [recipeName, setRecipeName] = useState("");
   const [responseData, setResponseData] = useState<ResponseData | null>(null);
 
+
   const handleSearch = async () => {
     try {
       const response = await axios.post(`${serverUrl}/search`, {
         recipeName,
       });
-      setResponseData(response.data);
+      setResponseData(JSON.parse(response.data));
     } catch (err) {
       console.log(err);
     }

@@ -111,20 +111,18 @@ export default function RecipeCards(
               <div className="recipe_card_footer">
                 <div className="recipe_card_details">
                   <h3>{recipe.strMeal}</h3>
-                  <p>{recipe.idMeal}</p>
-                  <div className="category_container"><p id='recipe_card_category'>{recipe.strCategory}</p></div>
+                  <div className="category_container"><p id='recipe_card_category'>{recipe.strCategory}</p>
+                    <div className="icons_container">
+                      <div><button
+                        className="delete_btn"
+                      >
+                        <img className="ic-hover" src={icon_delete} alt="delete" onClick={(event) => handleDelete(recipe.idMeal, event)} />
+                      </button></div>
+                    </div>
+                  </div>
+
                 </div>
-                <div className="icons_container">
-                  <div><button
-                    className="delete_btn"
-                  >
-                    <img className="ic-hover" src={icon_delete} alt="delete" onClick={(event) => handleDelete(recipe.idMeal, event)} />
-                  </button></div>
-                  <div><button
-                    className="share_btn"
-                  >
-                  </button></div>
-                </div>
+
 
               </div>
             </div>

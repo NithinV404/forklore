@@ -23,3 +23,12 @@ dist-ssr
 *.sln
 *.sw?
 server/recipes/*
+
+
+# Other
+*.log
+*.tmp
+*.temp
+server/target/*
+server/Cargo.lock
+
