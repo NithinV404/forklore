@@ -19,7 +19,7 @@ type Recipe = {
 };
 
 export default function RecipeDetails({ recipes, fetchRecipes }: { recipes: Recipe[], fetchRecipes: () => void }) {
-  var { id } = useParams();
+  const { id } = useParams();
   const recipe = recipes.find((recipe) => recipe.idMeal === id);
   const videoId = recipe?.strYoutube ? new URL(recipe.strYoutube).searchParams.get("v") : null;
   const embedUrl = `https://www.youtube.com/embed/${videoId}`;

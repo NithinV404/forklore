@@ -7,7 +7,11 @@ export default function HeaderBack() {
     const location = useLocation();
 
     const handleback = () => {
-        location.state ? navigate(location.state.from) : navigate("/");
+        if (location.state) {
+            navigate(location.state.from);
+        } else {
+            navigate("/");
+        }
     }
 
     return (
