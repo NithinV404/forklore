@@ -41,7 +41,7 @@ export default function Header({
     }
   };
 
-  const handleaddrecipe = async (recipeId: String) => {
+  const handleaddrecipe = async (recipeId: string) => {
     const index = recipes.findIndex((recipe) => recipe.idMeal === recipeId);
     if (index != -1) {
       alert("Recipe already exists");
@@ -69,7 +69,7 @@ export default function Header({
         <RecipeNameContext.Provider value={recipeName} />
         {responseData && responseData.meals != null ? (
           <div className={header_style.search_items}>
-            {responseData.meals.map((meal: any) => (
+            {responseData.meals.map((meal: Meal) => (
               <div key={meal.idMeal} className={header_style.items}>
                 <div className={header_style.item_name}>
                   <p>{meal.strMeal}</p>

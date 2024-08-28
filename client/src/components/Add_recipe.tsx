@@ -115,7 +115,7 @@ export default function AddRecipe({ fetchRecipes }: { fetchRecipes: () => void }
             <button
               className={styles.add_btn}
               onClick={(e) => {
-                addbutton < 10 ? setbutton((addbutton) => addbutton + 1) : null;
+                if (addbutton < 10) { setbutton((addbutton) => addbutton + 1) }
                 e.preventDefault();
               }}
             >
@@ -240,8 +240,8 @@ export default function AddRecipe({ fetchRecipes }: { fetchRecipes: () => void }
             value="Submit"
             onClick={handleSubmit}
           />
-        </form>
-      </div>
+        </form >
+      </div >
     </>
   );
 }

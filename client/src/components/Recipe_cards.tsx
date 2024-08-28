@@ -17,7 +17,7 @@ type Recipe = {
 };
 
 export default function RecipeCards(
-  { searchInput, recipes, fetchRecipes }: { searchInput: String | null, recipes: Recipe[], fetchRecipes: () => void }
+  { searchInput, recipes, fetchRecipes }: { searchInput: string | null, recipes: Recipe[], fetchRecipes: () => void }
 ) {
   const navigate = useNavigate();
   const serverUrl = import.meta.env.VITE_SERVER_URL;

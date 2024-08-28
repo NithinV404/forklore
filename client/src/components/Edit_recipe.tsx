@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import HeaderBack from "./header_back";
 import styles from "./Add_recipe.module.css";
@@ -20,13 +20,13 @@ type Recipe = {
 
 export default function Edit_recipe({ recipes, fetchRecipes }: { recipes: Recipe[], fetchRecipes: () => void }) {
 
-    var { id } = useParams();
+    const { id } = useParams();
     const serverUrl = import.meta.env.VITE_SERVER_URL;
     const recipe = recipes.find((e) => e.idMeal === id);
     console.log(recipe)
-    const ingredients: string[] = [];
-    const measureunit: string[] = [];
-    const measurevalue: string[] = [];
+    const ingredients: string[] = useMemo(() => [], []);
+    const measureunit: string[] = useMemo(() => [], []);
+    const measurevalue: string[] = useMemo(() => [], []);
 
     if (recipe) {
         for (let i = 1; i <= 20; i++) {
@@ -66,7 +66,7 @@ export default function Edit_recipe({ recipes, fetchRecipes }: { recipes: Recipe
     const [recipeinstructions, setrecipeinstructions] = useState<string>("");
     const [recipemeasureunit, setrecipemeasureunit] = useState<string[]>([]);
     const [recipemeasurevalue, setrecipemeasurevalue] = useState<string[]>([]);
-    const [recipeImage, setRecipeImage] = useState<File | null | String>(null);
+    const [recipeImage, setRecipeImage] = useState<File | null | string>(null);
     const [addbutton, setbutton] = useState<number>(1);
 
     useEffect(() => {
@@ -83,7 +83,7 @@ export default function Edit_recipe({ recipes, fetchRecipes }: { recipes: Recipe
             setbutton(ingredients.length);
             setrecipemealthumb(recipe.strMealThumb || "");
         }
-    }, [recipe]);
+    }, [ingredients, measureunit, measurevalue, recipe]);
 
     const handleSubmit = async () => {
         const recipeData = new FormData();
@@ -175,7 +175,9 @@ export default function Edit_recipe({ recipes, fetchRecipes }: { recipes: Recipe
                             <button
                                 className={styles.add_btn}
                                 onClick={(e) => {
-                                    addbutton < 10 ? setbutton((addbutton) => addbutton + 1) : null;
+                                    if (addbutton < 10) {
+                                        setbutton((addbutton) => addbutton + 1);
+                                    }
                                     e.preventDefault();
                                 }}
                             >
