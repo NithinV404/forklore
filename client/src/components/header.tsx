@@ -55,7 +55,7 @@ export default function Header({
   return (
     <div className={header_style.header}>
       <div className={header_style.header_name}>
-        <h2>ForkLore</h2>
+        <p>ForkLore</p>
       </div>
       <div onBlur={() => setResponseData(null)}>
         <input

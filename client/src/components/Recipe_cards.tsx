@@ -79,7 +79,7 @@ export default function RecipeCards(
   return (
     <>
       <div className="filter-ribbon">
-        <h4>Filter</h4>
+        <p>Filter</p>
         <select
           className="category-dropdown"
           onChange={(e) => setCategory(e.target.value)}
@@ -103,7 +103,7 @@ export default function RecipeCards(
               <div className="recipe_card_header">
                 <div className="tag-container">
                   {recipe.strTags && recipe.strTags.split(',').map((tag, tagIndex) => (
-                    tagIndex < 2 && <p className="tag" key={tagIndex}>{tag}</p>
+                    tagIndex < 2 && <p className="tag" key={tagIndex}># {tag}</p>
                   ))}
                 </div>
                 <img src={recipe.strMealThumb} alt={recipe.strMeal} />
@@ -111,19 +111,21 @@ export default function RecipeCards(
               <div className="recipe_card_footer">
                 <div className="recipe_card_details">
                   <h3>{recipe.strMeal}</h3>
-                  <div className="category_container"><p id='recipe_card_category'>{recipe.strCategory}</p>
+                  <div className="category_divider">
+                    <div className="category_container">
+                      <p>Category</p>
+                      <p id='recipe_card_category'>{recipe.strCategory}</p>
+                    </div>
                     <div className="icons_container">
                       <div><button
                         className="delete_btn"
+                        onClick={(event) => { handleDelete(recipe.idMeal, event); event.stopPropagation(); }}
                       >
-                        <img className="ic-hover" src={icon_delete} alt="delete" onClick={(event) => handleDelete(recipe.idMeal, event)} />
+                        <img className="ic-hover" src={icon_delete} alt="delete" />
                       </button></div>
                     </div>
                   </div>
-
                 </div>
-
-
               </div>
             </div>
           ))
