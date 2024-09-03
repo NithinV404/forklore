@@ -39,16 +39,16 @@ export default function App() {
 
 
   return (
-    <>
-      <Header setSearchInput={setSearchInput} recipes={recipes} fetchRecipes={fetchRecipes} />
-      <Router>
+    <Router>
+      <>
+        <Header setSearchInput={setSearchInput} recipes={recipes} fetchRecipes={fetchRecipes} />
         <Routes>
           <Route path="/" element={<RecipeCards searchInput={searchInput} recipes={recipes} fetchRecipes={fetchRecipes} />} />
-          <Route path='/recipe_details/:id' element={<RecipeDetails recipes={recipes} fetchRecipes={fetchRecipes} />} />
-          <Route path='/add_recipe' element={<Add_recipe fetchRecipes={fetchRecipes} />} />
-          <Route path='/edit_recipe/:id' element={<Edit_recipe recipes={recipes} fetchRecipes={fetchRecipes} />} />
+          <Route path="/recipe_details/:id" element={<RecipeDetails recipes={recipes} fetchRecipes={fetchRecipes} />} />
+          <Route path="/add_recipe" element={<Add_recipe fetchRecipes={fetchRecipes} />} />
+          <Route path="/edit_recipe/:id" element={<Edit_recipe recipes={recipes} fetchRecipes={fetchRecipes} />} />
         </Routes>
-      </Router>
-    </>
-  )
+      </>
+    </Router>
+  );
 }

@@ -29,6 +29,7 @@ export default function RecipeDetails({ recipes, fetchRecipes }: { recipes: Reci
     window.scrollTo(0, 0);
   }, []);
 
+
   const handeRecipeDelete = async (id: string) => {
     try {
       const response = await axios.delete(`${serverUrl}/delete/${id}`);

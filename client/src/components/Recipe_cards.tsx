@@ -1,5 +1,5 @@
 import "../components/recipe_cards.css";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import icon_delete from "../assets/icon-delete.svg";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -130,10 +130,7 @@ export default function RecipeCards(
             </div>
           ))
         )}
-        <Link
-          to="/add_recipe" className={`add_icon`}>
-          +
-        </Link>
+
       </div>
     </>
   );
