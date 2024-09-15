@@ -2,8 +2,7 @@
 
 .addrecipe_form_style {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    align-items: center; /* Center the form horizontally */
     padding: 2rem;
     background-color: var(--primary-color);
     border-radius: 10px;
@@ -16,6 +15,7 @@
     gap: 1.5rem;
     width: 100%;
     max-width: 600px;
+    box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
 }
 
 .form_style label {
@@ -118,4 +118,57 @@
 
 .submit_btn:hover {
     background-color: #555;
+}
+.horizontal_fields {
+    display: flex;
+    gap: 1rem; /* Adjust the gap between the fields as needed */
+}
+
+.horizontal_fields > div {
+    flex: 1; /* Ensure the fields take equal space */
+    flex-wrap: wrap;
+}
+
+.tags_container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.tag_pill {
+    display: inline-block;
+    background-color: #e0f7fa; /* Light blue */
+    color: #00796b; /* Dark teal */
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Elevation */
+    transition:
+        background-color 0.3s,
+        box-shadow 0.3s; /* Smooth transitions */
+    cursor: pointer;
+    position: relative; /* For ripple effect */
+    overflow: hidden; /* For ripple effect */
+}
+
+.delete_tag_button {
+    background: none;
+    border: none;
+    color: #00796b; /* Dark teal */
+    margin-left: 0.5rem;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.imagePreview > img {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin-left: 8rem;
+}
+.imagePreview > p {
+    margin-left: 8rem;
+    margin-top: 2rem;
 }

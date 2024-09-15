@@ -124,18 +124,19 @@
     color: var(--text-color);
 }
 .delete_btn {
-    background-color: #f44336; 
+    background: linear-gradient(135deg, #f44336, #fa6464); /* Gradient background */
     border: none;
     padding: 0;
-    width: 40px;
+    width: 40px; /* Slightly larger */
     height: 40px; 
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
-    transition: background-color 0.3s, box-shadow 0.3s; 
+    transition: background 0.3s, box-shadow 0.3s, transform 0.2s; /* Smooth transitions */
     cursor: pointer;
+    margin-top: 20px;
     position: relative; 
     overflow: hidden; 
 }
@@ -146,8 +147,9 @@
 }
 
 .delete_btn:hover {
-    background-color: #d32f2f; 
+    background: linear-gradient(135deg, #d32f2f, #ff4441); /* Different gradient on hover */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+    transform: scale(1.1); /* Slightly larger on hover */
 }
 
 .delete_btn:active::after {
@@ -160,6 +162,16 @@
     animation: ripple 0.6s ease-out;
 }
 
+@keyframes ripple {
+    from {
+        transform: scale(0);
+        opacity: 1;
+    }
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
 .tag-container {
   display: flex;
   position: absolute;
@@ -271,4 +283,19 @@ a
         transform: scale(100);
         background-color: white;
     }
+}
+
+.ingredient_images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.ingredient_image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }

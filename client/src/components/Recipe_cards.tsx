@@ -113,7 +113,7 @@ export default function RecipeCards(
                   <h3>{recipe.strMeal}</h3>
                   <div className="category_divider">
                     <div className="category_container">
-                      <p>Category</p>
+                      <b>Category</b>
                       <p id='recipe_card_category'>{recipe.strCategory}</p>
                     </div>
                     <div className="icons_container">

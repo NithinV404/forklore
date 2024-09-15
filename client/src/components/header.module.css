@@ -1,3 +1,6 @@
+:root {
+    --search-input-width: 21rem; /* Define a variable for the search input width */
+}
 *
 {
     font-family: 'inter', sans-serif;
@@ -25,13 +28,13 @@
     font-style: normal;
 }
 .header_input[type="text"] {
-    width: 20rem;
+    width: var(--search-input-width); /* Use the variable for the search input width */
     height: 2rem;
     border-radius: 1rem;
     border: 1px solid var(--border-color); /* Lighter border color */
     padding-left: 1rem;
     outline: none;
-    background-color: var(--primary-secondary-color) ;/* Use your existing variable */
+    background-color: var(--primary-secondary-color); /* Use your existing variable */
     transition: background-color 0.3s, border-color 0.3s; /* Smooth transitions */
 }
 
@@ -44,22 +47,27 @@
     background-color: #ffffff; /* White background on focus */
 }
 
-
-.search_items
-{
+.search_items {
     position: absolute;
     display: flex;
     flex-direction: column;
     background-color: white;
     box-shadow: 0 0 3px rgb(139, 139, 139);
     border-radius: 10px;
-    width: 20rem;
+    width: var(--search-input-width); /* Use the same variable for the search items width */
     max-height: 20rem;
     overflow: scroll;
     padding: 10px;
     animation: scrollDown 0.2s ease-out;
     z-index: 1;
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
 }
+
+.search_items::-webkit-scrollbar {
+    display: none;  /* Safari and Chrome */
+}
+
 .items:first
 {
     padding-top: 10px;
