@@ -13,11 +13,23 @@ jobs:
     steps:
       - name: Check out the repository
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Fetch all history for all tags
+
+      - name: Debug - List all tags
+        run: git tag
+
+      - name: Debug - Show current commit
+        run: git log -1
 
       - name: Get the latest tag
         id: get_tag
         run: |
-          TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "no-tag-found")
+          TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          if [ -z "$TAG" ]; then
+            echo "No tags found"
+            exit 1
+          fi
           echo "TAG=$TAG" >> $GITHUB_ENV
 
       - name: Zip the project files
