@@ -1,26 +1,32 @@
 @import "../variables.module.css";
 
-.circle
-{
+.header {
     display: flex;
-    position: absolute;
-    justify-content: center;
-    height: 40px;
-    width: 40px;
-    top: 6rem;
-    border-radius: 100%;
-    padding: 0.5rem;
-    margin-left: 20px;
-    transition: all 0.2s ease-out;
-    background-color: white;
-}
-.circle:hover
-{
-    background-color: var(--primary-secondary-color-hover);
+    align-items: center;
+    padding: 0rem 2rem;
+    background-color: var(--primary-color);
+    border-bottom: 1px solid var(--border-color); /* Smaller border */
 }
 
-.back_icon
-{
-    width: 20px;
-    padding: 0 2rem;
+.circle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 35px; /* Reduced size */
+    width: 35px;  /* Reduced size */
+    border-radius: 100%;
+    padding: 0.3rem;
+    margin-right: 1rem;
+    transition: all 0.2s ease-out;
+    background-color: var(--primary-secondary-color);
+    border: 1px solid var(--border-color);
+}
+
+.circle:hover {
+    background-color: #e0e0e0;
+}
+
+.back_icon {
+    width: 18px; /* Reduced size */
+    padding: 0;
 }

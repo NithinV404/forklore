@@ -6,7 +6,7 @@ export default function HeaderBack() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const handleback = () => {
+    const handleBack = () => {
         if (location.state) {
             navigate(location.state.from);
         } else {
@@ -15,8 +15,8 @@ export default function HeaderBack() {
     }
 
     return (
-        <header>
-            <div onClick={handleback} className={header_back_style.circle}>
+        <header className={header_back_style.header}>
+            <div onClick={handleBack} className={header_back_style.circle}>
                 <img
                     src={icon_back}
                     alt="back"
