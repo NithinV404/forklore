@@ -13,7 +13,9 @@ jobs:
 
       - name: Get the latest tag
         id: get_tag
-        run: echo "::set-output name=TAG::$(git describe --tags --abbrev=0)"
+        run: |
+          TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "no-tag-found")
+          echo "TAG=$TAG" >> $GITHUB_ENV
 
       - name: Zip the project files
         run: zip -r project.zip .
@@ -24,8 +26,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.get_tag.outputs.TAG }}
-          release_name: "Release ${{ steps.get_tag.outputs.TAG }}"
+          tag_name: ${{ env.TAG }}
+          release_name: "Release ${{ env.TAG }}"
           draft: false
           prerelease: false
 
