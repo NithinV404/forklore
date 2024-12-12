@@ -3,8 +3,8 @@ updates:
   - package-ecosystem: "npm" # or "pip", "maven", etc.
     directory: "/client" # location of the package files
     schedule:
-      interval: "weekly"
+      interval: "monthly"
   - package-ecosystem: "cargo"
     directory: "/server"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
