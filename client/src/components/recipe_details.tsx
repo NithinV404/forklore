@@ -60,7 +60,7 @@ export default function RecipeDetails({ recipes, fetchRecipes }: { recipes: Reci
             </div>
             <div className="recipe_tags">
               <b>Tags:   </b> {recipe.strTags && recipe.strTags.split(',').map((tag, index) => (
-                <span key={index} className="pill_tags">{tag}</span>
+                <span key={index} className="pill_tags">{`# ${tag}`}</span>
               ))}
             </div>
             <div className="modify_icons">
