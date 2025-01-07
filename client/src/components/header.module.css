@@ -1,6 +1,5 @@
-:root {
-    --search-input-width: 21rem; /* Define a variable for the search input width */
-}
+@import "../variables.css";
+
 *
 {
     font-family: 'inter', sans-serif;
@@ -19,7 +18,6 @@
 .header > *
 {
     margin: 0 2rem;
-
 }
 .header_name
 {
@@ -28,125 +26,119 @@
     font-style: normal;
 }
 .header_input[type="text"] {
-    width: var(--search-input-width); /* Use the variable for the search input width */
+    width: var(--search-input-width); 
     height: 2rem;
     border-radius: 1rem;
-    border: 1px solid var(--border-color); /* Lighter border color */
+    border: 1px solid var(--color-input-border); 
     padding-left: 1rem;
     outline: none;
-    background-color: var(--primary-secondary-color); /* Use your existing variable */
-    transition: background-color 0.3s, border-color 0.3s; /* Smooth transitions */
+    background-color: var(--color-input-bg); 
+    color: var(--color-input-text);
+    transition: background-color 0.3s, border-color 0.3s; 
 }
 
 .header_input[type="text"]:hover {
-    background-color: var(--primary-secondary-color-hover); /* Use your existing variable */
+    background-color: var(--color-input-bg-hover); 
 }
 
 .header_input[type="text"]:focus {
-    border-color: #888; /* Subtle gray border on focus */
-    background-color: #ffffff; /* White background on focus */
+    border-color: var(--color-input-border); 
+    background-color: var(--color-input-bg-hover); 
 }
 
 .search_items {
     position: absolute;
     display: flex;
     flex-direction: column;
-    background-color: white;
-    box-shadow: 0 0 3px rgb(139, 139, 139);
+    justify-content: space-between;
+    background-color: var(--color-input-bg);
+    box-shadow: var(--color-box-shadow);
     border-radius: 10px;
-    width: var(--search-input-width); /* Use the same variable for the search items width */
+    width: var(--search-input-width); 
     max-height: 20rem;
-    overflow: scroll;
+    overflow-y: auto;
     padding: 10px;
     animation: scrollDown 0.2s ease-out;
     z-index: 1;
-    -ms-overflow-style: none;  /* Internet Explorer 10+ */
-    scrollbar-width: none;  /* Firefox */
 }
 
-.search_items::-webkit-scrollbar {
-    display: none;  /* Safari and Chrome */
-}
-
-.items:first
-{
-    padding-top: 10px;
-}
-.items
-{
+.items {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     padding: 0.2rem 0;
-    width: 20rem;
+    width: 100%;
 }
-.items > .item_name
-{
+
+.item_name {
     width: 13rem;
     font-size: 1rem;
     font-weight: 500;
     padding-left: 0.5rem;
+}
 
+.items img {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.3s;
 }
-.items > img
-{
-   width: 3rem;
-   height: 3rem;
-   border-radius: 10px;
-   cursor: pointer;
-   transition: ease-in-out 0.3s;
-}
-.ic_hover
-{
-    transition: ease-in-out 0.1s;
-    border-radius: 8px;
-}
-.ic_hover:hover
-{
+
+.ic_hover:hover {
     transform: scale(1.1);
-    background-color: rgb(228, 228, 228);
+    background-color: var(--color-input-bg-hover);
 }
-.items > .add_icon
-{
-    width: 20px;
-    height: 20px;
+
+.add_icon {
+    display: flex;
+    justify-content: center;
+    border-radius: 10px;
+    padding: 0.2rem;
 }
+
+.add_icon img {
+    width: 2rem;
+    height: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.3s;
+    filter: var(--filter-icon);
+}
+
 .add_button {
-  background-color: var(--primary-secondary-color);
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  display: inline-block;
-  border: 1px solid var(--border-color);
-  margin-left: 1rem;
-  margin-bottom: 0.3rem;
-  border-radius: 50%; /* Makes the button round */
-  overflow: hidden; /* Ensures the image fits within the round button */
-  width: 35px; /* Adjust the size as needed */
-  height: 35px; /* Adjust the size as needed */
-  transition: background-color 0.3s, transform 0.3s; /* Smooth transitions */
+    background-color: var(--color-input-bg);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: inline-block;
+    border: 1px solid var(--color-input-border);
+    margin-left: 1rem;
+    margin-bottom: 0.3rem;
+    border-radius: 50%; 
+    overflow: hidden; 
+    width: 35px; 
+    height: 35px; 
+    transition: background-color 0.3s, transform 0.3s; 
 }
 
 .add_button:hover {
-  background-color: var(--primary-secondary-color-hover); /* Change this to your desired hover background color */
-  transform: scale(1.1); /* Slightly enlarge the button on hover */
+    background-color: var(--color-input-bg-hover); 
+    transform: scale(1.1); 
 }
 
 .add_button img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Ensures the image covers the button area */
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    filter: var(--filter-icon);
 }
 
-@keyframes scrollDown
-{
-    0%
-    {
+@keyframes scrollDown {
+    0% {
         opacity: 0;
         transform: translateY(-20px);
     }
-    100%
-    {
+    100% {
         opacity: 1;
         transform: translateY(0);
     }
