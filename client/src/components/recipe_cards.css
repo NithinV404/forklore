@@ -1,5 +1,13 @@
-@import "../variables.module.css";
+@import "../variables.css";
 
+body {
+    background-color: var(--primary-bg);
+    color: var(--color-label-text);
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 .recipe_cards
 {
     display: grid;
@@ -18,18 +26,19 @@
 }
 #recipe_card_category {
     display: inline-block;
-    background-color: #ffe0b2; /* Light orange */
-    color: #e65100; /* Dark orange */
+    background-color: var(--color-category-pill-bg); 
+    color: var(--color-category-pill-text); 
     padding: 5px 10px;
     border-radius: 20px;
     font-size: .9em;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Elevation */
-    transition: background-color 0.3s, box-shadow 0.3s; /* Smooth transitions */
+    box-shadow: 0 2px 4px var(--color-box-shadow); 
+    transition: background-color 0.3s, box-shadow 0.3s; 
     cursor: pointer;
-    position: relative; /* For ripple effect */
+    position: relative; 
     overflow: hidden;
     margin-left: -4px;
 }
+
 .category_divider {
     display: flex;
     justify-content: space-between;
@@ -67,10 +76,11 @@
     flex-direction: column;
     height: max-content;
     width: 15rem;
-    box-shadow: 0px 0px 8px rgb(161, 161, 161);
+    box-shadow: var(--color-box-shadow) 0 0px 8px;
     overflow: hidden;
     border-radius: 10px;
     transition: all 0.1s ease-out;
+    background-color: var(--color-recipe-container-bg);
 }
 .recipe_card:hover {
     transform: scale(1.05); 
@@ -91,12 +101,9 @@
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
-    flex-direction: column;
-    padding: 16px 16px;
-    border-radius: 0 0 20px 20px;
-    height: fit-content;
-    margin-top: -30px;
-    background-color: white;
+    margin: 1rem 0 0 1rem;
+    padding: 0 1rem 1rem 0;
+    background-color: var(--color-recipe-container-bg);
 }
 .recipe_card_footer > .icons_container
 {
@@ -112,6 +119,8 @@
     align-items: flex-start;
     justify-content: space-evenly;
     width: 100%;
+    color: var(--color-label-text);
+    background-color: var(--color-recipe-container-bg);
 }
 .recipe_card_details > h3
 {
@@ -124,7 +133,7 @@
     color: var(--text-color);
 }
 .delete_btn {
-    background: linear-gradient(135deg, #f44336, #fa6464); /* Gradient background */
+    background:  var(--color-btn-delete);
     border: none;
     padding: 0;
     width: 40px; /* Slightly larger */
@@ -162,6 +171,7 @@
     animation: ripple 0.6s ease-out;
 }
 
+
 @keyframes ripple {
     from {
         transform: scale(0);
@@ -173,28 +183,28 @@
     }
 }
 .tag-container {
-  display: flex;
-  position: absolute;
-  gap: 5px;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  font-size: 12px;
-  font-weight: bold;
-  margin: 5px 0 0 10px;
+    display: flex;
+    position: absolute;
+    gap: 5px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    font-size: 12px;
+    font-weight: bold;
+    margin: 5px 0 0 10px;
 }
 
 .tag {
     display: inline-block;
-    background-color: #e0f7fa; /* Light blue */
-    color: #00796b; /* Dark teal */
+    background-color: var(--color-tag-pill-bg);
+    color: var(--color-tag-pill-text);
     padding: 5px 10px;
     border-radius: 20px;
     font-size: .9em;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Elevation */
-    transition: background-color 0.3s, box-shadow 0.3s; /* Smooth transitions */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+    transition: background-color 0.3s, box-shadow 0.3s; 
     cursor: pointer;
-    position: relative; /* For ripple effect */
-    overflow: hidden; /* For ripple effect */
+    position: relative; 
+    overflow: hidden; 
 }
 
 
@@ -213,40 +223,23 @@
     justify-content: space-between;
     align-items: center;
     margin: 2rem 2.5rem;
+    color: var(--color-label-text);
 }
 .category-dropdown {
     width: 8rem;
     height: 2rem;
     border-radius: 1rem;
-    border: 1px solid var(--border-color); /* Lighter border color */
+    border: 1px solid var(--color-input-border); 
     padding: 0 .5rem;
     outline: none;
-    background-color: var(--primary-secondary-color); 
+    background-color: var(--color-input-bg);
+    color: var(--color-input-text); 
     transition: background-color 0.3s, border-color 0.3s; 
     text-align: left;
 }
 
 .category-dropdown:hover {
-    background-color: var(--primary-secondary-color-hover); /* Use your existing variable */
-}
-
-
-.recipe_cards > .add_icon
-{
-    display: flex;
-    justify-content: center;
-    position:fixed;
-	width:60px;
-	height:58px;
-	bottom:40px;
-	right:40px;
-    padding: 0 0 1px 0;
-	background-color:rgb(44, 44, 44);
-	color:#FFF;
-	border-radius:50px;
-    font-size: 40px;
-    cursor: pointer;
-    transition: ease-in 0.1s;
+    background-color: var(--color-input-bg-hover); 
 }
 
 @keyframes toast {
@@ -259,15 +252,7 @@ a
     text-decoration: none;
     color: black;
 }
-.add_icon:hover
-{
-    animation: 0.5s ease-in-out;
-    box-shadow: 0px 0px 8px rgb(44, 44, 44);
-}
-.add_icon.active
-{
-    animation: fillscreen 0.5s ease-out;
-}
+
 #recipe_youtube,#recipe_source
 {
     width: 35rem;
@@ -286,16 +271,15 @@ a
 }
 
 .ingredient_images {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 10px;
 }
 
 .ingredient_image {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
 }

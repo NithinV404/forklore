@@ -79,14 +79,15 @@ export default function Header({
                     <p>{meal.strMeal}</p>
                   </div>
                   <img src={meal.strMealThumb} />
-                  <img
-                    className={`${header_style.add_icon}  ${header_style.ic_hover}`}
-                    src={ic_plus}
-                    onMouseDown={(e) => {
-                      e.preventDefault();
-                      handleaddrecipe(meal.idMeal);
-                    }}
-                  />
+                  <div className={`${header_style.add_icon}  ${header_style.ic_hover}`}>
+                    <img
+                      src={ic_plus}
+                      onMouseDown={(e) => {
+                        e.preventDefault();
+                        handleaddrecipe(meal.idMeal);
+                      }}
+                    />
+                  </div>
                 </div>
               ))}
             </div>

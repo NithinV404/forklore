@@ -1,4 +1,4 @@
-@import "../variables.module.css";
+@import "../variables.css";
 
 * {
     padding: 0;
@@ -6,11 +6,6 @@
     box-sizing: border-box;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: var(--background-color);
-    color: var(--font-color);
-}
 
 header {
     display: flex;
@@ -89,19 +84,20 @@ header {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: var(--primary-secondary-color);
+    background-color: var(--color-input-bg);
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
 .modify_icons > div:hover {
-    background-color: var(--primary-color);
+    background-color: var(--color-input-bg-hover);
 }
 
 .modify_icons > div > embed {
     pointer-events: none;
     width: 20px;
     height: 20px;
+    filter: var(--filter-icon);
 }
 
 @media (max-width: 768px) {
@@ -140,42 +136,29 @@ header {
 }
 
 .pill_id {
-    background-color: #d1c4e9; /* Light purple */
-    color: #512da8; /* Dark purple */
+    background-color: var(--color-id-pill-bg); 
+    color: var(--color-id-pill-text); 
 }
 
 .pill_category {
-    background-color: #ffe0b2; /* Light orange */
-    color: #e65100; /* Dark orange */
+    background-color: var(--color-category-pill-bg); 
+    color: var(--color-category-pill-text); 
 }
 
 .pill_area {
-    background-color: #c8e6c9; /* Light green */
-    color: #2e7d32; /* Dark green */
+    background-color: var(--color-area-pill-bg); 
+    color: var(--color-area-pill-text); 
 }
 
 .pill_tags {
-    background-color: #e0f7fa; /* Light blue */
-    color: #00796b; /* Dark teal */
+    background-color: var(--color-tag-pill-bg); 
+    color: var(--color-tag-pill-text); 
 }
 
 .recipe_ingredients {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-}
-
-.pill_ingredient {
-    display: inline-block;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s, box-shadow 0.3s;
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 0.9em;
-    margin-right: 5px;
-    margin-bottom: 5px;
-    background-color: #f0f4c3; /* Light yellow */
-    color: #827717; /* Dark yellow */
 }
 
 .pill_ingredient {
@@ -188,8 +171,8 @@ header {
     font-size: 0.9em;
     margin-right: 5px;
     margin-bottom: 5px;
-    background-color: #f0f4c3; /* Light yellow */
-    color: #827717; /* Dark yellow */
+    background-color: var(--color-ingredient-pill-bg); 
+    color: var(--color-ingredient-pill-text);
 }
 
 .pill_ingredient img {
