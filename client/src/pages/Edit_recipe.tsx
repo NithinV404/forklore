@@ -1,30 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
-import HeaderBack from "./header_back";
+import HeaderBack from "../components/Header_back";
 import styles from "./Add_recipe.module.css";
 import axios from "axios";
 import React from "react";
+import { Recipe, useRecipes } from "../context/Recipe_context";
 
-type Recipe = {
-  idMeal: string;
-  strMeal: string;
-  strCategory: string;
-  strArea: string;
-  strInstructions: string;
-  strMealThumb: string;
-  strTags: string;
-  strYoutube: string;
-  strSource: string;
-};
-
-export default function Edit_recipe({
-  recipes,
-  fetchRecipes,
-}: {
-  recipes: Recipe[];
-  fetchRecipes: () => void;
-}) {
+export default function Edit_recipe() {
   const { id } = useParams();
+  const { recipes, fetchRecipes } = useRecipes();
   const serverUrl = import.meta.env.VITE_SERVER_URL;
   const recipe = recipes.find((e) => e.idMeal === id);
   console.log(recipe);

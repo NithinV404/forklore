@@ -1,9 +1,9 @@
 import { createContext, useState } from "react";
 import axios from "axios";
-import header_style from "./header.module.css";
+import header_style from "./Header.module.css";
 import ic_plus from '../assets/icon-plus.svg';
 import { Link } from "react-router-dom";
-
+import { useRecipes } from "../context/Recipe_context";
 
 
 export const RecipeNameContext = createContext("");
@@ -19,14 +19,11 @@ interface ResponseData {
 
 export default function Header({
   setSearchInput,
-  recipes,
-  fetchRecipes
 }: {
   setSearchInput: (input: string) => void;
-  recipes: Meal[];
-  fetchRecipes: () => void;
 }) {
 
+  const { recipes, fetchRecipes } = useRecipes();
   const serverUrl = import.meta.env.VITE_SERVER_URL;
   const [recipeName, setRecipeName] = useState("");
   const [responseData, setResponseData] = useState<ResponseData | null>(null);

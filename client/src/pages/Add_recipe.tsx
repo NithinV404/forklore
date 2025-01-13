@@ -2,14 +2,12 @@ import { useState } from "react";
 import styles from "./Add_recipe.module.css";
 import React from "react";
 import axios from "axios";
-import HeaderBack from "./header_back";
+import HeaderBack from "../components/Header_back";
+import { useRecipes } from "../context/Recipe_context";
 
-export default function AddRecipe({
-  fetchRecipes,
-}: {
-  fetchRecipes: () => void;
-}) {
+export default function AddRecipe() {
   const serverUrl = import.meta.env.VITE_SERVER_URL;
+  const { fetchRecipes } = useRecipes();
   const measure = [
     "grams",
     "ml",

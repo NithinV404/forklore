@@ -1,45 +1,29 @@
-import "../components/recipe_details.css";
 import { useParams } from "react-router-dom";
-import HeaderBack from "./header_back";
 import { useEffect } from "react";
+import { useRecipes } from "../context/Recipe_context";
+import "../pages/Recipe_details.css";
+import HeaderBack from "../components/Header_back";
 import icon_edit from "../assets/icon-edit.svg";
 import icon_delete from "../assets/icon-delete.svg";
-import axios from "axios";
 
-type Recipe = {
-  idMeal: string;
-  strMeal: string;
-  strCategory: string;
-  strArea: string;
-  strInstructions: string;
-  strMealThumb: string;
-  strTags: string;
-  strYoutube: string;
-  strSource: string;
-  [key: string]: string | undefined; // To handle dynamic ingredient and measure properties
-};
 
-export default function RecipeDetails({ recipes, fetchRecipes }: { recipes: Recipe[], fetchRecipes: () => void }) {
+export default function RecipeDetails() {
   const { id } = useParams();
+  const { recipes, deleteRecipe } = useRecipes();
   const recipe = recipes.find((recipe) => recipe.idMeal === id);
   const videoId = recipe?.strYoutube ? new URL(recipe.strYoutube).searchParams.get("v") : null;
   const embedUrl = `https://www.youtube.com/embed/${videoId}`;
-  const serverUrl = import.meta.env.VITE_SERVER_URL;
+
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   const handleRecipeDelete = async (id: string) => {
-    try {
-      const response = await axios.delete(`${serverUrl}/delete/${id}`);
-      if (response.status === 200) {
-        fetchRecipes();
-        window.location.href = "/";
-      }
-    } catch (error) {
-      console.error("Error deleting recipe:", error);
-    }
+    const response = await deleteRecipe(id);
+    console.log(response);
+    window.location.href = "/";
+
   }
 
   if (!recipe) {

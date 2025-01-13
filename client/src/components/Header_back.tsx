@@ -1,6 +1,6 @@
 import icon_back from "../assets/icon-back.svg";
 import { useLocation, useNavigate } from "react-router-dom";
-import header_back_style from "./header_back.module.css";
+import header_back_style from "./Header_back.module.css";
 
 export default function HeaderBack() {
     const navigate = useNavigate();
