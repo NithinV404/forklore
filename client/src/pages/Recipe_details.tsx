@@ -1,33 +1,45 @@
-import { useParams } from "react-router-dom";
+import "../pages/Recipe_details.css";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { useRecipes } from "../context/Recipe_context";
-import "../pages/Recipe_details.css";
 import HeaderBack from "../components/Header_back";
 import icon_edit from "../assets/icon-edit.svg";
 import icon_delete from "../assets/icon-delete.svg";
+import { useToast } from "../context/Toast_context";
 
 
 export default function RecipeDetails() {
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const { id } = useParams();
-  const { recipes, deleteRecipe } = useRecipes();
+  const { recipes, deleteRecipe, loading } = useRecipes();
+  const { showToast } = useToast();
   const recipe = recipes.find((recipe) => recipe.idMeal === id);
   const videoId = recipe?.strYoutube ? new URL(recipe.strYoutube).searchParams.get("v") : null;
   const embedUrl = `https://www.youtube.com/embed/${videoId}`;
 
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo(0, location.state?.scrollPosition || 0);
   }, []);
 
   const handleRecipeDelete = async (id: string) => {
-    const response = await deleteRecipe(id);
-    console.log(response);
-    window.location.href = "/";
+    deleteRecipe(id);
+    showToast("Recipe deleted");
+    navigate(location.state?.from || "/", {
+      state: { from: location.pathname }
+    });
 
   }
 
-  if (!recipe) {
+  if (loading) {
     return <div className="loading">Loading...</div>;
+  }
+
+  if (!recipe) {
+    return <div className="error">Recipe not found</div>;
   }
 
   return (
@@ -48,7 +60,14 @@ export default function RecipeDetails() {
               ))}
             </div>
             <div className="modify_icons">
-              <div onClick={(event) => { event.preventDefault(); window.location.href = `/edit_recipe/${id}`; }}>
+              <div onClick={(event) => {
+                event.preventDefault(); navigate(`/edit_recipe/${id}`, {
+                  state: {
+                    from: location.pathname,
+                    scrollPosition: scrollY
+                  }
+                })
+              }}>
                 <embed type="image/svg+xml" className="edit_icon" src={icon_edit} />
               </div>
               <div onClick={(event) => { event.preventDefault(); handleRecipeDelete(recipe.idMeal); }}>

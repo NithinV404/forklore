@@ -1,41 +1,53 @@
-import { useEffect, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import HeaderBack from "../components/Header_back";
 import styles from "./Add_recipe.module.css";
 import axios from "axios";
 import React from "react";
 import { Recipe, useRecipes } from "../context/Recipe_context";
+import { useToast } from "../context/Toast_context";
 
 export default function Edit_recipe() {
   const { id } = useParams();
   const { recipes, fetchRecipes } = useRecipes();
+  const { showToast } = useToast();
   const serverUrl = import.meta.env.VITE_SERVER_URL;
   const recipe = recipes.find((e) => e.idMeal === id);
-  console.log(recipe);
-  const ingredients: string[] = useMemo(() => [], []);
-  const measureunit: string[] = useMemo(() => [], []);
-  const measurevalue: string[] = useMemo(() => [], []);
+  const [ingredients, setIngredients] = useState<string[]>([]);
+  const [measureunit, setMeasureunit] = useState<string[]>([]);
+  const [measurevalue, setMeasurevalue] = useState<string[]>([]);
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  if (recipe) {
-    for (let i = 1; i <= 20; i++) {
-      if (
-        recipe[`strIngredient${i}` as keyof Recipe] &&
-        recipe[`strIngredient${i}` as keyof Recipe].trim() !== ""
-      ) {
-        ingredients.push(recipe[`strIngredient${i}` as keyof Recipe]);
+  useEffect(() => {
+    if (recipe) {
+      const tempIngredients: string[] = [];
+      const tempMeasureunit: string[] = [];
+      const tempMeasurevalue: string[] = [];
+
+      for (let i = 1; i <= 20; i++) {
+        if (
+          recipe[`strIngredient${i}` as keyof Recipe] &&
+          recipe[`strIngredient${i}` as keyof Recipe].trim() !== ""
+        ) {
+          tempIngredients.push(recipe[`strIngredient${i}` as keyof Recipe]);
+        }
+        if (
+          recipe[`strMeasure${i}` as keyof Recipe] &&
+          recipe[`strMeasure${i}` as keyof Recipe].trim() !== ""
+        ) {
+
+          const measureParts = recipe[`strMeasure${i}` as keyof Recipe].trim().split(' ');
+          tempMeasurevalue.push(measureParts[0]);
+          tempMeasureunit.push(measureParts[1] || '');
+        }
       }
-      if (
-        recipe[`strMeasure${i}` as keyof Recipe] &&
-        recipe[`strMeasure${i}` as keyof Recipe].trim() !== ""
-      ) {
-        const measure = recipe[`strMeasure${i}` as keyof Recipe];
-        const value = measure.match(/\d+/)?.[0] || "";
-        const unit = measure.replace(/\d+/, "").trim();
-        measurevalue.push(value);
-        measureunit.push(unit);
-      }
+
+      setIngredients(tempIngredients);
+      setMeasureunit(tempMeasureunit);
+      setMeasurevalue(tempMeasurevalue);
     }
-  }
+  }, [recipe]);
 
   const measure = [
     "grams",
@@ -80,6 +92,10 @@ export default function Edit_recipe() {
     }
   }, [ingredients, measureunit, measurevalue, recipe]);
 
+  useEffect(() => {
+    window.scrollTo(0, location.state?.scrollPosition || 0);
+  }, []);
+
   const handleSubmit = async () => {
     const recipeData = new FormData();
     if (recipeImage) {
@@ -105,9 +121,10 @@ export default function Edit_recipe() {
         },
       });
       if (response.status === 200) {
+        showToast("Recipe added");
         fetchRecipes();
       }
-      window.location.href = "/";
+
     } catch (err) {
       console.log(err);
     }
@@ -355,7 +372,12 @@ export default function Edit_recipe() {
               className={`${styles.submit_btn} ${styles.add_btn}`}
               type="button"
               value="Submit"
-              onClick={handleSubmit}
+              onClick={(e) => {
+                handleSubmit();
+                e.preventDefault();
+                e.stopPropagation();
+                navigate(location.state?.from || "/");
+              }}
             />
           </form>
         </div>

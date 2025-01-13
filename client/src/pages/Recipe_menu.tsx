@@ -1,19 +1,22 @@
 import "../pages/Recipe_menu.css";
 import icon_delete from "../assets/icon-delete.svg";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Recipe, useRecipes } from "../context/Recipe_context";
+import { useToast } from "../context/Toast_context";
 
 
 export default function RecipeCards(
   { searchInput }: { searchInput: string | null }
 ) {
   const { recipes, deleteRecipe } = useRecipes();
+  const { showToast } = useToast();
   const [category, setCategory] = useState("All");
   const [categoryList, setCategoryList] = useState<string[]>([]);
   const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>(recipes);
   const navigate = useNavigate();
+  const location = useLocation();
 
 
   useEffect(() => {
@@ -39,20 +42,16 @@ export default function RecipeCards(
   }, [recipes]);
 
   const recipeDetailsRedirect = (id: string) => {
-    sessionStorage.setItem('scrollPosition', window.scrollY.toString());
     navigate(`/recipe_details/${id}`, {
       state: {
-        from: '/',
+        from: location.pathname,
+        scrollPosition: scrollY
       }
     });
   }
 
   useEffect(() => {
-    const scrollPos = sessionStorage.getItem('scrollPosition');
-    if (scrollPos) {
-      window.scrollTo(0, parseInt(scrollPos));
-      sessionStorage.removeItem('scrollPosition');
-    }
+    window.scrollTo(0, location.state?.scrollPosition || 0);
   }, []);
 
   return (
@@ -98,7 +97,11 @@ export default function RecipeCards(
                     <div className="icons_container">
                       <div><button
                         className="delete_btn"
-                        onClick={(event) => { deleteRecipe(recipe.idMeal); event.stopPropagation(); }}
+                        onClick={(event) => {
+                          deleteRecipe(recipe.idMeal);
+                          showToast("Recipe deleted");
+                          event.stopPropagation();
+                        }}
                       >
                         <img className="ic-hover" src={icon_delete} alt="delete" />
                       </button></div>

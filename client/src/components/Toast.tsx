@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import styles from './Toast.module.css';
 
 interface ToastProps {
     message: string;
@@ -19,7 +20,7 @@ const Toast: React.FC<ToastProps> = ({ message }) => {
 
     return (
         <div>
-            {showToast && <div className="toast">{message}</div>}
+            {showToast && <div className={styles.toast}>{message}</div>}
         </div>
     );
 }

@@ -4,7 +4,7 @@ import header_style from "./Header.module.css";
 import ic_plus from '../assets/icon-plus.svg';
 import { Link } from "react-router-dom";
 import { useRecipes } from "../context/Recipe_context";
-
+import { useToast } from "../context/Toast_context";
 
 export const RecipeNameContext = createContext("");
 
@@ -24,6 +24,7 @@ export default function Header({
 }) {
 
   const { recipes, fetchRecipes } = useRecipes();
+  const { showToast } = useToast();
   const serverUrl = import.meta.env.VITE_SERVER_URL;
   const [recipeName, setRecipeName] = useState("");
   const [responseData, setResponseData] = useState<ResponseData | null>(null);
@@ -43,7 +44,7 @@ export default function Header({
   const handleaddrecipe = async (recipeId: string) => {
     const index = recipes.findIndex((recipe) => recipe.idMeal === recipeId);
     if (index != -1) {
-      alert("Recipe already exists");
+      showToast("Recipe already exists");
       return;
     } else {
       const response = await axios.post(`${serverUrl}/add`, { recipeId });
