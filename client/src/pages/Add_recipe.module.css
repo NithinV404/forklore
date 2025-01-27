@@ -83,7 +83,7 @@
     flex-direction: column;
     gap: 1rem;
 }
-.ingredients_list > div {
+.ingredients_list > div:first-child{
     display: flex;
     gap: 1rem;
     justify-items: center;
@@ -93,7 +93,12 @@
     margin-top: 1rem;
     display: flex;
     gap: 1rem;
-    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.ingredients_list_input > div {
+    display: flex;
+    gap: 1rem;
 }
 
 .form_textarea {

@@ -1,16 +1,15 @@
 import "../pages/Recipe_menu.css";
 import icon_delete from "../assets/icon-delete.svg";
-
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Recipe, useRecipes } from "../context/Recipe_context";
 import { useToast } from "../context/Toast_context";
+import { useSearch } from "../context/Search_context";
 
 
-export default function RecipeCards(
-  { searchInput }: { searchInput: string | null }
-) {
+export default function RecipeCards() {
   const { recipes, deleteRecipe } = useRecipes();
+  const { searchInput } = useSearch();
   const { showToast } = useToast();
   const [category, setCategory] = useState("All");
   const [categoryList, setCategoryList] = useState<string[]>([]);

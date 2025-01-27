@@ -183,7 +183,7 @@ export default function AddRecipe() {
           </div>
           <div className={styles.ingredients_list}>
             <div>
-              <label>Recipe Ingredients</label>{" "}
+              <p>Recipe Ingredients</p>{" "}
               <button
                 type="button"
                 className={styles.form_btn}
@@ -211,7 +211,7 @@ export default function AddRecipe() {
             </div>
             <div className={styles.ingredients_list_input}>
               {[...Array(addbutton)].map((_, index) => (
-                <React.Fragment key={`ingredients_key_${index}`}>
+                <div key={`ingredients_key_${index}`}>
                   <input
                     className={styles.form_inputs}
                     type="text"
@@ -252,7 +252,7 @@ export default function AddRecipe() {
                       </option>
                     ))}
                   </select>
-                </React.Fragment>
+                </div>
               ))}
             </div>
           </div>

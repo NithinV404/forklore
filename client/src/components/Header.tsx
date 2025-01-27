@@ -1,45 +1,22 @@
-import { createContext, useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import header_style from "./Header.module.css";
 import ic_plus from '../assets/icon-plus.svg';
 import { Link } from "react-router-dom";
 import { useRecipes } from "../context/Recipe_context";
 import { useToast } from "../context/Toast_context";
+import { SearchItemType, useSearch } from "../context/Search_context";
 
-export const RecipeNameContext = createContext("");
 
-interface Meal {
-  idMeal: string;
-  strMeal: string;
-  strMealThumb: string;
-}
-interface ResponseData {
-  meals: Meal[];
-}
-
-export default function Header({
-  setSearchInput,
-}: {
-  setSearchInput: (input: string) => void;
-}) {
+const Header = () => {
 
   const { recipes, fetchRecipes } = useRecipes();
+  const { searchReturn, fetchSearch } = useSearch();
   const { showToast } = useToast();
   const serverUrl = import.meta.env.VITE_SERVER_URL;
-  const [recipeName, setRecipeName] = useState("");
-  const [responseData, setResponseData] = useState<ResponseData | null>(null);
-
-
-  const handleSearch = async () => {
-    try {
-      const response = await axios.post(`${serverUrl}/search`, {
-        recipeName,
-      });
-      setResponseData(JSON.parse(response.data));
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const [showDropdown, setShowDropdown] = useState(true);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [searchTimeout, setSearchTimeout] = useState<ReturnType<typeof setTimeout> | null>(null);
 
   const handleaddrecipe = async (recipeId: string) => {
     const index = recipes.findIndex((recipe) => recipe.idMeal === recipeId);
@@ -52,6 +29,26 @@ export default function Header({
     }
   };
 
+  const handleSearch = (value: string) => {
+    if (searchTimeout) {
+      clearTimeout(searchTimeout);
+    }
+
+    const timeout = setTimeout(() => {
+      fetchSearch(value);
+    }, 500);
+
+    setSearchTimeout(timeout);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (searchTimeout) {
+        clearTimeout(searchTimeout);
+      }
+    };
+  }, [searchTimeout]);
+
   return (
     <>
       <div className={header_style.header}>
@@ -59,37 +56,39 @@ export default function Header({
           <p>ForkLore</p>
         </div>
 
-        <div onBlur={() => setResponseData(null)}>
+        <div>
           <input
             className={header_style.header_input}
             type="text"
             placeholder="Search for recipes"
-            onChange={(e) => { setRecipeName(e.currentTarget.value); setSearchInput(e.currentTarget.value); }}
-            onKeyDown={handleSearch}
-            onFocus={handleSearch}
+            onChange={(e) => handleSearch(e.target.value)}
+            onBlur={() => {
+              setTimeout(() => setShowDropdown(false), 200);
+            }}
+            onFocus={() => setShowDropdown(true)}
           />
-          <RecipeNameContext.Provider value={recipeName} />
-          {responseData && responseData.meals != null ? (
-            <div className={header_style.search_items}>
-              {responseData.meals.map((meal: Meal) => (
+          {searchReturn && searchReturn.length > 0 && showDropdown && (
+            <div ref={dropdownRef} className={header_style.search_items}>
+              {searchReturn.map((meal: SearchItemType) => (
                 <div key={meal.idMeal} className={header_style.items}>
                   <div className={header_style.item_name}>
                     <p>{meal.strMeal}</p>
                   </div>
-                  <img src={meal.strMealThumb} />
-                  <div className={`${header_style.add_icon}  ${header_style.ic_hover}`}>
+                  <img src={meal.strMealThumb} alt={meal.strMeal} />
+                  <div className={`${header_style.add_icon} ${header_style.ic_hover}`}>
                     <img
                       src={ic_plus}
                       onMouseDown={(e) => {
                         e.preventDefault();
                         handleaddrecipe(meal.idMeal);
                       }}
+                      alt="Add recipe"
                     />
                   </div>
                 </div>
               ))}
             </div>
-          ) : null}
+          )}
         </div>
         <Link to="/add_recipe" className={header_style.add_button}>
           <img src={ic_plus} alt="" />
@@ -97,4 +96,6 @@ export default function Header({
       </div>
     </>
   );
-}
+};
+
+export default Header;

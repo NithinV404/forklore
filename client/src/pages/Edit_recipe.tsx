@@ -229,82 +229,85 @@ export default function Edit_recipe() {
                 ))}
               </div>
             </div>
-            <div className="ingredients_list">
-              <label>Recipe Ingredients</label>{" "}
-              <button
-                className={styles.add_btn}
-                onClick={(e) => {
-                  if (addbutton < 10) {
-                    setbutton((addbutton) => addbutton + 1);
-                  }
-                  e.preventDefault();
-                }}
-              >
-                Add
-              </button>
-              <button
-                className={styles.add_btn}
-                onClick={(e) => {
-                  if (addbutton > 0) {
-                    setbutton((addbutton) => addbutton - 1);
-                  }
-                  e.preventDefault();
-                }}
-              >
-                Delete
-              </button>
-              <hr />
-              {[...Array(addbutton)].map((_, index) => (
-                <React.Fragment key={`ingredients_key_${index}`}>
-                  <br />
-                  <input
-                    className={styles.form_inputs}
-                    type="text"
-                    placeholder={`Ingredient ${index + 1}`}
-                    value={recipeingredients[index] || ""}
-                    onChange={(e) => {
-                      const newIngredients = [...recipeingredients];
-                      newIngredients[index] = e.target.value;
-                      setrecipeingredients(newIngredients);
-                    }}
-                  />
-                  <input
-                    className={styles.form_inputs}
-                    type="text"
-                    placeholder={`Quantity ${index + 1}`}
-                    value={recipemeasurevalue[index]}
-                    onChange={(e) => {
-                      const newMeasureValues = [...recipemeasurevalue];
-                      newMeasureValues[index] = e.target.value;
-                      setrecipemeasurevalue(newMeasureValues);
-                    }}
-                  />
-                  <select
-                    className={styles.form_inputs_dropdown}
-                    value={recipemeasureunit[index]}
-                    onChange={(e) => {
-                      const newMeasures = [...recipemeasureunit];
-                      newMeasures[index] = e.target.value;
-                      setrecipemeasureunit(newMeasures);
-                    }}
-                  >
-                    <option value="">select</option>
-                    {measure.map((measure, index) => (
-                      <option key={`measure_${index}`} value={measure}>
-                        {measure}
-                      </option>
-                    ))}
-                    {!measure.includes(recipemeasureunit[index]) &&
-                      recipemeasureunit[index] && (
-                        <option value={recipemeasureunit[index]}>
-                          {recipemeasureunit[index]}
+            <div className={styles.ingredients_list}>
+              <div>
+                <p>Recipe Ingredients</p>{" "}
+                <button
+                  type="button"
+                  className={styles.form_btn}
+                  onClick={(e) => {
+                    if (addbutton < 10) {
+                      setbutton((addbutton) => addbutton + 1);
+                    }
+                    e.preventDefault();
+                  }}
+                >
+                  Add
+                </button>
+                <button
+                  type="button"
+                  className={styles.form_btn}
+                  onClick={(e) => {
+                    if (addbutton > 0) {
+                      setbutton((addbutton) => addbutton - 1);
+                    }
+                    e.preventDefault();
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
+              <div className={styles.ingredients_list_input}>
+                {[...Array(addbutton)].map((_, index) => (
+                  <div key={`ingredients_key_${index}`}>
+                    <input
+                      className={styles.form_inputs}
+                      type="text"
+                      placeholder={`Ingredient ${index + 1}`}
+                      value={recipeingredients[index] || ""}
+                      onChange={(e) => {
+                        const newIngredients = [...recipeingredients];
+                        newIngredients[index] = e.target.value;
+                        setrecipeingredients(newIngredients);
+                      }}
+                    />
+                    <input
+                      className={styles.form_inputs}
+                      type="text"
+                      placeholder={`Quantity ${index + 1}`}
+                      value={recipemeasurevalue[index]}
+                      onChange={(e) => {
+                        const newMeasureValues = [...recipemeasurevalue];
+                        newMeasureValues[index] = e.target.value;
+                        setrecipemeasurevalue(newMeasureValues);
+                      }}
+                    />
+                    <select
+                      className={styles.form_inputs_dropdown}
+                      value={recipemeasureunit[index]}
+                      onChange={(e) => {
+                        const newMeasures = [...recipemeasureunit];
+                        newMeasures[index] = e.target.value;
+                        setrecipemeasureunit(newMeasures);
+                      }}
+                    >
+                      <option value="">select</option>
+                      {measure.map((measure, index) => (
+                        <option key={`measure_${index}`} value={measure}>
+                          {measure}
                         </option>
-                      )}
-                  </select>
-                </React.Fragment>
-              ))}
+                      ))}
+                      {!measure.includes(recipemeasureunit[index]) &&
+                        recipemeasureunit[index] && (
+                          <option value={recipemeasureunit[index]}>
+                            {recipemeasureunit[index]}
+                          </option>
+                        )}
+                    </select>
+                  </div>
+                ))}
+              </div>
             </div>
-            <hr />
             <div>
               <label htmlFor="recipe_instructions">Recipe Instructions</label>
               <br />
@@ -325,7 +328,7 @@ export default function Edit_recipe() {
               <div>
                 <label>Recipe Image</label>
                 <input
-                  className={styles.add_btn}
+                  className={styles.form_btn}
                   type="file"
                   accept="image/*"
                   onChange={(e) => {
@@ -369,7 +372,7 @@ export default function Edit_recipe() {
               />
             </div>
             <input
-              className={`${styles.submit_btn} ${styles.add_btn}`}
+              className={`${styles.submit_btn} ${styles.form_btn}`}
               type="button"
               value="Submit"
               onClick={(e) => {
