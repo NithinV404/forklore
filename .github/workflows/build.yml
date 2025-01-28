@@ -5,6 +5,7 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -28,3 +29,11 @@ jobs:
         run: |
           cargo build --release
           mv target/release/server forklore
+
+      - name: Archive binary
+        working-directory: ./server
+        run: |
+          mkdir -p forklore-release
+          cp /public ./forklore-release
+          cp /target/release/server ./forklore-release
+          cd forklore-release && tar -czvf forklore.tar.gz *
