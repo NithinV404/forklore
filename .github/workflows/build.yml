@@ -1,19 +1,20 @@
-name: Build and Package Forklore
+name: Build Forklore Application
 
 on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Version to build"
+        description: "Build version"
         required: true
         default: "latest"
+        type: string
       environment:
-        description: "Environment to deploy"
+        description: "Target environment"
+        required: true
         type: choice
         options:
           - development
           - production
-        required: true
         default: "development"
 
 jobs:
