@@ -3,7 +3,7 @@ use futures::StreamExt;
 use reqwest;
 use serde_json::Value;
 
-const SEARCH_API_URL: &str = "https://www.themealdb.com/api/json/v1/1/search.php?s=";
+const SEARCH_API_URL: &str = "https://www.themealdb.com/api/json/v1/1/";
 
 pub async fn search_api(mut payload: web::Payload) -> HttpResponse {
     let mut data: Value = Value::Null;
@@ -11,12 +11,34 @@ pub async fn search_api(mut payload: web::Payload) -> HttpResponse {
         let bytes = item.unwrap();
         data = serde_json::from_slice(&bytes).unwrap();
     }
-    let recipe_name = data["recipeName"].as_str().unwrap_or("Unknown");
-    let return_data = reqwest::get(&format!("{}{}", SEARCH_API_URL, recipe_name))
-        .await
-        .unwrap()
-        .text()
-        .await
-        .unwrap();
-    HttpResponse::Ok().json(return_data)
+
+    let search_value = data["search_value"].as_str().unwrap();
+    let search_type = data["search_type"].as_str().unwrap();
+
+    let api_url = match search_type {
+        "name" => {
+            format!("{}{}", SEARCH_API_URL, "search.php?s=")
+        }
+        "category" => {
+            format!("{}{}", SEARCH_API_URL, "filter.php?c=")
+        }
+        "area" => {
+            format!("{}{}", SEARCH_API_URL, "filter.php?a=")
+        }
+        "ingredient" => {
+            format!("{}{}", SEARCH_API_URL, "filter.php?i=")
+        }
+        "id" => {
+            format!("{}{}", SEARCH_API_URL, "lookup.php?i=")
+        }
+        _ => return HttpResponse::BadRequest().finish(),
+    };
+
+    match reqwest::get(format!("{}{}", &api_url, search_value)).await {
+        Ok(response) => match response.text().await {
+            Ok(json) => HttpResponse::Ok().json(json),
+            Err(_) => HttpResponse::InternalServerError().finish(),
+        },
+        Err(_) => HttpResponse::InternalServerError().finish(),
+    }
 }

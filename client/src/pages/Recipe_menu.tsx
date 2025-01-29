@@ -1,29 +1,21 @@
-import "../components/recipe_cards.css";
-import { useNavigate } from "react-router-dom";
+import "../pages/Recipe_menu.css";
 import icon_delete from "../assets/icon-delete.svg";
-import axios from "axios";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { Recipe, useRecipes } from "../context/Recipe_context";
+import { useToast } from "../context/Toast_context";
+import { useSearch } from "../context/Search_context";
 
-type Recipe = {
-  idMeal: string;
-  strMeal: string;
-  strCategory: string;
-  strArea: string;
-  strInstructions: string;
-  strMealThumb: string;
-  strTags: string;
-  strYoutube: string;
-  strSource: string;
-};
 
-export default function RecipeCards(
-  { searchInput, recipes, fetchRecipes }: { searchInput: string | null, recipes: Recipe[], fetchRecipes: () => void }
-) {
-  const navigate = useNavigate();
-  const serverUrl = import.meta.env.VITE_SERVER_URL;
+export default function RecipeCards() {
+  const { recipes, deleteRecipe } = useRecipes();
+  const { searchInput } = useSearch();
+  const { showToast } = useToast();
   const [category, setCategory] = useState("All");
   const [categoryList, setCategoryList] = useState<string[]>([]);
   const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>(recipes);
+  const navigate = useNavigate();
+  const location = useLocation();
 
 
   useEffect(() => {
@@ -49,32 +41,17 @@ export default function RecipeCards(
   }, [recipes]);
 
   const recipeDetailsRedirect = (id: string) => {
-    sessionStorage.setItem('scrollPosition', window.scrollY.toString());
     navigate(`/recipe_details/${id}`, {
       state: {
-        from: '/',
+        from: location.pathname,
+        scrollPosition: scrollY
       }
     });
   }
 
   useEffect(() => {
-    const scrollPos = sessionStorage.getItem('scrollPosition');
-    if (scrollPos) {
-      window.scrollTo(0, parseInt(scrollPos));
-      sessionStorage.removeItem('scrollPosition'); // Clear the scroll position after using it
-    }
+    window.scrollTo(0, location.state?.scrollPosition || 0);
   }, []);
-
-
-  const handleDelete = async (id: string, event: React.MouseEvent) => {
-    event.stopPropagation();
-    try {
-      const response = await axios.delete(`${serverUrl}/delete/${id}`);
-      if (response.status === 200) { fetchRecipes(); }
-    } catch (error) {
-      console.error("Error deleting recipe:", error);
-    }
-  };
 
   return (
     <>
@@ -119,7 +96,11 @@ export default function RecipeCards(
                     <div className="icons_container">
                       <div><button
                         className="delete_btn"
-                        onClick={(event) => { handleDelete(recipe.idMeal, event); event.stopPropagation(); }}
+                        onClick={(event) => {
+                          deleteRecipe(recipe.idMeal);
+                          showToast("Recipe deleted");
+                          event.stopPropagation();
+                        }}
                       >
                         <img className="ic-hover" src={icon_delete} alt="delete" />
                       </button></div>

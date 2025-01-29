@@ -1,57 +1,53 @@
-import { useEffect, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
-import HeaderBack from "./header_back";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import HeaderBack from "../components/Header_back";
 import styles from "./Add_recipe.module.css";
 import axios from "axios";
 import React from "react";
+import { Recipe, useRecipes } from "../context/Recipe_context";
+import { useToast } from "../context/Toast_context";
 
-type Recipe = {
-  idMeal: string;
-  strMeal: string;
-  strCategory: string;
-  strArea: string;
-  strInstructions: string;
-  strMealThumb: string;
-  strTags: string;
-  strYoutube: string;
-  strSource: string;
-};
-
-export default function Edit_recipe({
-  recipes,
-  fetchRecipes,
-}: {
-  recipes: Recipe[];
-  fetchRecipes: () => void;
-}) {
+export default function Edit_recipe() {
   const { id } = useParams();
+  const { recipes, fetchRecipes } = useRecipes();
+  const { showToast } = useToast();
   const serverUrl = import.meta.env.VITE_SERVER_URL;
   const recipe = recipes.find((e) => e.idMeal === id);
-  console.log(recipe);
-  const ingredients: string[] = useMemo(() => [], []);
-  const measureunit: string[] = useMemo(() => [], []);
-  const measurevalue: string[] = useMemo(() => [], []);
+  const [ingredients, setIngredients] = useState<string[]>([]);
+  const [measureunit, setMeasureunit] = useState<string[]>([]);
+  const [measurevalue, setMeasurevalue] = useState<string[]>([]);
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  if (recipe) {
-    for (let i = 1; i <= 20; i++) {
-      if (
-        recipe[`strIngredient${i}` as keyof Recipe] &&
-        recipe[`strIngredient${i}` as keyof Recipe].trim() !== ""
-      ) {
-        ingredients.push(recipe[`strIngredient${i}` as keyof Recipe]);
+  useEffect(() => {
+    if (recipe) {
+      const tempIngredients: string[] = [];
+      const tempMeasureunit: string[] = [];
+      const tempMeasurevalue: string[] = [];
+
+      for (let i = 1; i <= 20; i++) {
+        if (
+          recipe[`strIngredient${i}` as keyof Recipe] &&
+          recipe[`strIngredient${i}` as keyof Recipe].trim() !== ""
+        ) {
+          tempIngredients.push(recipe[`strIngredient${i}` as keyof Recipe]);
+        }
+        if (
+          recipe[`strMeasure${i}` as keyof Recipe] &&
+          recipe[`strMeasure${i}` as keyof Recipe].trim() !== ""
+        ) {
+
+          const measureParts = recipe[`strMeasure${i}` as keyof Recipe].trim().split(' ');
+          tempMeasurevalue.push(measureParts[0]);
+          tempMeasureunit.push(measureParts[1] || '');
+        }
       }
-      if (
-        recipe[`strMeasure${i}` as keyof Recipe] &&
-        recipe[`strMeasure${i}` as keyof Recipe].trim() !== ""
-      ) {
-        const measure = recipe[`strMeasure${i}` as keyof Recipe];
-        const value = measure.match(/\d+/)?.[0] || "";
-        const unit = measure.replace(/\d+/, "").trim();
-        measurevalue.push(value);
-        measureunit.push(unit);
-      }
+
+      setIngredients(tempIngredients);
+      setMeasureunit(tempMeasureunit);
+      setMeasurevalue(tempMeasurevalue);
     }
-  }
+  }, [recipe]);
 
   const measure = [
     "grams",
@@ -96,6 +92,10 @@ export default function Edit_recipe({
     }
   }, [ingredients, measureunit, measurevalue, recipe]);
 
+  useEffect(() => {
+    window.scrollTo(0, location.state?.scrollPosition || 0);
+  }, [location.state?.scrollPosition]);
+
   const handleSubmit = async () => {
     const recipeData = new FormData();
     if (recipeImage) {
@@ -121,9 +121,10 @@ export default function Edit_recipe({
         },
       });
       if (response.status === 200) {
+        showToast("Recipe added");
         fetchRecipes();
       }
-      window.location.href = "/";
+
     } catch (err) {
       console.log(err);
     }
@@ -228,82 +229,85 @@ export default function Edit_recipe({
                 ))}
               </div>
             </div>
-            <div className="ingredients_list">
-              <label>Recipe Ingredients</label>{" "}
-              <button
-                className={styles.add_btn}
-                onClick={(e) => {
-                  if (addbutton < 10) {
-                    setbutton((addbutton) => addbutton + 1);
-                  }
-                  e.preventDefault();
-                }}
-              >
-                Add
-              </button>
-              <button
-                className={styles.add_btn}
-                onClick={(e) => {
-                  if (addbutton > 0) {
-                    setbutton((addbutton) => addbutton - 1);
-                  }
-                  e.preventDefault();
-                }}
-              >
-                Delete
-              </button>
-              <hr />
-              {[...Array(addbutton)].map((_, index) => (
-                <React.Fragment key={`ingredients_key_${index}`}>
-                  <br />
-                  <input
-                    className={styles.form_inputs}
-                    type="text"
-                    placeholder={`Ingredient ${index + 1}`}
-                    value={recipeingredients[index] || ""}
-                    onChange={(e) => {
-                      const newIngredients = [...recipeingredients];
-                      newIngredients[index] = e.target.value;
-                      setrecipeingredients(newIngredients);
-                    }}
-                  />
-                  <input
-                    className={styles.form_inputs}
-                    type="text"
-                    placeholder={`Quantity ${index + 1}`}
-                    value={recipemeasurevalue[index]}
-                    onChange={(e) => {
-                      const newMeasureValues = [...recipemeasurevalue];
-                      newMeasureValues[index] = e.target.value;
-                      setrecipemeasurevalue(newMeasureValues);
-                    }}
-                  />
-                  <select
-                    className={styles.form_inputs_dropdown}
-                    value={recipemeasureunit[index]}
-                    onChange={(e) => {
-                      const newMeasures = [...recipemeasureunit];
-                      newMeasures[index] = e.target.value;
-                      setrecipemeasureunit(newMeasures);
-                    }}
-                  >
-                    <option value="">select</option>
-                    {measure.map((measure, index) => (
-                      <option key={`measure_${index}`} value={measure}>
-                        {measure}
-                      </option>
-                    ))}
-                    {!measure.includes(recipemeasureunit[index]) &&
-                      recipemeasureunit[index] && (
-                        <option value={recipemeasureunit[index]}>
-                          {recipemeasureunit[index]}
+            <div className={styles.ingredients_list}>
+              <div>
+                <p>Recipe Ingredients</p>{" "}
+                <button
+                  type="button"
+                  className={styles.form_btn}
+                  onClick={(e) => {
+                    if (addbutton < 10) {
+                      setbutton((addbutton) => addbutton + 1);
+                    }
+                    e.preventDefault();
+                  }}
+                >
+                  Add
+                </button>
+                <button
+                  type="button"
+                  className={styles.form_btn}
+                  onClick={(e) => {
+                    if (addbutton > 0) {
+                      setbutton((addbutton) => addbutton - 1);
+                    }
+                    e.preventDefault();
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
+              <div className={styles.ingredients_list_input}>
+                {[...Array(addbutton)].map((_, index) => (
+                  <div key={`ingredients_key_${index}`}>
+                    <input
+                      className={styles.form_inputs}
+                      type="text"
+                      placeholder={`Ingredient ${index + 1}`}
+                      value={recipeingredients[index] || ""}
+                      onChange={(e) => {
+                        const newIngredients = [...recipeingredients];
+                        newIngredients[index] = e.target.value;
+                        setrecipeingredients(newIngredients);
+                      }}
+                    />
+                    <input
+                      className={styles.form_inputs}
+                      type="text"
+                      placeholder={`Quantity ${index + 1}`}
+                      value={recipemeasurevalue[index]}
+                      onChange={(e) => {
+                        const newMeasureValues = [...recipemeasurevalue];
+                        newMeasureValues[index] = e.target.value;
+                        setrecipemeasurevalue(newMeasureValues);
+                      }}
+                    />
+                    <select
+                      className={styles.form_inputs_dropdown}
+                      value={recipemeasureunit[index]}
+                      onChange={(e) => {
+                        const newMeasures = [...recipemeasureunit];
+                        newMeasures[index] = e.target.value;
+                        setrecipemeasureunit(newMeasures);
+                      }}
+                    >
+                      <option value="">select</option>
+                      {measure.map((measure, index) => (
+                        <option key={`measure_${index}`} value={measure}>
+                          {measure}
                         </option>
-                      )}
-                  </select>
-                </React.Fragment>
-              ))}
+                      ))}
+                      {!measure.includes(recipemeasureunit[index]) &&
+                        recipemeasureunit[index] && (
+                          <option value={recipemeasureunit[index]}>
+                            {recipemeasureunit[index]}
+                          </option>
+                        )}
+                    </select>
+                  </div>
+                ))}
+              </div>
             </div>
-            <hr />
             <div>
               <label htmlFor="recipe_instructions">Recipe Instructions</label>
               <br />
@@ -324,7 +328,7 @@ export default function Edit_recipe({
               <div>
                 <label>Recipe Image</label>
                 <input
-                  className={styles.add_btn}
+                  className={styles.form_btn}
                   type="file"
                   accept="image/*"
                   onChange={(e) => {
@@ -368,10 +372,15 @@ export default function Edit_recipe({
               />
             </div>
             <input
-              className={`${styles.submit_btn} ${styles.add_btn}`}
+              className={`${styles.submit_btn} ${styles.form_btn}`}
               type="button"
               value="Submit"
-              onClick={handleSubmit}
+              onClick={(e) => {
+                handleSubmit();
+                e.preventDefault();
+                e.stopPropagation();
+                navigate(location.state?.from || "/");
+              }}
             />
           </form>
         </div>

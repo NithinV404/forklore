@@ -2,13 +2,17 @@ import { useState } from "react";
 import styles from "./Add_recipe.module.css";
 import React from "react";
 import axios from "axios";
-import HeaderBack from "./header_back";
+import HeaderBack from "../components/Header_back";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useToast } from "../context/Toast_context";
+import { useRecipes } from "../context/Recipe_context";
 
-export default function AddRecipe({
-  fetchRecipes,
-}: {
-  fetchRecipes: () => void;
-}) {
+export default function AddRecipe() {
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { showToast } = useToast();
+  const { fetchRecipes } = useRecipes();
   const serverUrl = import.meta.env.VITE_SERVER_URL;
   const measure = [
     "grams",
@@ -74,7 +78,7 @@ export default function AddRecipe({
     recipeData.append("recipecategory", recipecategory);
     recipeData.append("recipeyoutube", recipeyoutube);
     recipeData.append("recipesource", recipesource);
-    recipeData.append("recipetags", JSON.stringify(recipetags));
+    recipeData.append("recipetags", recipetags.toString());
     recipeData.append("recipearea", recipearea);
     console.log(recipeData);
     try {
@@ -84,12 +88,13 @@ export default function AddRecipe({
         },
       });
       if (response.status === 200) {
+        showToast("Recipe added");
         fetchRecipes();
       }
     } catch (err) {
       console.log(err);
     }
-    window.location.href = "/";
+    navigate(location.state?.from || "/");
   };
 
   return (
@@ -136,7 +141,7 @@ export default function AddRecipe({
                 id="recipe_area"
                 value={recipearea}
                 onChange={(e) => setrecipearea(e.target.value)}
-                onKeyDown={handleKeyDown}
+                onKeyDown={handleTagKeyDown}
                 placeholder="Enter recipe area"
               />
             </div>
@@ -177,7 +182,7 @@ export default function AddRecipe({
           </div>
           <div className={styles.ingredients_list}>
             <div>
-              <label>Recipe Ingredients</label>{" "}
+              <p>Recipe Ingredients</p>{" "}
               <button
                 type="button"
                 className={styles.form_btn}
@@ -205,7 +210,7 @@ export default function AddRecipe({
             </div>
             <div className={styles.ingredients_list_input}>
               {[...Array(addbutton)].map((_, index) => (
-                <React.Fragment key={`ingredients_key_${index}`}>
+                <div key={`ingredients_key_${index}`}>
                   <input
                     className={styles.form_inputs}
                     type="text"
@@ -216,7 +221,7 @@ export default function AddRecipe({
                       newIngredients[index] = e.target.value;
                       setrecipeingredients(newIngredients);
                     }}
-                    onKeyDown={handleKeyDown}
+                    onKeyDown={handleTagKeyDown}
                   />
                   <input
                     className={styles.form_inputs}
@@ -228,7 +233,7 @@ export default function AddRecipe({
                       newMeasureValues[index] = e.target.value;
                       setrecipemeasurevalue(newMeasureValues);
                     }}
-                    onKeyDown={handleKeyDown}
+                    onKeyDown={handleTagKeyDown}
                   />
                   <select
                     className={styles.form_inputs_dropdown}
@@ -246,7 +251,7 @@ export default function AddRecipe({
                       </option>
                     ))}
                   </select>
-                </React.Fragment>
+                </div>
               ))}
             </div>
           </div>
@@ -311,16 +316,21 @@ export default function AddRecipe({
               id="recipe_source"
               value={recipesource}
               onChange={(e) => setrecipesource(e.target.value)}
-              onKeyDown={handleKeyDown}
+              onKeyDown={handleTagKeyDown}
               placeholder="Enter recipe source"
             />
           </div>
           <div><button
             className={styles.form_btn}
-            onClick={handleSubmit}
+            onClick={(e) => {
+              handleSubmit()
+              e.preventDefault();
+              e.stopPropagation();
+            }}
           >Submit</button></div>
         </form>
       </div>
     </>
   );
 }
+
