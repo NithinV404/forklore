@@ -12,7 +12,7 @@ jobs:
       - name: Setup node and build
         uses: actions/setup-node@v4
         with:
-          node-version: "18+"
+          node-version: "18"
 
       - name: Install and Build frontend
         working-directory: ./client
