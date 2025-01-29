@@ -48,13 +48,11 @@ export function RecipeProvider({ children }: { children: ReactNode }) {
         } catch (error) {
             return error instanceof Error ? error.message : "An error occurred";
         }
-        finally {
-            fetchRecipes();
-        }
     };
 
     useEffect(() => {
         fetchRecipes();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
 

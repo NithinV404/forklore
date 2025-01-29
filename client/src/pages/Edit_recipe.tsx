@@ -94,7 +94,7 @@ export default function Edit_recipe() {
 
   useEffect(() => {
     window.scrollTo(0, location.state?.scrollPosition || 0);
-  }, []);
+  }, [location.state?.scrollPosition]);
 
   const handleSubmit = async () => {
     const recipeData = new FormData();

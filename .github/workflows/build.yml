@@ -2,20 +2,6 @@ name: Build Forklore Application
 
 on:
   workflow_dispatch:
-    inputs:
-      version:
-        description: "Build version"
-        required: true
-        default: "latest"
-        type: string
-      environment:
-        description: "Target environment"
-        required: true
-        type: choice
-        options:
-          - development
-          - production
-        default: "development"
 
 jobs:
   build:
