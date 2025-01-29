@@ -60,6 +60,13 @@ export default function AddRecipe() {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      (e.target as HTMLInputElement).blur();
+    }
+  };
+
   const handleSubmit = async () => {
     const recipeData = new FormData();
     recipeData.append("file", recipeImage as Blob);
@@ -106,6 +113,7 @@ export default function AddRecipe() {
                 id="recipe_name"
                 value={recipename}
                 onChange={(e) => setrecipename(e.target.value)}
+                onKeyDown={handleKeyDown}
                 placeholder="Enter recipe name"
               />
             </div>
@@ -119,6 +127,7 @@ export default function AddRecipe() {
                 id="recipe_category"
                 value={recipecategory}
                 onChange={(e) => setrecipecategory(e.target.value)}
+                onKeyDown={handleKeyDown}
                 placeholder="Enter recipe category"
               />
             </div>
@@ -147,7 +156,13 @@ export default function AddRecipe() {
               id="recipe_tags"
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
-              onKeyDown={handleTagKeyDown}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && tagInput.trim() !== "") {
+                  handleTagKeyDown(e);
+                } else {
+                  handleKeyDown(e);
+                }
+              }}
               placeholder="Enter recipe tags and press Enter"
             />
             <div className={styles.tags_container}>
@@ -287,6 +302,7 @@ export default function AddRecipe() {
               id="recipe_youtube"
               value={recipeyoutube}
               onChange={(e) => setrecipeyoutube(e.target.value)}
+              onKeyDown={handleKeyDown}
               placeholder="Enter YouTube link"
             />
           </div>
