@@ -30,6 +30,6 @@ jobs:
         working-directory: ./server
         run: |
           mkdir -p forklore-release
-          cp /public ./forklore-release
-          cp /target/release/server ./forklore-release
+          cp ./public ./forklore-release
+          cp ./target/release/server ./forklore-release
           cd forklore-release && tar -czvf forklore.tar.gz *
