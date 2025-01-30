@@ -28,8 +28,6 @@ jobs:
       - name: Archive binary
         working-directory: ./server
         run: |
-          sudo apt install -y tree
-          mkdir -p forklore-release && tree
           cp -r ./src/public ./forklore-release
-          cp -r ./forklore/server/target/release/server ./forklore-release
+          cp -r ./target/release/server ./forklore-release
           cd forklore-release && tar -czvf forklore.tar.gz *
