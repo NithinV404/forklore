@@ -24,7 +24,6 @@ jobs:
         working-directory: ./server
         run: |
           cargo build --release
-          mv target/release/server forklore
 
       - name: Archive binary
         working-directory: ./server
