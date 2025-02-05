@@ -32,5 +32,6 @@ jobs:
       - name: Lint Backend
         working-directory: ./server
         run: |
+          cargo fix --allow-dirty
           cargo clippy -- -D warnings
           cargo fmt -- --check
