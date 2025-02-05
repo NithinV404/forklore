@@ -1,0 +1,24 @@
+name: Test frontend and backend url
+on:
+  push:
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run tests
+        run: |
+          chmod +x ./tests.sh
+          # Exit code from tests.sh will propagate:
+          # 0 = success (green check)
+          # 1 = failure (red X)
+          ./tests.sh
+        env:
+          FRONTEND_URL: http://localhost:3000
+          API_URL: http://localhost:8080
