@@ -24,3 +24,9 @@ jobs:
         working-directory: ./server
         run: |
           cargo build --release
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: server-binary
+          path: server/target/release/
