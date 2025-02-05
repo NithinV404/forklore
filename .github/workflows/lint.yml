@@ -19,7 +19,7 @@ jobs:
       - name: Lint Frontend
         working-directory: ./client
         run: |
-          npm install
+          npm ci
           npm run lint
           npm run format:check
 
@@ -29,9 +29,14 @@ jobs:
         with:
           components: clippy, rustfmt
 
-      - name: Lint Backend
+      - name: Check Rust formatting
         working-directory: ./server
-        run: |
-          cargo fix --allow-dirty
-          cargo clippy -- -D warnings
-          cargo fmt -- --check
+        run: cargo fmt -- --check
+
+      - name: Run Clippy
+        working-directory: ./server
+        run: cargo clippy -- -D warnings
+
+      - name: Check compilation
+        working-directory: ./server
+        run: cargo check
