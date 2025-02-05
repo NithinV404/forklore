@@ -12,15 +12,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Run tests
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: server-binary
+          path: ./server/target/release/
+
+      - name: Set permissions and run tests
         run: |
-          chmod +x ./.github/workflows/build.yml
+          chmod +x ./.github/workflows/tests.sh
           chmod +x ./server/target/release/server
-            ./server/target/release/server &
-          # Exit code from tests.sh will propagate:
-          # 0 = success (green check)
-          # 1 = failure (red X)
-          ./tests.sh
-        env:
-          FRONTEND_URL: http://localhost:3000
-          API_URL: http://localhost:8080
+          ./server/target/release/server &
+          sleep 5  
+          ./.github/workflows/tests.sh
