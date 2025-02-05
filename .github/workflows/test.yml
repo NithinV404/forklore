@@ -14,7 +14,9 @@ jobs:
 
       - name: Run tests
         run: |
-          chmod +x ./tests.sh
+          chmod +x ./.github/workflows/build.yml
+          chmod +x ./server/target/release/server
+            ./server/target/release/server &
           # Exit code from tests.sh will propagate:
           # 0 = success (green check)
           # 1 = failure (red X)
