@@ -115,7 +115,11 @@ impl FileUtils {
     }
 
     pub fn write_file(path: &str, content: Vec<Recipe>) -> Result<(), io::Error> {
-        let file = File::create(path)?;
+        let file = OpenOptions::new()
+            .write(true)
+            .create(true)
+            .truncate(true)
+            .open(path)?;
         serde_json::to_writer(file, &content)?;
         Ok(())
     }
