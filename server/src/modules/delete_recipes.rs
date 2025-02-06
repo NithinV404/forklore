@@ -8,7 +8,7 @@ pub async fn delete_recipes(path: web::Path<String>) -> impl Responder {
 
     // Delete the file from recipes/images folder if it exists with the given id
     let image_path = format!("recipes/images/{}.jpg", id);
-    if let Err(_) = std::fs::remove_file(&image_path) {
+    if std::fs::remove_file(&image_path).is_err() {
         // Ignore the error if the file doesn't exist
     }
 

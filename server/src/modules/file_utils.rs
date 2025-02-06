@@ -76,13 +76,13 @@ impl FileUtils {
             }
             return false;
         }
-        return true;
+        true
     }
 
     // Checks if the file exists, if not it creates it with folder as specified in the path
     pub fn file_exists(path: &str, create: bool) -> bool {
         if OpenOptions::new().read(true).open(path).is_ok() {
-            return true;
+            true
         } else {
             if create {
                 let dir_path = Path::new(path).parent().unwrap();
@@ -91,11 +91,12 @@ impl FileUtils {
                     .read(true)
                     .write(true)
                     .create(true)
+                    .truncate(true)
                     .open(path)
                     .expect("Failed to open or create file");
                 println!("File created");
             }
-            return false;
+            false
         }
     }
 
