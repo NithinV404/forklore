@@ -1,6 +1,7 @@
 # ForkLore (Vite + React + Ts + Rust + Actix)
 
-![Build Status](https://img.shields.io/github/actions/workflow/status/NithinV404/forklore/build.yml?branch=main)
+![Build](https://github.com/NithinV404/forklore/actions/workflows/build.yml/badge.svg)
+![Lint](https://github.com/NithinV404/forklore/actions/workflows/lint.yml/badge.svg)
 ![License](https://img.shields.io/github/license/NIthinV404/forklore)
 ![Forks](https://img.shields.io/github/forks/NithinV404/forklore)
 ![Stars](https://img.shields.io/github/stars/NithinV404/forklore)
