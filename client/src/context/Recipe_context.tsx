@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from "react";
 import axios from "axios";
 
 export type Recipe = {
@@ -29,32 +29,34 @@ export function RecipeProvider({ children }: { children: ReactNode }) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    const fetchRecipes = async () => {
+    const fetchRecipes = useCallback(async () => {
+        setLoading(true);
+        setError(null);
         try {
             const response = await axios.get(`${serverUrl}/`);
             setRecipes(response.data);
-            setLoading(false);
         } catch (error) {
             setError(error instanceof Error ? error.message : "An error occurred");
+        } finally {
             setLoading(false);
         }
-        console.log(error);
-    };
+    }, [serverUrl]);
 
-    const deleteRecipe = async (id: string) => {
+    const deleteRecipe = useCallback(async (id: string) => {
         try {
             const response = await axios.delete(`${serverUrl}/delete/${id}`);
-            if (response.status === 200) { fetchRecipes(); return "Recipe deleted successfully"; }
+            if (response.status === 200) {
+                fetchRecipes();
+                return "Recipe deleted successfully";
+            }
         } catch (error) {
             return error instanceof Error ? error.message : "An error occurred";
         }
-    };
+    }, [serverUrl, fetchRecipes]);
 
     useEffect(() => {
         fetchRecipes();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
+    }, [fetchRecipes]);
 
     return (
         <RecipeContext.Provider value={{ recipes, loading, error, fetchRecipes, deleteRecipe }}>

@@ -6,7 +6,6 @@ import { Recipe, useRecipes } from "../context/Recipe_context";
 import { useToast } from "../context/Toast_context";
 import { useSearch } from "../context/Search_context";
 
-
 export default function RecipeCards() {
   const { recipes, deleteRecipe } = useRecipes();
   const { searchInput } = useSearch();
@@ -17,26 +16,31 @@ export default function RecipeCards() {
   const navigate = useNavigate();
   const location = useLocation();
 
-
   useEffect(() => {
+    const idRegex = /^[0-9]+$/;
     let filtered = [...recipes];
 
     if (category === "Alphabetical") {
       filtered.sort((a, b) => a.strMeal.localeCompare(b.strMeal));
     } else if (category !== "All") {
-      filtered = filtered.filter(recipe => recipe.strCategory === category);
+      filtered = filtered.filter((recipe) => recipe.strCategory === category);
     }
     if (searchInput !== "" && searchInput !== null) {
-      filtered = filtered.filter(recipe => recipe.strMeal.toLowerCase().includes(searchInput.toLowerCase()));
+      if (idRegex.test(searchInput)) {
+        filtered = filtered.filter((recipe) => recipe.idMeal === searchInput);
+      } else {
+        filtered = filtered.filter((recipe) =>
+          recipe.strMeal.toLowerCase().includes(searchInput.toLowerCase()),
+        );
+      }
     }
-
+    console.log(idRegex.test(searchInput));
     setFilteredRecipes(filtered);
   }, [category, searchInput, recipes]);
 
-
   useEffect(() => {
     const categorySet = new Set<string>();
-    recipes.forEach(recipe => categorySet.add(recipe.strCategory));
+    recipes.forEach((recipe) => categorySet.add(recipe.strCategory));
     setCategoryList(Array.from(categorySet));
   }, [recipes]);
 
@@ -44,14 +48,14 @@ export default function RecipeCards() {
     navigate(`/recipe_details/${id}`, {
       state: {
         from: location.pathname,
-        scrollPosition: scrollY
-      }
+        scrollPosition: scrollY,
+      },
     });
-  }
+  };
 
   useEffect(() => {
     window.scrollTo(0, location.state?.scrollPosition || 0);
-  }, []);
+  }, [location.state?.scrollPosition]);
 
   return (
     <>
@@ -63,7 +67,11 @@ export default function RecipeCards() {
         >
           <option value="All">All</option>
           <option value="Alphabetical">Alphabetical</option>
-          {categoryList.map((category, index) => <option key={index} value={category}>{category}</option>)}
+          {categoryList.map((category, index) => (
+            <option key={index} value={category}>
+              {category}
+            </option>
+          ))}
         </select>
       </div>
       <div className="recipe_cards">
@@ -76,12 +84,22 @@ export default function RecipeCards() {
         ) : (
           filteredRecipes &&
           filteredRecipes.map((recipe, index) => (
-            <div className="recipe_card" key={index} onClick={() => recipeDetailsRedirect(recipe.idMeal)}>
+            <div
+              className="recipe_card"
+              key={index}
+              onClick={() => recipeDetailsRedirect(recipe.idMeal)}
+            >
               <div className="recipe_card_header">
                 <div className="tag-container">
-                  {recipe.strTags && recipe.strTags.split(',').map((tag, tagIndex) => (
-                    tagIndex < 2 && <p className="tag" key={tagIndex}># {tag}</p>
-                  ))}
+                  {recipe.strTags &&
+                    recipe.strTags.split(",").map(
+                      (tag, tagIndex) =>
+                        tagIndex < 2 && (
+                          <p className="tag" key={tagIndex}>
+                            # {tag}
+                          </p>
+                        ),
+                    )}
                 </div>
                 <img src={recipe.strMealThumb} alt={recipe.strMeal} />
               </div>
@@ -91,19 +109,25 @@ export default function RecipeCards() {
                   <div className="category_divider">
                     <div className="category_container">
                       <b>Category</b>
-                      <p id='recipe_card_category'>{recipe.strCategory}</p>
+                      <p id="recipe_card_category">{recipe.strCategory}</p>
                     </div>
                     <div className="icons_container">
-                      <div><button
-                        className="delete_btn"
-                        onClick={(event) => {
-                          deleteRecipe(recipe.idMeal);
-                          showToast("Recipe deleted");
-                          event.stopPropagation();
-                        }}
-                      >
-                        <img className="ic-hover" src={icon_delete} alt="delete" />
-                      </button></div>
+                      <div>
+                        <button
+                          className="delete_btn"
+                          onClick={(event) => {
+                            deleteRecipe(recipe.idMeal);
+                            showToast("Recipe deleted");
+                            event.stopPropagation();
+                          }}
+                        >
+                          <img
+                            className="ic-hover"
+                            src={icon_delete}
+                            alt="delete"
+                          />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -111,7 +135,6 @@ export default function RecipeCards() {
             </div>
           ))
         )}
-
       </div>
     </>
   );

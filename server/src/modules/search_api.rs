@@ -8,7 +8,10 @@ const SEARCH_API_URL: &str = "https://www.themealdb.com/api/json/v1/1/";
 pub async fn search_api(mut payload: web::Payload) -> HttpResponse {
     let mut data: Value = Value::Null;
     while let Some(item) = payload.next().await {
-        let bytes = item.unwrap();
+        let bytes = match item {
+            Ok(bytes) => bytes,
+            Err(_) => return HttpResponse::BadRequest().finish(),
+        };
         data = serde_json::from_slice(&bytes).unwrap();
     }
 
@@ -35,7 +38,7 @@ pub async fn search_api(mut payload: web::Payload) -> HttpResponse {
     };
 
     match reqwest::get(format!("{}{}", &api_url, search_value)).await {
-        Ok(response) => match response.text().await {
+        Ok(response) => match response.json::<Value>().await {
             Ok(json) => HttpResponse::Ok().json(json),
             Err(_) => HttpResponse::InternalServerError().finish(),
         },

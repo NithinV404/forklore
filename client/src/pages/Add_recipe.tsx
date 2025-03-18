@@ -8,7 +8,6 @@ import { useToast } from "../context/Toast_context";
 import { useRecipes } from "../context/Recipe_context";
 
 export default function AddRecipe() {
-
   const navigate = useNavigate();
   const location = useLocation();
   const { showToast } = useToast();
@@ -25,16 +24,26 @@ export default function AddRecipe() {
     "pinch",
     "whole",
   ];
-  const [recipename, setrecipename] = useState<string>("");
-  const [recipecategory, setrecipecategory] = useState<string>("");
-  const [recipetags, setrecipetags] = useState<string[]>([]);
-  const [recipeyoutube, setrecipeyoutube] = useState<string>("");
-  const [recipearea, setrecipearea] = useState<string>("");
-  const [recipesource, setrecipesource] = useState<string>("");
-  const [recipeingredients, setrecipeingredients] = useState<string[]>([""]);
-  const [recipeinstructions, setrecipeinstructions] = useState<string>("");
-  const [recipemeasureunit, setrecipemeasureunit] = useState<string[]>([""]);
-  const [recipemeasurevalue, setrecipemeasurevalue] = useState<string[]>([""]);
+  const [formdata, setformdata] = useState({
+    recipeName: "",
+    recipeCategory: "",
+    recipeTags: [] as string[],
+    recipeYoutube: "",
+    recipeArea: "",
+    recipeSource: "",
+    recipeIngredients: [""],
+    recipeInstructions: "",
+    recipeMeasureUnit: [""],
+    recipeMeasureValue: [""],
+    recipeImage: null,
+  });
+
+  const handleFormInput = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    setformdata({ ...formdata, [e.target.name]: e.target.value });
+  };
+
   const [recipeImage, setRecipeImage] = useState<File | null>(null);
   const [addbutton, setbutton] = useState<number>(1);
   const [tagInput, setTagInput] = useState<string>("");
@@ -42,14 +51,22 @@ export default function AddRecipe() {
 
   const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && tagInput.trim() !== "") {
-      setrecipetags([...recipetags, tagInput.trim()]);
+      setformdata({
+        ...formdata,
+        recipeTags: [...formdata.recipeTags, tagInput.trim()],
+      });
       setTagInput("");
       e.preventDefault();
     }
   };
 
   const handleDeleteTag = (index: number) => {
-    setrecipetags(recipetags.filter((_, i) => i !== index));
+    setformdata({
+      ...formdata,
+      recipeTags: formdata.recipeTags.filter(
+        (_: string, i: number) => i !== index,
+      ),
+    });
   };
 
   const previewImageSet = (e: React.ChangeEvent<HTMLInputElement> | null) => {
@@ -70,16 +87,25 @@ export default function AddRecipe() {
   const handleSubmit = async () => {
     const recipeData = new FormData();
     recipeData.append("file", recipeImage as Blob);
-    recipeData.append("recipename", recipename);
-    recipeData.append("recipeingredients", JSON.stringify(recipeingredients));
-    recipeData.append("recipeinstructions", recipeinstructions);
-    recipeData.append("recipemeasureunit", JSON.stringify(recipemeasureunit));
-    recipeData.append("recipemeasurevalue", JSON.stringify(recipemeasurevalue));
-    recipeData.append("recipecategory", recipecategory);
-    recipeData.append("recipeyoutube", recipeyoutube);
-    recipeData.append("recipesource", recipesource);
-    recipeData.append("recipetags", recipetags.toString());
-    recipeData.append("recipearea", recipearea);
+    recipeData.append("recipename", formdata.recipeName);
+    recipeData.append(
+      "recipeingredients",
+      JSON.stringify(formdata.recipeIngredients),
+    );
+    recipeData.append("recipeinstructions", formdata.recipeInstructions);
+    recipeData.append(
+      "recipemeasureunit",
+      JSON.stringify(formdata.recipeMeasureUnit),
+    );
+    recipeData.append(
+      "recipemeasurevalue",
+      JSON.stringify(formdata.recipeMeasureValue),
+    );
+    recipeData.append("recipecategory", formdata.recipeCategory);
+    recipeData.append("recipeyoutube", formdata.recipeYoutube);
+    recipeData.append("recipesource", formdata.recipeSource);
+    recipeData.append("recipetags", formdata.recipeTags.toString());
+    recipeData.append("recipearea", formdata.recipeArea);
     console.log(recipeData);
     try {
       const response = await axios.post(`${serverUrl}/addrecipe`, recipeData, {
@@ -109,10 +135,10 @@ export default function AddRecipe() {
               <input
                 className={styles.form_inputs}
                 type="text"
-                name="recipe_name"
+                name="recipeName"
                 id="recipe_name"
-                value={recipename}
-                onChange={(e) => setrecipename(e.target.value)}
+                value={formdata.recipeName}
+                onChange={handleFormInput}
                 onKeyDown={handleKeyDown}
                 placeholder="Enter recipe name"
               />
@@ -123,10 +149,10 @@ export default function AddRecipe() {
               <input
                 className={styles.form_inputs}
                 type="text"
-                name="recipe_category"
+                name="recipeCategory"
                 id="recipe_category"
-                value={recipecategory}
-                onChange={(e) => setrecipecategory(e.target.value)}
+                value={formdata.recipeCategory}
+                onChange={handleFormInput}
                 onKeyDown={handleKeyDown}
                 placeholder="Enter recipe category"
               />
@@ -137,10 +163,10 @@ export default function AddRecipe() {
               <input
                 className={styles.form_inputs}
                 type="text"
-                name="recipe_area"
+                name="recipeArea"
                 id="recipe_area"
-                value={recipearea}
-                onChange={(e) => setrecipearea(e.target.value)}
+                value={formdata.recipeArea}
+                onChange={handleFormInput}
                 onKeyDown={handleTagKeyDown}
                 placeholder="Enter recipe area"
               />
@@ -152,7 +178,7 @@ export default function AddRecipe() {
             <input
               className={styles.form_inputs}
               type="text"
-              name="recipe_tags"
+              name="recipeTags"
               id="recipe_tags"
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
@@ -166,7 +192,7 @@ export default function AddRecipe() {
               placeholder="Enter recipe tags and press Enter"
             />
             <div className={styles.tags_container}>
-              {recipetags.map((tag, index) => (
+              {formdata.recipeTags.map((tag, index) => (
                 <span key={index} className={styles.tag_pill}>
                   {tag}
                   <button
@@ -214,12 +240,16 @@ export default function AddRecipe() {
                   <input
                     className={styles.form_inputs}
                     type="text"
+                    name="recipeIngredients"
                     placeholder={`Ingredient ${index + 1}`}
-                    value={recipeingredients[index] || ""}
+                    value={formdata.recipeIngredients[index] || ""}
                     onChange={(e) => {
-                      const newIngredients = [...recipeingredients];
+                      const newIngredients = [...formdata.recipeIngredients];
                       newIngredients[index] = e.target.value;
-                      setrecipeingredients(newIngredients);
+                      setformdata({
+                        ...formdata,
+                        recipeIngredients: newIngredients,
+                      });
                     }}
                     onKeyDown={handleTagKeyDown}
                   />
@@ -227,21 +257,27 @@ export default function AddRecipe() {
                     className={styles.form_inputs}
                     type="text"
                     placeholder={`Quantity ${index + 1}`}
-                    value={recipemeasurevalue[index]}
+                    value={formdata.recipeMeasureValue[index]}
                     onChange={(e) => {
-                      const newMeasureValues = [...recipemeasurevalue];
+                      const newMeasureValues = [...formdata.recipeMeasureValue];
                       newMeasureValues[index] = e.target.value;
-                      setrecipemeasurevalue(newMeasureValues);
+                      setformdata({
+                        ...formdata,
+                        recipeMeasureValue: newMeasureValues,
+                      });
                     }}
                     onKeyDown={handleTagKeyDown}
                   />
                   <select
                     className={styles.form_inputs_dropdown}
-                    value={recipemeasureunit[index]}
+                    value={formdata.recipeMeasureUnit[index]}
                     onChange={(e) => {
-                      const newMeasures = [...recipemeasureunit];
+                      const newMeasures = [...formdata.recipeMeasureUnit];
                       newMeasures[index] = e.target.value;
-                      setrecipemeasureunit(newMeasures);
+                      setformdata({
+                        ...formdata,
+                        recipeMeasureUnit: newMeasures,
+                      });
                     }}
                   >
                     <option value="">select</option>
@@ -262,13 +298,11 @@ export default function AddRecipe() {
               className={styles.form_inputs}
               cols={80}
               rows={10}
-              name="recipe_instructions"
+              name="recipeInstructions"
               id="recipe_instructions"
               style={{ resize: "none" }}
-              value={recipeinstructions}
-              onChange={(e) => {
-                setrecipeinstructions(e.target.value);
-              }}
+              value={formdata.recipeInstructions}
+              onChange={handleFormInput}
             />
           </div>
           <div className={styles.horizontal_fields}>
@@ -278,9 +312,7 @@ export default function AddRecipe() {
                 className={styles.form_btn}
                 type="file"
                 accept="image/*"
-                onChange={(e) => {
-                  previewImageSet(e);
-                }}
+                onChange={previewImageSet}
                 name="file"
               />
             </div>
@@ -298,10 +330,10 @@ export default function AddRecipe() {
             <input
               className={styles.form_inputs}
               type="text"
-              name="recipe_youtube"
+              name="recipeYoutube"
               id="recipe_youtube"
-              value={recipeyoutube}
-              onChange={(e) => setrecipeyoutube(e.target.value)}
+              value={formdata.recipeYoutube}
+              onChange={handleFormInput}
               onKeyDown={handleKeyDown}
               placeholder="Enter YouTube link"
             />
@@ -312,25 +344,28 @@ export default function AddRecipe() {
             <input
               className={styles.form_inputs}
               type="text"
-              name="recipe_source"
+              name="recipeSource"
               id="recipe_source"
-              value={recipesource}
-              onChange={(e) => setrecipesource(e.target.value)}
+              value={formdata.recipeSource}
+              onChange={handleFormInput}
               onKeyDown={handleTagKeyDown}
               placeholder="Enter recipe source"
             />
           </div>
-          <div><button
-            className={styles.form_btn}
-            onClick={(e) => {
-              handleSubmit()
-              e.preventDefault();
-              e.stopPropagation();
-            }}
-          >Submit</button></div>
+          <div>
+            <button
+              className={styles.form_btn}
+              onClick={(e) => {
+                handleSubmit();
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+            >
+              Submit
+            </button>
+          </div>
         </form>
       </div>
     </>
   );
 }
-

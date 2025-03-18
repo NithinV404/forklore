@@ -108,7 +108,6 @@ pub async fn add_recipe_user(mut payload: Multipart) -> Result<HttpResponse, Err
     let mut recipe_json = Map::new();
     recipe_json.insert("recipe_name".to_string(), json!(recipe_data.recipe_name));
 
-    println!("{:?}", recipe_data.ingredients);
     for i in 0..20 {
         let ingredient = recipe_data
             .ingredients

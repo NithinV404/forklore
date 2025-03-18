@@ -1,22 +1,22 @@
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import header_style from "./Header.module.css";
-import ic_plus from '../assets/icon-plus.svg';
+import ic_plus from "../assets/icon-plus.svg";
 import { Link } from "react-router-dom";
 import { useRecipes } from "../context/Recipe_context";
 import { useToast } from "../context/Toast_context";
 import { SearchItemType, useSearch } from "../context/Search_context";
 
-
 const Header = () => {
-
   const { recipes, fetchRecipes } = useRecipes();
   const { searchReturn, fetchSearch } = useSearch();
   const { showToast } = useToast();
   const serverUrl = import.meta.env.VITE_SERVER_URL;
   const [showDropdown, setShowDropdown] = useState(true);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const [searchTimeout, setSearchTimeout] = useState<ReturnType<typeof setTimeout> | null>(null);
+  const [searchTimeout, setSearchTimeout] = useState<ReturnType<
+    typeof setTimeout
+  > | null>(null);
 
   const handleaddrecipe = async (recipeId: string) => {
     const index = recipes.findIndex((recipe) => recipe.idMeal === recipeId);
@@ -25,7 +25,9 @@ const Header = () => {
       return;
     } else {
       const response = await axios.post(`${serverUrl}/add`, { recipeId });
-      if (response.status === 200) { fetchRecipes(); }
+      if (response.status === 200) {
+        fetchRecipes();
+      }
     }
   };
 
@@ -36,6 +38,7 @@ const Header = () => {
 
     const timeout = setTimeout(() => {
       fetchSearch(value);
+      console.log(searchReturn);
     }, 500);
 
     setSearchTimeout(timeout);
@@ -74,8 +77,10 @@ const Header = () => {
                   <div className={header_style.item_name}>
                     <p>{meal.strMeal}</p>
                   </div>
-                  <img src={meal.strMealThumb} alt={meal.strMeal} />
-                  <div className={`${header_style.add_icon} ${header_style.ic_hover}`}>
+                  <img src={`${meal.strMealThumb}/small`} alt={meal.strMeal} />
+                  <div
+                    className={`${header_style.add_icon} ${header_style.ic_hover}`}
+                  >
                     <img
                       src={ic_plus}
                       onMouseDown={(e) => {
