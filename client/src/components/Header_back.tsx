@@ -22,7 +22,7 @@ export default function HeaderBack() {
     <header className={header_back_style.header}>
       <div onClick={handleBack} className={header_back_style.circle}>
         <img
-          src={icon_back}
+          src={icons.back}
           alt="back"
           className={header_back_style.back_icon}
         />

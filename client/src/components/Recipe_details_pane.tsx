@@ -82,7 +82,7 @@ export default function RecipeDetailsPane({ id }: RecipeDetailsPaneProps) {
               <embed
                 type="image/svg+xml"
                 className="edit_icon"
-                src={icon_edit}
+                src={icons.edit}
               />
             </div>
             <div
@@ -91,7 +91,7 @@ export default function RecipeDetailsPane({ id }: RecipeDetailsPaneProps) {
                 handleRecipeDelete(recipe.idMeal);
               }}
             >
-              <embed type="image/svg+xml" src={icon_delete} />
+              <embed type="image/svg+xml" src={icons.delete} />
             </div>
           </div>
         </div>
