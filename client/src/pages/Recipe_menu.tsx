@@ -1,5 +1,5 @@
 import "../pages/Recipe_menu.css";
-import icon_delete from "../assets/icon-delete.svg";
+import { icons } from "../assets/icon";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Recipe, useRecipes } from "../context/Recipe_context";
@@ -123,7 +123,7 @@ export default function RecipeCards() {
                         >
                           <img
                             className="ic-hover"
-                            src={icon_delete}
+                            src={icons.delete}
                             alt="delete"
                           />
                         </button>
