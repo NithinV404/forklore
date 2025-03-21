@@ -2,8 +2,7 @@ import { Recipe, useRecipes } from "../context/Recipe_context";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useToast } from "../context/Toast_context";
 import { useSearch } from "../context/Search_context";
-import icon_delete from "../assets/icon-delete.svg";
-import icon_edit from "../assets/icon-edit.svg";
+import icons from "../assets/icon";
 
 interface RecipeDetailsPaneProps {
   id: string;

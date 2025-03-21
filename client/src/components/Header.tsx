@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import header_style from "./Header.module.css";
-import ic_plus from "../assets/icon-plus.svg";
+import icons from "../assets/icon";
 import { Link } from "react-router-dom";
 import { useRecipes } from "../context/Recipe_context";
 import { useToast } from "../context/Toast_context";
@@ -82,7 +82,7 @@ const Header = () => {
                     className={`${header_style.add_icon} ${header_style.ic_hover}`}
                   >
                     <img
-                      src={ic_plus}
+                      src={icons.plus}
                       onMouseDown={(e) => {
                         e.preventDefault();
                         handleaddrecipe(meal.idMeal);
@@ -96,7 +96,7 @@ const Header = () => {
           )}
         </div>
         <Link to="/add_recipe" className={header_style.add_button}>
-          <img src={ic_plus} alt="" />
+          <img src={icons.plus} alt="" />
         </Link>
       </div>
     </>
