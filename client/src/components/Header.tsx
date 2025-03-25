@@ -40,32 +40,43 @@ const Header = () => {
     }
   };
 
+  const searchItemsRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const unfocusSearch = () => {
-    inputRef.current?.blur();
-  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        searchItemsRef.current &&
+        !searchItemsRef.current.contains(event.target as Node)
+      ) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [searchItemsRef]);
 
   return (
     <header className={header_style.header}>
       <div className={header_style.title}>
         <h2>Forklore</h2>
       </div>
-      <div className={header_style.search_container}>
+      <div className={header_style.search_container} ref={searchItemsRef}>
         <input
           ref={inputRef}
           placeholder="Search for recipes"
           className={header_style.input}
-          onBlur={() => {
-            unfocusSearch();
-            setShowDropdown(false);
-          }}
           onChange={(e) => {
             handleDebouncedSearch(e.target.value);
           }}
         ></input>
         <Search className={header_style.search_icon}></Search>
         {searchReturn && searchReturn.length > 0 && showDropdown && (
-          <div className={`${header_style.search_items}`}>
+          <div className={`${header_style.search_items}`} ref={searchItemsRef}>
             {searchReturn.map((meal: SearchItemType) => (
               <div className={header_style.search_item}>
                 <img src={`${meal.strMealThumb}/small`} alt={meal.strMeal} />
