@@ -1,59 +1,59 @@
 :root {
-    --color-primary-bg: #ffffff;
-    --color-category-pill-bg: #ffe0b2;
-    --color-category-pill-text: #e65100;
-    --color-box-shadow: rgba(0, 0, 0, 0.2);
-    --color-tag-pill-bg: #e0f7fa;
-    --color-tag-pill-text: #00796b;
-    --color-area-pill-bg: #c8e6c9;
-    --color-area-pill-text: #2e7d32;
-    --color-id-pill-bg: #d1c4e9;
-    --color-id-pill-text:  #512da8;
-    --color-ingredient-pill-bg: #f0f4c3;
-    --color-ingredient-pill-text:  #827717;
-    --color-btn-delete: linear-gradient(135deg, #f44336, #fa6464);
-    --color-label-text: #000000; 
-    --search-input-width: 21rem;
-    --primary-bg: #ffffff;
-    --color-input-bg: #f5f5f5;
-    --color-input-border: #a8a8a8;
-    --color-input-text: #747474;
-    --color-input-bg-hover: #c0c0c0;
-    --filter-icon: none;
-    --color-btn-bg: #2e2e2e;
-    --color-btn-bg-hover: #4e4e4e;
-    --color-btn-text: #fff;
-    --transition-duration: 0.3s;
-    --padding-form-input: 12px;
-    --box-shadow-light: 0 4px 8px rgba(0, 0, 0, 0.1);
-    --box-shadow-dark: 0 4px 8px rgba(255, 255, 255, 0.1);
+  --color-primary-bg: #ffffff;
+  --color-category-pill-bg: #ffe0b2;
+  --color-category-pill-text: #e65100;
+  --color-box-shadow: rgba(0, 0, 0, 0.2);
+  --color-tag-pill-bg: #e0f7fa;
+  --color-tag-pill-text: #00796b;
+  --color-area-pill-bg: #c8e6c9;
+  --color-area-pill-text: #2e7d32;
+  --color-id-pill-bg: #d1c4e9;
+  --color-id-pill-text: #512da8;
+  --color-ingredient-pill-bg: #f0f4c3;
+  --color-ingredient-pill-text: #827717;
+  --color-btn-delete: linear-gradient(135deg, #f44336, #fa6464);
+  --color-label-text: #000000;
+  --search-input-width: 21rem;
+  --primary-bg: #ffffff;
+  --color-input-bg: #f5f5f5;
+  --color-input-border: #a8a8a8;
+  --color-input-text: #747474;
+  --color-input-bg-hover: #c0c0c0;
+  --filter-icon: none;
+  --color-btn-bg: #2e2e2e;
+  --color-btn-bg-hover: #4e4e4e;
+  --color-btn-text: #fff;
+  --transition-duration: 0.3s;
+  --padding-form-input: 12px;
+  --box-shadow-light: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --box-shadow-dark: 0 4px 8px rgba(255, 255, 255, 0.1);
 }
 
 @media (prefers-color-scheme: dark) {
-    :root {
-        --primary-bg: #1a1a1a;
-        --color-input-bg: #444444;
-        --color-input-border: #555;
-        --color-input-text: #fff;
-        --color-input-bg-hover: #666;
-        --color-tag-pill-bg: #37474f;
-        --color-tag-pill-text: #80cbc4;
-        --color-category-pill-bg: #ef6c00; 
-        --color-category-pill-text: #ffe0b2;
-        --color-area-pill-bg: #388e3c;
-        --color-area-pill-text: #c8e6c9;
-        --color-id-pill-bg: #5e35b1;;
-        --color-id-pill-text: #d1c4e9;
-        --color-ingredient-pill-text: #f0f4c3;
-        --color-ingredient-pill-bg:  #827717;
-        --color-label-text: #c5c5c5;
-        --color-recipe-container-bg: #2e2e2e;
-        --color-box-shadow: rgba(255, 255, 255, 0.075);
-        --filter-icon: invert(90%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(80%) contrast(100%);
-        --color-btn-bg: #444;
-        --color-btn-bg-hover: #666;
-        --color-btn-text: #fff;
-        --transition-duration: 0.3s;
-    }
+  :root {
+    --primary-bg: #1a1a1a;
+    --color-input-bg: #444444;
+    --color-input-border: #555;
+    --color-input-text: #fff;
+    --color-input-bg-hover: #666;
+    --color-tag-pill-bg: #37474f;
+    --color-tag-pill-text: #80cbc4;
+    --color-category-pill-bg: #ef6c00;
+    --color-category-pill-text: #ffe0b2;
+    --color-area-pill-bg: #388e3c;
+    --color-area-pill-text: #c8e6c9;
+    --color-id-pill-bg: #5e35b1;
+    --color-id-pill-text: #d1c4e9;
+    --color-ingredient-pill-text: #f0f4c3;
+    --color-ingredient-pill-bg: #827717;
+    --color-label-text: #c5c5c5;
+    --color-recipe-container-bg: #2e2e2e;
+    --color-box-shadow: rgba(255, 255, 255, 0.075);
+    --filter-icon: invert(90%) sepia(0%) saturate(0%) hue-rotate(0deg)
+      brightness(80%) contrast(100%);
+    --color-btn-bg: #444;
+    --color-btn-bg-hover: #666;
+    --color-btn-text: #fff;
+    --transition-duration: 0.3s;
+  }
 }
-

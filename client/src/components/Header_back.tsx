@@ -1,4 +1,4 @@
-import icons from "../assets/icon";
+import Back from "../assets/SVG/Back";
 import { useLocation, useNavigate } from "react-router-dom";
 import header_back_style from "./Header_back.module.css";
 import { useEffect } from "react";
@@ -21,11 +21,7 @@ export default function HeaderBack() {
   return (
     <header className={header_back_style.header}>
       <div onClick={handleBack} className={header_back_style.circle}>
-        <img
-          src={icons.back}
-          alt="back"
-          className={header_back_style.back_icon}
-        />
+        <Back className={header_back_style.back_icon} />
       </div>
     </header>
   );

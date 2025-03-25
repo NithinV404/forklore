@@ -1,22 +1,31 @@
 import { useState, useRef, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import header_style from "./Header.module.css";
-import icons from "../assets/icon";
-import { Link } from "react-router-dom";
+import Plus from "../assets/SVG/Plus";
+import Search from "../assets/SVG/Search";
 import { useRecipes } from "../context/Recipe_context";
 import { useToast } from "../context/Toast_context";
 import { SearchItemType, useSearch } from "../context/Search_context";
+import { useDebounce } from "../hooks/useDebounce";
 
 const Header = () => {
   const { recipes, fetchRecipes } = useRecipes();
   const { searchReturn, fetchSearch } = useSearch();
   const { showToast } = useToast();
   const serverUrl = import.meta.env.VITE_SERVER_URL;
-  const [showDropdown, setShowDropdown] = useState(true);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const [searchTimeout, setSearchTimeout] = useState<ReturnType<
-    typeof setTimeout
-  > | null>(null);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo(0, location.state?.scrollPosition || 0);
+  }, [location.state?.scrollPosition]);
+
+  const handleDebouncedSearch = useDebounce((value: string) => {
+    fetchSearch(value);
+    setShowDropdown(true);
+  }, 500);
 
   const handleaddrecipe = async (recipeId: string) => {
     const index = recipes.findIndex((recipe) => recipe.idMeal === recipeId);
@@ -31,75 +40,63 @@ const Header = () => {
     }
   };
 
-  const handleSearch = (value: string) => {
-    if (searchTimeout) {
-      clearTimeout(searchTimeout);
-    }
-
-    const timeout = setTimeout(() => {
-      fetchSearch(value);
-      console.log(searchReturn);
-    }, 500);
-
-    setSearchTimeout(timeout);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const unfocusSearch = () => {
+    inputRef.current?.blur();
   };
 
-  useEffect(() => {
-    return () => {
-      if (searchTimeout) {
-        clearTimeout(searchTimeout);
-      }
-    };
-  }, [searchTimeout]);
-
   return (
-    <>
-      <div className={header_style.header}>
-        <div className={header_style.header_name}>
-          <p>ForkLore</p>
-        </div>
-
-        <div>
-          <input
-            className={header_style.header_input}
-            type="text"
-            placeholder="Search for recipes"
-            onChange={(e) => handleSearch(e.target.value)}
-            onBlur={() => {
-              setTimeout(() => setShowDropdown(false), 200);
-            }}
-            onFocus={() => setShowDropdown(true)}
-          />
-          {searchReturn && searchReturn.length > 0 && showDropdown && (
-            <div ref={dropdownRef} className={header_style.search_items}>
-              {searchReturn.map((meal: SearchItemType) => (
-                <div key={meal.idMeal} className={header_style.items}>
-                  <div className={header_style.item_name}>
-                    <p>{meal.strMeal}</p>
-                  </div>
-                  <img src={`${meal.strMealThumb}/small`} alt={meal.strMeal} />
-                  <div
-                    className={`${header_style.add_icon} ${header_style.ic_hover}`}
-                  >
-                    <img
-                      src={icons.plus}
-                      onMouseDown={(e) => {
-                        e.preventDefault();
-                        handleaddrecipe(meal.idMeal);
-                      }}
-                      alt="Add recipe"
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-        <Link to="/add_recipe" className={header_style.add_button}>
-          <img src={icons.plus} alt="" />
-        </Link>
+    <header className={header_style.header}>
+      <div className={header_style.title}>
+        <h2>Forklore</h2>
       </div>
-    </>
+      <div className={header_style.search_container}>
+        <input
+          ref={inputRef}
+          placeholder="Search for recipes"
+          className={header_style.input}
+          onBlur={() => {
+            unfocusSearch();
+            setShowDropdown(false);
+          }}
+          onChange={(e) => {
+            handleDebouncedSearch(e.target.value);
+          }}
+        ></input>
+        <Search className={header_style.search_icon}></Search>
+        {searchReturn && searchReturn.length > 0 && showDropdown && (
+          <div className={`${header_style.search_items}`}>
+            {searchReturn.map((meal: SearchItemType) => (
+              <div className={header_style.search_item}>
+                <img src={`${meal.strMealThumb}/small`} alt={meal.strMeal} />
+                <h1>{meal.strMeal}</h1>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    handleaddrecipe(meal.idMeal);
+                  }}
+                >
+                  <Plus />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+      <Plus
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          navigate(`/add_recipe`, {
+            state: {
+              from: location.pathname,
+              scrollPosition: scrollY,
+            },
+          });
+        }}
+      />
+    </header>
   );
 };
 

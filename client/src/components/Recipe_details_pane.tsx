@@ -2,7 +2,8 @@ import { Recipe, useRecipes } from "../context/Recipe_context";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useToast } from "../context/Toast_context";
 import { useSearch } from "../context/Search_context";
-import icons from "../assets/icon";
+import Edit from "../assets/SVG/Edit";
+import Delete from "../assets/SVG/Delete";
 
 interface RecipeDetailsPaneProps {
   id: string;
@@ -79,11 +80,7 @@ export default function RecipeDetailsPane({ id }: RecipeDetailsPaneProps) {
                 });
               }}
             >
-              <embed
-                type="image/svg+xml"
-                className="edit_icon"
-                src={icons.edit}
-              />
+              <Edit type="image/svg+xml" className="edit_icon" />
             </div>
             <div
               onClick={(event) => {
@@ -91,7 +88,7 @@ export default function RecipeDetailsPane({ id }: RecipeDetailsPaneProps) {
                 handleRecipeDelete(recipe.idMeal);
               }}
             >
-              <embed type="image/svg+xml" src={icons.delete} />
+              <Delete type="image/svg+xml" />
             </div>
           </div>
         </div>

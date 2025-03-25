@@ -1,190 +1,187 @@
 @import "../variables.css";
 
-
-
 .addrecipe_form_style {
-    display: flex;
-    align-items: center; /* Center the form horizontally */
-    padding: 2rem;
-    background-color: var(--color-form-bg);
-    box-shadow: var(--box-shadow-light);
+  display: flex;
+  align-items: center; /* Center the form horizontally */
+  padding: 2rem;
+  background-color: var(--color-form-bg);
+  box-shadow: var(--box-shadow-light);
 }
 
 .form_style {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    width: 100%;
-    max-width: 600px;
-    box-sizing: border-box; 
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 600px;
+  box-sizing: border-box;
 }
 
 .form_style label {
-    display: inline-block;
-    margin: 0 0 0.5rem 0.4rem;
-    font-weight: bold;
-    color: var(--color-label-text);
+  display: inline-block;
+  margin: 0 0 0.5rem 0.4rem;
+  font-weight: bold;
+  color: var(--color-label-text);
 }
 
 .form_style hr {
-    margin: 1.5rem 0;
-    border: none;
-    border-top: 1px solid var(--color-border-light);
+  margin: 1.5rem 0;
+  border: none;
+  border-top: 1px solid var(--color-border-light);
 }
 
 .form_inputs {
-    border: 1px solid var(--color-input-border);
-    background-color: var(--color-input-bg);
-    color: var(--color-form-input-text);
-    border-radius: 10px;
-    padding: var(--padding-form-input);
-    margin-bottom: 1rem;
-    outline: none;
-    transition: border-color 0.3s;
+  border: 1px solid var(--color-input-border);
+  background-color: var(--color-input-bg);
+  color: var(--color-form-input-text);
+  border-radius: 10px;
+  padding: var(--padding-form-input);
+  margin-bottom: 1rem;
+  outline: none;
+  transition: border-color 0.3s;
 }
 
 .form_inputs:focus {
-    border-color: var(--color-border-dark);
-    box-shadow: 0 0 5px rgba(102, 102, 102, 0.5);
+  border-color: var(--color-border-dark);
+  box-shadow: 0 0 5px rgba(102, 102, 102, 0.5);
 }
 
 .form_inputs_dropdown {
-    border: 1px solid var(--color-input-border);
-    color: var(--color-input-text);
-    border-radius: 10px;
-    background-color: var(--color-input-bg);
-    padding: 12px;
-    margin-bottom: 1rem;
-    outline: none;
-    transition: border-color 0.3s;
+  border: 1px solid var(--color-input-border);
+  color: var(--color-input-text);
+  border-radius: 10px;
+  background-color: var(--color-input-bg);
+  padding: 12px;
+  margin-bottom: 1rem;
+  outline: none;
+  transition: border-color 0.3s;
 }
 
 .form_inputs_dropdown:focus {
-    border-color: #666;
-    box-shadow: 0 0 5px rgba(102, 102, 102, 0.5);
+  border-color: #666;
+  box-shadow: 0 0 5px rgba(102, 102, 102, 0.5);
 }
 
 .form_btn {
-    padding: 0.5rem 1.5rem;
-    border: none;
-    border-radius: 20px;
-    color: var(--color-btn-text);
-    background-color: var(--color-btn-bg);
-    cursor: pointer;
-    transition: background-color var(--transition-duration);
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 20px;
+  color: var(--color-btn-text);
+  background-color: var(--color-btn-bg);
+  cursor: pointer;
+  transition: background-color var(--transition-duration);
 }
 
 .form_btn:hover {
-    background-color: var(--color-btn-bg-hover);
+  background-color: var(--color-btn-bg-hover);
 }
-.ingredients_list
-{
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+.ingredients_list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
-.ingredients_list > div:first-child{
-    display: flex;
-    gap: 1rem;
-    justify-items: center;
-    align-items: center;
+.ingredients_list > div:first-child {
+  display: flex;
+  gap: 1rem;
+  justify-items: center;
+  align-items: center;
 }
 .ingredients_list_input {
-    margin-top: 1rem;
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    flex-direction: column;
+  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-direction: column;
 }
 .ingredients_list_input > div {
-    display: flex;
-    gap: 1rem;
+  display: flex;
+  gap: 1rem;
 }
 
 .form_textarea {
-    border-radius: var(--border-radius);
-    height: fit-content;
-    padding: 12px;
-    border: 1px solid var(--color-input-border);
-    background-color: var(--color-input-bg);
-    color: var(--color-btn-text);
-    outline: none;
-    transition: border-color var(--transition-duration);
+  border-radius: var(--border-radius);
+  height: fit-content;
+  padding: 12px;
+  border: 1px solid var(--color-input-border);
+  background-color: var(--color-input-bg);
+  color: var(--color-btn-text);
+  outline: none;
+  transition: border-color var(--transition-duration);
 }
 
 .form_textarea:focus {
-    border-color: var(--color-border-focus-light);
-    box-shadow: 0 0 5px rgba(102, 102, 102, 0.5);
+  border-color: var(--color-border-focus-light);
+  box-shadow: 0 0 5px rgba(102, 102, 102, 0.5);
 }
 
 .submit_btn {
-    margin: 0;
-    height: 50px;
-    width: 100px;
-    border-radius: var(--border-radius);
-    background-color: var(--color-primary-dark);
-    color: var(--color-primary-light);
-    border: none;
-    cursor: pointer;
-    transition: background-color var(--transition-duration);
+  margin: 0;
+  height: 50px;
+  width: 100px;
+  border-radius: var(--border-radius);
+  background-color: var(--color-primary-dark);
+  color: var(--color-primary-light);
+  border: none;
+  cursor: pointer;
+  transition: background-color var(--transition-duration);
 }
 
 .submit_btn:hover {
-    background-color: var(--color-btn-bg-hover);
+  background-color: var(--color-btn-bg-hover);
 }
 
 .horizontal_fields {
-    display: flex;
-    gap: 1rem; 
+  display: flex;
+  gap: 1rem;
 }
 
 .horizontal_fields > div {
-    flex: 1; 
-    flex-wrap: wrap;
+  flex: 1;
+  flex-wrap: wrap;
 }
 
 .tags_container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
 }
 
 .tag_pill {
-    display: inline-block;
-    background-color: var(--color-tag-pill-bg); /* Light blue */
-    color: var(--color-tag-pill-text); /* Dark teal */
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 0.9em;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
-    transition:
-        background-color 0.3s,
-        box-shadow 0.3s; /* Smooth transitions */
-    cursor: pointer;
-    position: relative; 
-    overflow: hidden; 
+  display: inline-block;
+  background-color: var(--color-tag-pill-bg); /* Light blue */
+  color: var(--color-tag-pill-text); /* Dark teal */
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.9em;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition:
+    background-color 0.3s,
+    box-shadow 0.3s; /* Smooth transitions */
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
 }
 
 .delete_tag_button {
-    background: none;
-    border: none; 
-    color: var(--color-teal-light); 
-    margin-left: 0.5rem;
-    cursor: pointer;
-    font-size: 1rem;
-    line-height: 1 ;
+  background: none;
+  border: none;
+  color: var(--color-teal-light);
+  margin-left: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
 }
 
 .imagePreview > img {
-    position: relative;
-    width: 100px;
-    height: 100px;
-    margin-left: 8rem;
-    border-radius: 10px;
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin-left: 8rem;
+  border-radius: 10px;
 }
 .imagePreview > p {
-    margin-left: 5rem;
-    margin-top: 2rem;
-    color: var(--color-input-text);
+  margin-left: 5rem;
+  margin-top: 2rem;
+  color: var(--color-input-text);
 }
