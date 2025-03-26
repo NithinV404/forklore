@@ -34,7 +34,6 @@ export default function RecipeCards() {
         );
       }
     }
-    console.log(idRegex.test(searchInput));
     setFilteredRecipes(filtered);
   }, [category, searchInput, recipes]);
 
@@ -54,8 +53,12 @@ export default function RecipeCards() {
   };
 
   useEffect(() => {
-    window.scrollTo(0, location.state?.scrollPosition || 0);
-  }, [location.state?.scrollPosition]);
+    if (location.state?.from === location.pathname) {
+      setTimeout(() => {
+        window.scrollTo(0, location.state?.scrollPosition);
+      }, 0);
+    } else window.scrollTo(0, 0);
+  }, [location.state?.scrollPosition, location.pathname, location.state?.from]);
 
   return (
     <>

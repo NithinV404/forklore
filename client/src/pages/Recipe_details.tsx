@@ -9,8 +9,12 @@ export default function RecipeDetails() {
   const { id } = useParams();
 
   useEffect(() => {
-    window.scrollTo(0, location.state?.scrollPosition || 0);
-  }, [location.state?.scrollPosition]);
+    if (location.state?.from === location.pathname) {
+      setTimeout(() => {
+        window.scrollTo(0, location.state?.scrollPosition);
+      }, 0);
+    } else window.scrollTo(0, 0);
+  }, [location.state?.scrollPosition, location.pathname, location.state?.from]);
 
   return (
     <>
