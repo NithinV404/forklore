@@ -1,13 +1,5 @@
 @import "../variables.css";
 
-body {
-  background-color: var(--primary-bg);
-  color: var(--color-label-text);
-  font-family: "Roboto", sans-serif;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 .recipe_cards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -220,26 +212,30 @@ body {
   height: 100%;
 }
 
+/* Filter ribbion */
+
 .filter-ribbon {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 1rem;
   align-items: center;
-  margin: 2rem 2.5rem;
   color: var(--color-label-text);
+  margin-top: 1rem;
+  padding: 1rem 0;
+  border-radius: 0.5rem;
 }
-.category-dropdown {
-  width: 8rem;
-  height: 2rem;
-  border-radius: 1rem;
-  border: 1px solid var(--color-input-border);
-  padding: 0 0.5rem;
-  outline: none;
-  background-color: var(--color-input-bg);
-  color: var(--color-input-text);
-  transition:
-    background-color 0.3s,
-    border-color 0.3s;
-  text-align: left;
+
+.filter-ribbon > button {
+  background: var(--color-input-bg);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  transition: ease-in-out 0.3s;
+}
+
+.filter-ribbon > button.active {
+  background: #000;
+  color: fff;
 }
 
 .category-dropdown:hover {

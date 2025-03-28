@@ -12,7 +12,7 @@ import { ToastProvider } from "./context/Toast_context";
 import { SearchProvider } from "./context/Search_context";
 
 const main_style = {
-  padding: "1rem",
+  padding: "1.5rem 3rem",
 };
 
 export default function App() {

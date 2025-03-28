@@ -1,7 +1,7 @@
 import "../pages/Recipe_menu.css";
 import Delete from "../assets/SVG/Delete";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { Recipe, useRecipes } from "../context/Recipe_context";
 import { useToast } from "../context/Toast_context";
 import { useSearch } from "../context/Search_context";
@@ -10,34 +10,13 @@ export default function RecipeCards() {
   const { recipes, deleteRecipe } = useRecipes();
   const { searchInput } = useSearch();
   const { showToast } = useToast();
-  const [category, setCategory] = useState("All");
+  const [categorySelected, setCategorySelected] = useState(["All"]);
   const [categoryList, setCategoryList] = useState<string[]>([]);
   const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>(recipes);
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
-    const idRegex = /^[0-9]+$/;
-    let filtered = [...recipes];
-
-    if (category === "Alphabetical") {
-      filtered.sort((a, b) => a.strMeal.localeCompare(b.strMeal));
-    } else if (category !== "All") {
-      filtered = filtered.filter((recipe) => recipe.strCategory === category);
-    }
-    if (searchInput !== "" && searchInput !== null) {
-      if (idRegex.test(searchInput)) {
-        filtered = filtered.filter((recipe) => recipe.idMeal === searchInput);
-      } else {
-        filtered = filtered.filter((recipe) =>
-          recipe.strMeal.toLowerCase().includes(searchInput.toLowerCase()),
-        );
-      }
-    }
-    setFilteredRecipes(filtered);
-  }, [category, searchInput, recipes]);
-
-  useEffect(() => {
+  useMemo(() => {
     const categorySet = new Set<string>();
     recipes.forEach((recipe) => categorySet.add(recipe.strCategory));
     setCategoryList(Array.from(categorySet));
@@ -51,6 +30,23 @@ export default function RecipeCards() {
       },
     });
   };
+  useEffect(() => {
+    let filtered = [...recipes];
+
+    if (!(categorySelected.length === 1 && categorySelected[0] === "All")) {
+      filtered = filtered.filter((recipe) =>
+        categorySelected.includes(recipe.strCategory),
+      );
+    }
+
+    if (searchInput && searchInput.trim() !== "") {
+      filtered = filtered.filter((recipe) =>
+        recipe.strMeal.toLowerCase().includes(searchInput.toLowerCase()),
+      );
+    }
+
+    setFilteredRecipes(filtered);
+  }, [recipes, categorySelected, searchInput]);
 
   useEffect(() => {
     if (location.state?.from === location.pathname) {
@@ -60,22 +56,50 @@ export default function RecipeCards() {
     } else window.scrollTo(0, 0);
   }, [location.state?.scrollPosition, location.pathname, location.state?.from]);
 
+  const categoryAddClickHandler = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      const buttonText = e.currentTarget.textContent;
+      if (buttonText) {
+        setCategorySelected((prev) =>
+          prev.includes(buttonText)
+            ? prev.filter((category) => category !== buttonText)
+            : [...prev, buttonText],
+        );
+      }
+    },
+    [],
+  );
+
   return (
     <>
       <div className="filter-ribbon">
-        <p>Filter</p>
-        <select
-          className="category-dropdown"
-          onChange={(e) => setCategory(e.target.value)}
-        >
-          <option value="All">All</option>
-          <option value="Alphabetical">Alphabetical</option>
-          {categoryList.map((category, index) => (
-            <option key={index} value={category}>
-              {category}
-            </option>
-          ))}
-        </select>
+        {useMemo(
+          () => (
+            <>
+              <button
+                value="All"
+                className={categorySelected.includes("All") ? "active" : ""}
+              >
+                All
+              </button>
+              {categoryList.map((category) => (
+                <button
+                  key={category}
+                  className={
+                    categorySelected.includes(category) ? "active" : ""
+                  }
+                  value={category}
+                  onClick={(e) => {
+                    categoryAddClickHandler(e);
+                  }}
+                >
+                  {category}
+                </button>
+              ))}
+            </>
+          ),
+          [categoryList, categorySelected, categoryAddClickHandler],
+        )}
       </div>
       <div className="recipe_cards">
         {filteredRecipes.length === 0 ? (
