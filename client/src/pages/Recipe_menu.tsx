@@ -1,4 +1,4 @@
-import "../pages/Recipe_menu.css";
+import recipe_menu_style from "../pages/Recipe_menu.module.css";
 import Delete from "../assets/SVG/Delete";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState, useMemo, useCallback } from "react";
@@ -72,22 +72,28 @@ export default function RecipeCards() {
 
   return (
     <>
-      <div className="filter-ribbon">
+      <div className={recipe_menu_style.filter_ribbon}>
         {useMemo(
           () => (
             <>
               <button
                 value="All"
-                className={categorySelected.includes("All") ? "active" : ""}
+                className={`${recipe_menu_style.filter_ribbon_button} ${
+                  categorySelected.includes("All")
+                    ? recipe_menu_style.active
+                    : ""
+                }`}
               >
                 All
               </button>
               {categoryList.map((category) => (
                 <button
                   key={category}
-                  className={
-                    categorySelected.includes(category) ? "active" : ""
-                  }
+                  className={`${recipe_menu_style.filter_ribbon_button} ${
+                    categorySelected.includes(category)
+                      ? recipe_menu_style.active
+                      : ""
+                  }`}
                   value={category}
                   onClick={(e) => {
                     categoryAddClickHandler(e);
@@ -101,7 +107,7 @@ export default function RecipeCards() {
           [categoryList, categorySelected, categoryAddClickHandler],
         )}
       </div>
-      <div className="recipe_cards">
+      <div className={recipe_menu_style.recipe_menu}>
         {filteredRecipes.length === 0 ? (
           <div className="empty-recipe">
             <h1>No recipes saved</h1>
@@ -112,49 +118,23 @@ export default function RecipeCards() {
           filteredRecipes &&
           filteredRecipes.map((recipe, index) => (
             <div
-              className="recipe_card"
+              className={recipe_menu_style.recipe_card}
               key={index}
               onClick={() => recipeDetailsRedirect(recipe.idMeal)}
             >
-              <div className="recipe_card_header">
-                <div className="tag-container">
-                  {recipe.strTags &&
-                    recipe.strTags.split(",").map(
-                      (tag, tagIndex) =>
-                        tagIndex < 2 && (
-                          <p className="tag" key={tagIndex}>
-                            # {tag}
-                          </p>
-                        ),
-                    )}
-                </div>
-                <img src={recipe.strMealThumb} alt={recipe.strMeal} />
+              <Delete
+                className="ic-hover"
+                onClick={(event) => {
+                  deleteRecipe(recipe.idMeal);
+                  showToast("Recipe deleted");
+                  event.stopPropagation();
+                }}
+              />
+              <div className={recipe_menu_style.image_container}>
+                <img src={`${recipe.strMealThumb}`} />
               </div>
-              <div className="recipe_card_footer">
-                <div className="recipe_card_details">
-                  <h3>{recipe.strMeal}</h3>
-                  <div className="category_divider">
-                    <div className="category_container">
-                      <b>Category</b>
-                      <p id="recipe_card_category">{recipe.strCategory}</p>
-                    </div>
-                    <div className="icons_container">
-                      <div>
-                        <button
-                          className="delete_btn"
-                          onClick={(event) => {
-                            deleteRecipe(recipe.idMeal);
-                            showToast("Recipe deleted");
-                            event.stopPropagation();
-                          }}
-                        >
-                          <Delete className="ic-hover" fill="#fff" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <p id="recipe_card_category">{recipe.strCategory}</p>
+              <h2>{recipe.strMeal}</h2>
             </div>
           ))
         )}
