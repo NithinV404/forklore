@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./Add_recipe.module.css";
 import React from "react";
 import axios from "axios";
@@ -37,6 +37,14 @@ export default function AddRecipe() {
     recipeMeasureValue: [""],
     recipeImage: null,
   });
+
+  useEffect(() => {
+    if (location.state?.from === location.pathname) {
+      setTimeout(() => {
+        window.scrollTo(0, location.state?.scrollPosition);
+      }, 0);
+    } else window.scrollTo(0, 0);
+  }, [location.state?.scrollPosition, location.pathname, location.state?.from]);
 
   const handleFormInput = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
