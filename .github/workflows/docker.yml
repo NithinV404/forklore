@@ -14,6 +14,20 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: client/package-lock.json
+
+    - name: Lint and build client
+      run: |
+        cd client
+        npm ci
+        npm run lint
+        npm run build
+
     - name: Build client Docker image
       run: |
         cd client
@@ -28,6 +42,8 @@ jobs:
 
     - name: Set up Rust
       uses: actions-rust-lang/setup-rust-toolchain@v1
+      with:
+        components: clippy, rustfmt
 
     - name: Cache Cargo
       uses: actions/cache@v4
@@ -39,6 +55,12 @@ jobs:
         key: ${{ runner.os }}-cargo-${{ hashFiles('server/Cargo.lock') }}
         restore-keys: |
           ${{ runner.os }}-cargo-
+
+    - name: Lint server
+      run: |
+        cd server
+        cargo fmt --check
+        cargo clippy -- -D warnings
 
     - name: Build server
       run: |
@@ -58,10 +80,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Build and start services with Docker Compose
+    - name: Start services with Docker Compose
       run: |
-        docker-compose up --build -d
-        sleep 10  # Wait for services to start
+        docker-compose up -d
+        sleep 15  # Wait for services to start
 
     - name: Test server health
       run: |
@@ -70,6 +92,11 @@ jobs:
     - name: Test client
       run: |
         curl -f http://localhost:80 || exit 1
+        curl -s http://localhost:80 | grep -q "html" || exit 1  # Check if HTML is served
+
+    - name: Test server API endpoint
+      run: |
+        curl -f http://localhost:5000/ || exit 1  # Assuming / returns something
 
     - name: Stop services
       run: docker-compose down
