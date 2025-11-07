@@ -72,7 +72,7 @@ jobs:
 
       - name: Start services with Docker Compose
         run: |
-          docker-compose up --build -d
+          docker compose up --build -d
           sleep 30  # Wait for services to start
 
       - name: Test server health
@@ -85,4 +85,4 @@ jobs:
           curl -s http://localhost:3000 | grep -q "html" || exit 1  # Check if HTML is served
 
       - name: Stop services
-        run: docker-compose down
+        run: docker compose down
