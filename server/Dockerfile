@@ -16,10 +16,10 @@ COPY src ./src
 RUN cargo build --release
 
 # Runtime stage
-FROM debian:bullseye-slim AS runtime
+FROM debian:bookworm-slim AS runtime
 
 # Install necessary runtime dependencies (if any, e.g., for SSL)
-RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y ca-certificates libssl3 && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
