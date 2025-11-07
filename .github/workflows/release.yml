@@ -2,6 +2,9 @@ permissions:
   contents: write
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -11,16 +14,20 @@ jobs:
   release:
     needs: build
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
 
-      - name: Archive binary
-        working-directory: ./server
+      - name: Download server binary
+        uses: actions/download-artifact@v4
+        with:
+          name: server-binary
+          path: ./
+
+      - name: Prepare binary
         run: |
-          cp -r ./src/public ./forklore-release
-          cp -r ./target/release/server ./forklore-release
-          cd forklore-release && tar -czvf forklore.tar.gz *
-          sudo apt install -y tree && tree
+          chmod +x server
+          ls -la server
 
       - name: Create Release
         id: create_release
@@ -39,6 +46,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./forklore-release/forklore.tar.gz
-          asset_name: forklore.tar.gz
-          asset_content_type: application/gzip
+          asset_path: ./server
+          asset_name: forklore-server
+          asset_content_type: application/octet-stream
