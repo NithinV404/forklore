@@ -2,7 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
 }
 
@@ -10,12 +12,21 @@ html, body, #root {
 @tailwind components;
 @tailwind utilities;
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
 }
 
 body {
-  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial;
   @apply bg-background text-foreground;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -34,22 +45,44 @@ body {
   object-fit: cover;
 }
 
-.floating-btn:focus { outline: none }
+.floating-btn:focus {
+  outline: none;
+}
 
 /* modern helpers */
-.muted { color: var(--muted) }
+.muted {
+  color: var(--muted);
+}
 
 /* subtle motion */
-* { transition: background-color 200ms ease, color 200ms ease, transform 250ms ease, box-shadow 250ms ease }
+* {
+  transition:
+    background-color 200ms ease,
+    color 200ms ease,
+    transform 250ms ease,
+    box-shadow 250ms ease;
+}
 
 /* selection */
-::selection { background: #06b6d4; color: white }
+::selection {
+  background: #06b6d4;
+  color: white;
+}
 
 /* scrollbar */
-::-webkit-scrollbar { width: 6px }
-::-webkit-scrollbar-track { background: #1e293b }
-::-webkit-scrollbar-thumb { background: #64748b; border-radius: 3px }
-::-webkit-scrollbar-thumb:hover { background: #06b6d4 }
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+::-webkit-scrollbar-thumb {
+  background: #64748b;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #06b6d4;
+}
 
 /* Fix Radix Select dropdown animation origin */
 [data-radix-select-content] {
