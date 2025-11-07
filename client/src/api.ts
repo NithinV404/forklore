@@ -38,12 +38,19 @@ const API_BASE =
 export async function fetchRecipes(): Promise<Recipe[]> {
   const res = await fetch(`${API_BASE}/`);
   if (!res.ok) return [];
-  return (await res.json()) as Recipe[];
+  const data = await res.json();
+  return (data.meals as Recipe[]) || [];
+}
+
+export async function fetchSavedRecipes(): Promise<Recipe[]> {
+  const res = await fetch(`${API_BASE}/saved`);
+  if (!res.ok) return [];
+  return await res.json();
 }
 
 // Add recipe using multipart/form-data as the server expects (route: /addrecipe)
 export async function addRecipe(
-  payload: AddRecipePayload | FormData
+  payload: AddRecipePayload | FormData,
 ): Promise<void> {
   const fd = payload instanceof FormData ? payload : new FormData();
   if (!(payload instanceof FormData)) {
@@ -58,7 +65,7 @@ export async function addRecipe(
     fd.append("recipeingredients", JSON.stringify(payload.ingredients || []));
     fd.append(
       "recipemeasurevalue",
-      JSON.stringify(payload.measureValues || [])
+      JSON.stringify(payload.measureValues || []),
     );
     fd.append("recipemeasureunit", JSON.stringify(payload.measureUnits || []));
     // For image: server accepts either an URL string or uploaded bytes on field 'file'
@@ -74,7 +81,7 @@ export async function addRecipe(
 // Edit recipe using multipart/form-data (route: /editrecipe)
 export async function editRecipe(
   id: string,
-  payload: AddRecipePayload | FormData
+  payload: AddRecipePayload | FormData,
 ): Promise<void> {
   const fd = payload instanceof FormData ? payload : new FormData();
   if (!(payload instanceof FormData)) {
@@ -90,7 +97,7 @@ export async function editRecipe(
     fd.append("recipeingredients", JSON.stringify(payload.ingredients || []));
     fd.append(
       "recipemeasurevalue",
-      JSON.stringify(payload.measureValues || [])
+      JSON.stringify(payload.measureValues || []),
     );
     fd.append("recipemeasureunit", JSON.stringify(payload.measureUnits || []));
     // For image: server accepts either an URL string or uploaded bytes on field 'file'
@@ -120,7 +127,7 @@ export async function deleteRecipe(id: string): Promise<void> {
 
 export async function searchRemote(
   search_value: string,
-  search_type: string
+  search_type: string,
 ): Promise<any> {
   const res = await fetch(`${API_BASE}/search`, {
     method: "POST",
@@ -129,4 +136,28 @@ export async function searchRemote(
   });
   if (!res.ok) return null;
   return await res.json();
+}
+
+export async function exportRecipes(): Promise<void> {
+  const res = await fetch(`${API_BASE}/export`);
+  if (!res.ok) throw new Error("Export failed");
+  const blob = await res.blob();
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "recipes.json";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  window.URL.revokeObjectURL(url);
+}
+
+export async function importRecipes(file: File): Promise<void> {
+  const fd = new FormData();
+  fd.append("file", file);
+  const res = await fetch(`${API_BASE}/import`, {
+    method: "POST",
+    body: fd,
+  });
+  if (!res.ok) throw new Error("Import failed");
 }

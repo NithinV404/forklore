@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use serde_json::Error;
 use std::fs::{File, OpenOptions};
 use std::io::{self, Read};
 use std::path::Path;
@@ -68,51 +67,77 @@ pub struct FileUtils;
 #[allow(dead_code)]
 impl FileUtils {
     // Checks if the folder exists, if not it creates it
-    pub fn folder_exists(path: &str, create: bool) -> bool {
-        if !Path::new(path).exists() {
-            if create {
-                std::fs::create_dir(path).expect("Failed to create directory");
-                println!("Folder created");
-            }
-            return false;
+    pub fn folder_exists(path: &str, create: bool) -> Result<bool, io::Error> {
+        let path_obj = Path::new(path);
+        if path_obj.exists() {
+            Ok(true)
+        } else if create {
+            std::fs::create_dir_all(path)?;
+            dbg!("Folder create {}", path);
+            Ok(true)
+        } else {
+            Ok(false)
         }
-        true
     }
 
     // Checks if the file exists, if not it creates it with folder as specified in the path
-    pub fn file_exists(path: &str, create: bool) -> bool {
+    pub fn file_exists(path: &str, create: bool) -> Result<bool, io::Error> {
         if OpenOptions::new().read(true).open(path).is_ok() {
-            true
-        } else {
-            if create {
-                let dir_path = Path::new(path).parent().unwrap();
-                Self::folder_exists(dir_path.to_str().unwrap(), true);
-                OpenOptions::new()
-                    .read(true)
-                    .write(true)
-                    .create(true)
-                    .truncate(true)
-                    .open(path)
-                    .expect("Failed to open or create file");
-                println!("File created");
+            Ok(true)
+        } else if create {
+            if let Some(dir_path) = Path::new(path).parent() {
+                Self::folder_exists(
+                    dir_path.to_str().ok_or_else(|| {
+                        io::Error::new(io::ErrorKind::InvalidInput, "Invalid Path encoding")
+                    })?,
+                    true,
+                )?;
             }
-            false
+            OpenOptions::new()
+                .read(true)
+                .write(true)
+                .create(true)
+                .truncate(true)
+                .open(path)?;
+            dbg!("File created {}", path);
+            Ok(true)
+        } else {
+            Ok(false)
         }
     }
 
-    pub fn read_file(path: &str) -> Result<Vec<Recipe>, Error> {
-        Self::file_exists(path, true);
-        let mut file = File::open(path).expect("Failed to open file");
+    pub fn read_file(path: &str) -> Result<Vec<Recipe>, Box<dyn std::error::Error>> {
+        Self::file_exists(path, true)?;
+        let mut file = File::open(path)?;
         let mut contents = String::new();
-        file.read_to_string(&mut contents)
-            .expect("Failed to read file");
+        file.read_to_string(&mut contents)?;
 
         if contents.trim().is_empty() {
             return Ok(vec![]);
         }
 
-        let data: Vec<Recipe> = serde_json::from_str(&contents)?;
-        Ok(data)
+        match serde_json::from_str(&contents) {
+            Ok(data) => Ok(data),
+            Err(e) => {
+                eprintln!(
+                    "The recipes file is corrupted, removing file and replacing with []: {}",
+                    e
+                );
+                if let Err(remove_err) = Self::remove_file(path) {
+                    eprintln!("Failed to remove file: {}", remove_err);
+                    eprintln!("Checking if file exists and creating file");
+                    match Self::file_exists(path, true) {
+                        Ok(_) => Ok(vec![]),
+                        Err(create_err) => {
+                            eprintln!("Failed to create file: {}", create_err);
+                            Err(Box::new(create_err))
+                        }
+                    }
+                } else {
+                    Ok(vec![])
+                }
+            }
+        }
     }
 
     pub fn write_file(path: &str, content: Vec<Recipe>) -> Result<(), io::Error> {
@@ -128,5 +153,15 @@ impl FileUtils {
     pub fn remove_file(path: &str) -> Result<(), io::Error> {
         std::fs::remove_file(path)?;
         Ok(())
+    }
+
+    pub fn validate_and_parse_recipes(
+        content: &str,
+    ) -> Result<Vec<Recipe>, Box<dyn std::error::Error>> {
+        if content.trim().is_empty() {
+            return Ok(vec![]);
+        }
+        let data: Vec<Recipe> = serde_json::from_str(content)?;
+        Ok(data)
     }
 }
