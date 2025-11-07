@@ -1,5 +1,5 @@
 # Build stage
-FROM rust:1.75-slim as builder
+FROM rust:1.75-slim AS builder
 
 WORKDIR /app
 
@@ -13,7 +13,7 @@ COPY src ./src
 RUN cargo build --release
 
 # Runtime stage
-FROM debian:bullseye-slim
+FROM debian:bullseye-slim AS runtime
 
 # Install necessary runtime dependencies (if any, e.g., for SSL)
 RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
@@ -24,10 +24,10 @@ WORKDIR /app
 COPY --from=builder /app/target/release/server ./server
 
 # Copy the recipes directory (for data persistence)
-COPY recipes ./recipes
+COPY server/recipes ./recipes
 
 # Copy the .env file
-COPY .env ./.env
+COPY server/.env ./.env
 
 # Expose the port
 EXPOSE 5000
