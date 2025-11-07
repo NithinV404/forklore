@@ -1,6 +1,6 @@
 use crate::modules::file_utils::{FileUtils, Recipe};
 use actix_multipart::Multipart;
-use actix_web::HttpResponse;
+use actix_web::{Error, HttpResponse};
 use futures::StreamExt;
 use serde_json::{json, Map, Value};
 use std::fs::File;
@@ -22,9 +22,7 @@ struct RecipeDataUser {
     source: String,
 }
 
-pub async fn add_recipe_user(
-    mut payload: Multipart,
-) -> Result<HttpResponse, Box<dyn std::error::Error>> {
+pub async fn add_recipe_user(mut payload: Multipart) -> Result<HttpResponse, Error> {
     let mut recipe_data = RecipeDataUser {
         recipe_id: format!("U_{}", Uuid::new_v4()),
         recipe_name: String::new(),
@@ -57,15 +55,13 @@ pub async fn add_recipe_user(
                 let content_str = String::from_utf8_lossy(&bytes).to_string();
                 if content_str.starts_with("https://") || content_str.starts_with("http://") {
                     recipe_data.mealthumb = Some(content_str.clone());
-                } else if FileUtils::folder_exists("recipes/images", true)? {
+                } else if FileUtils::folder_exists("recipes/images", true) {
                     let filename = format!("recipes/images/{}.jpg", recipe_data.recipe_id);
                     let mut file = File::create(filename)?;
                     file.write_all(&bytes).expect("Failed to write file");
-                    let base_url = std::env::var("BASE_URL")
-                        .unwrap_or_else(|_| "http://localhost:5000".to_string());
                     recipe_data.mealthumb = Some(format!(
-                        "{}/recipes/images/{}.jpg",
-                        base_url, recipe_data.recipe_id
+                        "http://localhost:5000/recipes/images/{}.jpg",
+                        recipe_data.recipe_id
                     ));
                 }
             }
@@ -157,5 +153,6 @@ pub async fn add_recipe_user(
 
     // Write the updated list back to the file
     FileUtils::write_file("recipes/recipes.json", existing_recipes).unwrap();
+
     Ok(HttpResponse::Ok().body("Recipe added successfully"))
 }

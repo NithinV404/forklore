@@ -31,3 +31,5 @@ server/src/public/*
 *.tmp
 *.temp
 server/target/*
+server/Cargo.lock
+

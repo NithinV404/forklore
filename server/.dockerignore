@@ -1,6 +1,0 @@
-target/
-.git/
-README.md
-Dockerfile
-.dockerignore
-node_modules/

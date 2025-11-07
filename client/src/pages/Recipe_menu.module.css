@@ -1,0 +1,147 @@
+@import "../variables.css";
+
+/* Recipe menu */
+
+.empty_recipe {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  left: 0;
+  top: 0;
+}
+
+.recipe_menu {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 5rem;
+  padding-top: 1rem;
+}
+@media screen and (max-width: 1000px) {
+  .recipe_menu {
+    justify-items: center;
+    align-items: center;
+  }
+}
+
+.recipe_card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 15rem;
+  height: 25rem;
+  transition: ease-in-out 0.3s;
+}
+
+.recipe_card svg {
+  position: relative;
+  top: 3.5rem;
+  left: 11.5rem;
+  height: 40px;
+  width: 40px;
+  fill: #000;
+  z-index: 1;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  backdrop-filter: blur(4px);
+  transition: all ease-in-out 0.3s;
+}
+
+.recipe_card svg:hover {
+  background: rgba(255, 0, 0, 0.7);
+}
+
+.image_container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 1.5rem;
+  overflow: hidden;
+}
+
+.image_container > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all ease-in-out 0.3s;
+}
+
+.recipe_card:hover .image_container > img {
+  transform: scale(1.1);
+}
+
+/* Add overlay to the image container */
+.image_container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0));
+  transition: all ease-in-out 0.3s;
+}
+
+.recipe_card:hover .image_container::after {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+}
+
+.recipe_card > h2 {
+  padding-left: 1.5rem;
+  position: absolute;
+  color: #fff;
+  margin-top: calc(25rem - 9rem);
+  z-index: 1;
+}
+
+.recipe_card > p {
+  position: absolute;
+  display: block;
+  margin-top: calc(25rem - 4rem);
+  margin-left: 1rem;
+  padding: 0.5rem 1rem;
+  height: fit-content;
+  min-width: 2rem;
+  background: rgba(255, 224, 178, 0.5);
+  border-radius: 20px;
+  font-size: 0.875rem;
+  color: #fff;
+  z-index: 1;
+  backdrop-filter: blur(4px);
+}
+/* Filter ribbion */
+
+.filter_ribbon {
+  display: flex;
+  justify-content: flex-start;
+  gap: 1rem;
+  align-items: center;
+  color: var(--color-label-text);
+  margin-top: 1rem;
+  padding: 1rem 0;
+  border-radius: 0.5rem;
+}
+
+.filter_ribbon > button {
+  background: var(--color-input-bg);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  transition: ease-in-out 0.3s;
+  color: var(--color-input-text);
+}
+
+.filter_ribbon > button.active {
+  background: #000;
+  color: #fff;
+}
+
+.filter_ribbon > button:hover {
+  background: var(--color-btn-hover);
+  color: #fff;
+}
