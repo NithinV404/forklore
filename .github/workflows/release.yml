@@ -22,15 +22,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: server-binary
-          path: server/target/release/
+          path: ./
 
-      - name: Archive binary
-        working-directory: ./server
+      - name: Prepare binary
         run: |
-          mkdir -p forklore-release
-          cp ./target/release/server ./forklore-release
-          cd forklore-release && tar -czvf forklore.tar.gz *
-          ls -la
+          chmod +x server
+          ls -la server
 
       - name: Create Release
         id: create_release
@@ -49,6 +46,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./forklore-release/forklore.tar.gz
-          asset_name: forklore.tar.gz
-          asset_content_type: application/gzip
+          asset_path: ./server
+          asset_name: forklore-server
+          asset_content_type: application/octet-stream

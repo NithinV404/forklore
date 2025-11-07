@@ -13,7 +13,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: 'npm'
+          cache: "npm"
           cache-dependency-path: client/package-lock.json
 
       - name: Install and Build frontend
@@ -60,9 +60,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: server-binary
-          path: server/target/release/
-
-
+          path: server/target/release/server
 
   test:
     runs-on: ubuntu-latest
@@ -73,7 +71,46 @@ jobs:
       - name: Start services with Docker Compose
         run: |
           docker compose up --build -d
-          sleep 30  # Wait for services to start
+
+      - name: Wait for server to be ready
+        run: |
+          echo "Waiting for server to start..."
+          max_attempts=30
+          attempt=0
+          until curl -f http://localhost:5000/ > /dev/null 2>&1; do
+            attempt=$((attempt + 1))
+            if [ $attempt -eq $max_attempts ]; then
+              echo "Server failed to start after $max_attempts attempts"
+              docker compose ps
+              echo "=== Server logs ==="
+              docker compose logs server
+              echo "=== Client logs ==="
+              docker compose logs client
+              exit 1
+            fi
+            echo "Attempt $attempt/$max_attempts: Server not ready yet, waiting..."
+            sleep 2
+          done
+          echo "Server is ready!"
+
+      - name: Wait for client to be ready
+        run: |
+          echo "Waiting for client to start..."
+          max_attempts=30
+          attempt=0
+          until curl -f http://localhost:8000 > /dev/null 2>&1; do
+            attempt=$((attempt + 1))
+            if [ $attempt -eq $max_attempts ]; then
+              echo "Client failed to start after $max_attempts attempts"
+              docker compose ps
+              echo "=== Client logs ==="
+              docker compose logs client
+              exit 1
+            fi
+            echo "Attempt $attempt/$max_attempts: Client not ready yet, waiting..."
+            sleep 2
+          done
+          echo "Client is ready!"
 
       - name: Test server health
         run: |
@@ -81,8 +118,8 @@ jobs:
 
       - name: Test client
         run: |
-          curl -f http://localhost:3000 || exit 1
-          curl -s http://localhost:3000 | grep -q "html" || exit 1  # Check if HTML is served
+          curl -f http://localhost:8000 || exit 1
+          curl -s http://localhost:8000 | grep -q "html" || exit 1  # Check if HTML is served
 
       - name: Stop services
         run: docker compose down
