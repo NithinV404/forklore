@@ -37,7 +37,7 @@ A full-stack recipe management app built with React (frontend) and Rust/Actix (b
 
 ### Prerequisites
 - Node.js 20+
-- Rust 1.75+
+- Rust 1.83+
 - npm or yarn
 
 ### Setup
