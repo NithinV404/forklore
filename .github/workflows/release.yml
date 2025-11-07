@@ -14,13 +14,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Download server binary
+        uses: actions/download-artifact@v4
+        with:
+          name: server-binary
+          path: server/target/release/
+
       - name: Archive binary
         working-directory: ./server
         run: |
-          cp -r ./src/public ./forklore-release
-          cp -r ./target/release/server ./forklore-release
+          mkdir -p forklore-release
+          cp ./target/release/server ./forklore-release
           cd forklore-release && tar -czvf forklore.tar.gz *
-          sudo apt install -y tree && tree
+          ls -la
 
       - name: Create Release
         id: create_release

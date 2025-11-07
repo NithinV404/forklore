@@ -9,10 +9,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build client Docker image
+      - name: Setup node and build
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: 'npm'
+          cache-dependency-path: client/package-lock.json
+
+      - name: Install and Build frontend
+        working-directory: ./client
         run: |
-          cd client
-          docker build -t forklore-client .
+          npm ci
+          npm run lint
+          npm run format:check
+          npm run build
 
   build-server:
     runs-on: ubuntu-latest
@@ -41,10 +51,18 @@ jobs:
           cargo fmt --check
           cargo clippy -- -D warnings
 
-      - name: Build server Docker image
+      - name: Build rust binary
+        working-directory: ./server
         run: |
-          cd server
-          docker build -t forklore-server .
+          cargo build --release
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: server-binary
+          path: server/target/release/
+
+
 
   test:
     runs-on: ubuntu-latest
