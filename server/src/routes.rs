@@ -6,9 +6,14 @@ use actix_files as fs;
 use actix_web::web;
 
 pub fn config(cfg: &mut web::ServiceConfig) {
+    let images_url_path =
+        std::env::var("IMAGES_URL_PATH").unwrap_or_else(|_| "/recipes/images".to_string());
+    let images_file_path =
+        std::env::var("IMAGES_FILE_PATH").unwrap_or_else(|_| "recipes/images".to_string());
+
     // Serve images
     cfg.service(
-        fs::Files::new("/recipes/images", "recipes/images")
+        fs::Files::new(&images_url_path, &images_file_path)
             .show_files_listing()
             .prefer_utf8(true)
             .use_last_modified(true),

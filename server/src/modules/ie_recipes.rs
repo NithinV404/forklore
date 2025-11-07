@@ -9,10 +9,12 @@ use futures::StreamExt;
 use std::collections::HashSet;
 use std::path::PathBuf;
 
-const RECIPES_FILE_PATH: &str = "./recipes/recipes.json";
+fn recipes_file_path() -> String {
+    std::env::var("RECIPES_FILE_PATH").unwrap_or_else(|_| "./recipes/recipes.json".to_string())
+}
 
 pub async fn export_recipes() -> Result<NamedFile, actix_web::Error> {
-    let path = PathBuf::from(RECIPES_FILE_PATH);
+    let path = PathBuf::from(recipes_file_path());
     let file = NamedFile::open(path)?;
     Ok(file.set_content_disposition(ContentDisposition {
         disposition: DispositionType::Attachment,
@@ -35,14 +37,14 @@ pub async fn import_recipes(
                     }
                     let content = String::from_utf8(bytes)?;
                     let imported = FileUtils::validate_and_parse_recipes(&content)?;
-                    let mut existing = FileUtils::read_file(RECIPES_FILE_PATH)?;
+                    let mut existing = FileUtils::read_file(&recipes_file_path())?;
                     let existing_ids: HashSet<_> = existing.iter().map(|r| &r.idMeal).collect();
                     let new_recipes: Vec<_> = imported
                         .into_iter()
                         .filter(|r| !existing_ids.contains(&r.idMeal))
                         .collect();
                     existing.extend(new_recipes);
-                    FileUtils::write_file(RECIPES_FILE_PATH, existing)?;
+                    FileUtils::write_file(&recipes_file_path(), existing)?;
                     return Ok(HttpResponse::Ok().body("Recipes imported successfully"));
                 }
             }
