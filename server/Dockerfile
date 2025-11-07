@@ -24,10 +24,10 @@ WORKDIR /app
 COPY --from=builder /app/target/release/server ./server
 
 # Copy the recipes directory (for data persistence)
-COPY server/recipes ./recipes
+COPY recipes ./recipes
 
 # Copy the .env file
-COPY server/.env ./.env
+COPY .env ./.env
 
 # Expose the port
 EXPOSE 5000
