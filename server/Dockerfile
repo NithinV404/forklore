@@ -3,6 +3,9 @@ FROM rust:1.83-slim AS builder
 
 WORKDIR /app
 
+# Install build dependencies
+RUN apt-get update && apt-get install -y pkg-config libssl-dev && rm -rf /var/lib/apt/lists/*
+
 # Copy dependency files
 COPY Cargo.toml Cargo.lock ./
 
