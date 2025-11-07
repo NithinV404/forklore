@@ -1,13 +1,12 @@
-# ForkLore (Vite + React + Ts + Rust + Actix)
+# ForkLore (Vite + React + TypeScript + Rust + Actix)
 
-[![Build](https://img.shields.io/github/actions/workflow/status/NithinV404/forklore/test.yml?label=build)](https://github.com/NithinV404/forklore/actions/workflows/test.yml)
-![Lint](https://github.com/NithinV404/forklore/actions/workflows/lint.yml/badge.svg)
-![License](https://img.shields.io/github/license/NIthinV404/forklore)
+[![CI](https://img.shields.io/github/actions/workflow/status/NithinV404/forklore/docker.yml?label=CI)](https://github.com/NithinV404/forklore/actions/workflows/docker.yml)
+![License](https://img.shields.io/github/license/NithinV404/forklore)
 ![Forks](https://img.shields.io/github/forks/NithinV404/forklore)
 ![Stars](https://img.shields.io/github/stars/NithinV404/forklore)
 ![Issues](https://img.shields.io/github/issues/NithinV404/forklore)
 
-This is a recipe app used to save and store recipes locally on the system
+A full-stack recipe management app built with React (frontend) and Rust/Actix (backend). Save, search, and manage recipes locally or from TheMealDB API.
 
 ![Example Image 1](./images/screenshots/photo_1.png)
 
@@ -17,34 +16,82 @@ This is a recipe app used to save and store recipes locally on the system
 
 ![Example Image 4](./images/screenshots/photo_4.png)
 
-## Instruction to run the project
+## Quick Start with Docker (Recommended)
 
-- First download the project to your local device
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/NithinV404/forklore.git
+   cd forklore
+   ```
 
-- Navigate to the forklore folder
+2. **Run with Docker Compose**:
+   ```bash
+   docker-compose up --build
+   ```
 
-- To run the project execute the following command
+3. **Open in browser**:
+   - Frontend: http://localhost:8000
+   - API: http://localhost:5000
 
-```
-cd client && npm run start-react
-```
+## Local Development
 
-```
-cd server && cargo run
-```
+### Prerequisites
+- Node.js 20+
+- Rust 1.75+
+- npm or yarn
 
-- Navigate to the url or ctrl click the url to open in browser from terminal
+### Setup
+1. **Clone and navigate**:
+   ```bash
+   git clone https://github.com/NithinV404/forklore.git
+   cd forklore
+   ```
 
-```
-https://localhost:5173
-```
+2. **Backend (Rust)**:
+   ```bash
+   cd server
+   cargo run
+   ```
+   Server runs on http://localhost:5000
+
+3. **Frontend (React)**:
+   ```bash
+   cd client
+   npm install
+   npm run dev
+   ```
+   App runs on http://localhost:5173
+
+### Environment Variables
+- Copy `server/.env` and adjust as needed (e.g., `HOST=0.0.0.0` for Docker).
+- For frontend, set `VITE_API_BASE` if needed (defaults to `http://127.0.0.1:5000`).
+
+## Features
+
+- **Recipe Management**: Add, edit, delete, and search recipes.
+- **Image Uploads**: Upload and serve recipe images.
+- **API Integration**: Fetch recipes from TheMealDB.
+- **Import/Export**: JSON-based recipe import/export.
+- **Responsive UI**: Built with React, TypeScript, and Tailwind CSS.
+
+## API Endpoints
+
+- `GET /` - Fetch all recipes
+- `POST /addrecipe` - Add a new recipe (multipart)
+- `POST /editrecipe` - Edit a recipe (multipart)
+- `DELETE /delete/{id}` - Delete a recipe
+- `POST /search` - Search remote recipes
+- `GET /export` - Export recipes as JSON
+- `POST /import` - Import recipes from JSON
+- `GET /saved` - Get saved recipes
+- `GET /recipes/images/*` - Serve uploaded images
 
 ## Contributing
 
-- Feel free to fork this repository and submit pull requests.
-- Please ensure that all tests pass before submitting a pull request.
-- Submit the PR to the test branch
+- Fork the repository and submit pull requests.
+- Ensure CI passes (linting, building, and tests).
+- Follow the code style (Prettier for JS/TS, rustfmt for Rust).
 
 ## License
 
-Please do not claim this project as yours.
+This project is licensed under the MIT License. Please do not claim it as your own.
