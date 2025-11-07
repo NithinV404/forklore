@@ -61,9 +61,11 @@ pub async fn add_recipe_user(
                     let filename = format!("recipes/images/{}.jpg", recipe_data.recipe_id);
                     let mut file = File::create(filename)?;
                     file.write_all(&bytes).expect("Failed to write file");
+                    let base_url = std::env::var("BASE_URL")
+                        .unwrap_or_else(|_| "http://localhost:5000".to_string());
                     recipe_data.mealthumb = Some(format!(
-                        "http://localhost:5000/recipes/images/{}.jpg",
-                        recipe_data.recipe_id
+                        "{}/recipes/images/{}.jpg",
+                        base_url, recipe_data.recipe_id
                     ));
                 }
             }
